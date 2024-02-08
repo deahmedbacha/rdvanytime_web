@@ -1,7 +1,11 @@
+import { Head} from '../Components/Head';
+
 
 function Index (){
-    return (
-<h1>index</h1>
+    return(
+       <>
+      <Head></Head>
+       </>
     )
 }
 export default Index
