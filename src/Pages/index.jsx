@@ -1,6 +1,5 @@
 import { Head} from '../Components/Head';
 
-
 function Index (){
     return(
        <>

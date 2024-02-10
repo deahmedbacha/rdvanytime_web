@@ -266,8 +266,12 @@ a {
         line-height: 1.25rem;
     }
 }
-
-
+@media (min-width: 768px) {
+    .burger {
+            display: none
+    
+        }
+    }
 .w-8 {
     width: 2rem;
 }
@@ -482,6 +486,7 @@ a {
 .ps-3 {
     padding-inline-start: .75rem;
 }
+
 
 
 
