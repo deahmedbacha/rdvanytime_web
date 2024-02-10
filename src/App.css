@@ -1,6 +1,5 @@
-
 @font-face {
     font-family: "Bold";
     src: local("DMSans-Bold.ttf"),
-        url("../fonts/DMSans-Bold.ttf") format("truetype");
+        url("./assets/fonts/PoppinsBold.ttf") format("truetype");
 }
