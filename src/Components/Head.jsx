@@ -1,8 +1,6 @@
 import { Menu } from './menu/Menu'
 import logo from '../assets/logo.png'
 import icon from '../assets/langue.png'
-import '../Pages/header.css'
-
 
 export const Head = () => {
     return(
