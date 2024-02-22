@@ -1,6 +1,6 @@
 import { Head } from '../Components/Head';
 import { Body } from '../Components/Body';
-import "../Pages/Body.css";
+import "../Pages/Body.css"; 
 function Index() {
     return (
       <>
@@ -8,6 +8,5 @@ function Index() {
         <Body />
       </>
     );
-}
-
+    }
 export default Index;

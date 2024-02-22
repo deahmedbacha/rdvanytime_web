@@ -5676,13 +5676,12 @@ input[type=date]::-webkit-inner-spin-button {
     .mx-auto 
     {
         display: block;
-    }
-     
+    } 
 }
-
 @media (max-width: 768px) {
     .mt-11 {
     margin-top: calc(5vh + 130px);
+    margin-left: 13%;
     }
 
 }
@@ -5700,16 +5699,9 @@ width: 90%;
 }
 }
 
-
-
-
 .menu.open{
     backdrop-filter: blur(5px);
 }
-
-
-
-
 
 .imag_back{
 background: url("src/assets/img_background.png") 0% 0% / 95% no-repeat;
@@ -5746,3 +5738,5 @@ background: url("src/assets/img_background.png") 0% 0% / 95% no-repeat;
         padding-right: 20%;
     }
 }
+
+
