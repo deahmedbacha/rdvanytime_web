@@ -6,7 +6,7 @@ import {
   Outlet,
   useNavigate,
 } from "react-router-dom";
-import "./styles.css";
+import "./Menu.css";
 
 const Praticien = () => (
   <Page

@@ -3,6 +3,19 @@ import emailjs from "@emailjs/browser";
 import { useRef, useState } from 'react';
 import './index.css'
 import { Head } from '../../Components/Head.jsx';
+import "../../styles/color.css";
+import "../../styles/font.css";
+import "../../styles/index.css";
+import "../../styles/tailwind.css";
+
+
+
+
+
+
+
+
+
 const Img = ({
   className,
   src = "defaultNoData.png",
@@ -418,7 +431,7 @@ const formRef = useRef(); // Ref for the form element
             </div>
           </div>
           <Img
-            className="absolute bottom-[0] h-[217px] object-cover right-[11%] w-[23%]"
+            className="absolute bottom-[0] h-[217px] object-cover right-[11%] w-[23%] left-[67%]"
             src="images/img_lettersend1.png"
             alt="lettersendOne"
           />

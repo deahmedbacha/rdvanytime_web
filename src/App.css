@@ -3,3 +3,6 @@
     src: local("DMSans-Bold.ttf"),
         url("./assets/fonts/PoppinsBold.ttf") format("truetype");
 }
+*{
+    font-family: Bold;
+}
