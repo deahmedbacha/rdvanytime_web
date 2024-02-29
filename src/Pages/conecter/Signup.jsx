@@ -2,6 +2,7 @@ import { Head } from "../../Components/Head";
 import "../conecter/Signup.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Head2 from "Components/Head2";
 function Signup() {
   //number:
   const [mobileNumber, setMobileNumber] = useState("");
@@ -64,7 +65,7 @@ function Signup() {
   };
   return (
     <>
-      <Head />
+      <Head2 />
 
       <div className="sc-aaf087d9-5 kGAwKF">
         <div className="sc-aaf087d9-6 gpRMrZ">

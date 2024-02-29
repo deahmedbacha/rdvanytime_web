@@ -67,7 +67,7 @@ export const Head = () => {
                 </div>
                 <div className="h-full bg-gray-200 py-5 w-px"></div>
                 <div className="flex md:hidden min-w-[1.5em] min-h-[1.5em] ">
-            {/* <Menu></Menu>*/} 
+            <Menu></Menu> 
                 </div>
                 <div className="hidden md:flex md:w-[max-content]">
                   <a

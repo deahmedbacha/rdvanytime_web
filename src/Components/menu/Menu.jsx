@@ -1,36 +1,15 @@
 import { useState } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
 import "./Menu.css";
 
 const Praticien = () => (
-  <Page
-    title="Vous êtes praticien ?"
-    content={``}
-  />
+  <Page title="Vous êtes praticien ?" content="Contenu pour les praticiens" />
 );
-const Apropos = () => (
-  <Page
-    title="À propos"
-    content={``}
-  />
-);
+const Apropos = () => <Page title="À propos" content="Contenu pour À propos" />;
 const Contact = () => (
-  <Page
-    title="Contact"
-    content={``}
-  />
+  <Page title="Contact" content="Contenu pour le contact" />
 );
 const Connecter = () => (
-  <Page
-    title="Se connecter"
-    content={``}
-  />
+  <Page title="Se connecter" content="Contenu pour la connexion" />
 );
 
 const Page = ({ title, content }) => {
@@ -45,17 +24,16 @@ const Page = ({ title, content }) => {
 const links = ["Vous êtes praticien ?", "À propos", "Contact", "Se connecter"];
 
 const Layout = () => {
-  const navigate = useNavigate();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedContentIndex, setSelectedContentIndex] = useState(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const isOpen = isMenuOpen ? "open" : "";
 
-  const onClick = (href) => {
+  const onClick = (index) => {
     toggleMenu();
-    navigate(href);
+    setSelectedContentIndex(index);
   };
 
   return (
@@ -69,7 +47,7 @@ const Layout = () => {
               key={link}
               className={isMenuOpen ? "appear" : ""}
               style={{ animationDelay: `0.${index + 1}s` }}
-              onClick={() => onClick(link)}
+              onClick={() => onClick(index)}
             >
               {link}
             </a>
@@ -77,23 +55,20 @@ const Layout = () => {
         </nav>
       </div>
       <main className={`page ${isOpen}`}>
-        <Outlet />
+        {/* Contenu sélectionné */}
+        {selectedContentIndex !== null && (
+          <>
+            {selectedContentIndex === 0 && <Praticien />}
+            {selectedContentIndex === 1 && <Apropos />}
+            {selectedContentIndex === 2 && <Contact />}
+            {selectedContentIndex === 3 && <Connecter />}
+          </>
+        )}
       </main>
     </>
   );
 };
 
 export const Menu = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="praticien" element={<Praticien />} />
-          <Route path="apropos" element={<Apropos />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="connecter" element={<Connecter />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
+  return <Layout />;
 };

@@ -6,6 +6,8 @@ import './index.css'
 import Contact from "./Pages/Contactus/index.jsx";
 import Signin from "./Pages/conecter/Signin.jsx";
 import Signup from "./Pages/conecter/Signup.jsx";
+import Rechercher from "./Pages/Recherche/Recherche.jsx";
+
 
 
 
@@ -27,7 +29,10 @@ const router = createBrowserRouter([
     path: "Signup",
     element: <Signup />,
   },
-
+  {
+    path: "Rechercher",
+    element: <Rechercher />,
+  },
 ]);
 
 

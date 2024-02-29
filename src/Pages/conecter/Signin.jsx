@@ -2,6 +2,7 @@ import { Head } from "../../Components/Head";
 import "../conecter/Signin.css"
 import  { useState } from "react";
 import { Link } from "react-router-dom";
+import Head2 from "Components/Head2";
 function Signin() {
   //email:
   const [email, setEmail] = useState("");
@@ -46,7 +47,7 @@ function Signin() {
   };
   return (
     <>
-      <Head />
+      <Head2/>
 
       <div className="sc-1bc08e0b-4 hietwj">
         <div className="sc-1bc08e0b-5 jyhvPI">
