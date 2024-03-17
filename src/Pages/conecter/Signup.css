@@ -1,5 +1,5 @@
 .kGAwKF {
-    background: url("./sign-up-svg.svg") 0% 0% / 45% no-repeat;
+  /*  background: url("./sign-up-svg.svg") 0% 0% / 45% no-repeat;
     background-position: 95% 50%;
     display: flex;
     flex-direction: column;
@@ -8,8 +8,10 @@
     min-height: 88vh;
     padding: 2rem;
     padding-right: 47%;
-    padding-top: 10%;
-
+    padding-top: 10%;*/
+    padding-top: 12%;
+    padding-left: 17%;
+    padding-right: 17%;
 }
 
 
@@ -24,11 +26,12 @@
 
 .gpRMrZ {
     position: relative;
-    margin: 2.5rem;
+   /* margin: 2.5rem; */
  /*   width: 680px;  */
     background: white;
     border-radius: 1.5rem;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 25px 50px 12px;
+    max-width: 900px;
 }
 
 .first\:ctw-bg-white:first-child {
@@ -551,12 +554,12 @@ p {
 }
 
 .kEHKi p {
-    font-size: 10px;
+    font-size: 13px;
     line-height: 13px;
 }
 
 .kEHKi a {
-    font-size: 10px;
+    font-size: 13px;
     line-height: 13px;
 }
 
@@ -775,11 +778,14 @@ body {
 
 
 .hietwjj:hover {
-    background: linear-gradient(to top, #8be1cf 0%, rgb(255, 255, 255) 50%);
+    background: linear-gradient(to top, #02ae96 0%, rgb(255, 255, 255) 50%);
 }
 @media(max-width: 768px) {
     .kGAwKF {
-        background: none;
-        padding-right: 5%;
+       /* background: none;
+        padding-right: 5%;*/
+        padding-top: 25%;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }

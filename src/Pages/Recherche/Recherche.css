@@ -425,7 +425,7 @@ svg:not(:root) {
 }
 #booking-search-results-map {
   background: #a9bfd6;
-  height: calc(100vh - 365px);
+  height: calc(100vh - 381px);
   min-height: 250px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 25px 50px 12px;
 }
@@ -435,9 +435,7 @@ svg:not(:root) {
 .dl-border-radius-inherit {
   border-radius: inherit !important;
 }
-.dl-border-radius-inherit {
-  border-radius: inherit !important;
-}
+
 .dl-full-height {
   height: 100% !important;
 }
@@ -596,3 +594,12 @@ b, strong {
 .butt-phone{
       margin-top: 2%;
        width: inherit}}
+
+@media (min-width : 550px) {
+.Menuaff{
+ display: none;
+      }}
+@media (max-width : 550px) {
+.Menuadiff{
+ display: none;
+      }} 

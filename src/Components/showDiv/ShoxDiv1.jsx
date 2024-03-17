@@ -42,6 +42,7 @@ function ShoxDiv1() {
    const [inputValueSpes, setInputValueSpes] = useState("");
    const ButtonClickSpes = (value) => {
      setInputValueSpes(value);
+      setShowDiv1(false);
    };
    ///
    const [showDiv1, setShowDiv1] = useState(false);

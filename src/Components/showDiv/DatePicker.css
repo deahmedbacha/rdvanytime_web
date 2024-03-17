@@ -1,0 +1,35 @@
+.react-datepicker__header{
+    background-color: #eceef1;
+    border-bottom: none !important;
+    border-top-left-radius: 1.5em !important;
+    border-top-right-radius: 1.5rem !important;
+}
+.react-datepicker{
+  font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+  font-size: 0.8rem;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 1.5rem;
+  display: inline-block;
+  position: relative;
+  
+}
+.react-datepicker-popper{
+    inset: 9px auto auto 0px !important;
+}
+.react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header{
+   color: #5a6171;
+}
+.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name{ 
+  margin: 0.400rem;
+}
+.react-datepicker__day--disabled, .react-datepicker__month-text--disabled, .react-datepicker__quarter-text--disabled, .react-datepicker__year-text--disabled{
+   color: #ccc;
+}
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range{    
+ background-color: rgb(2, 174, 150);
+}
+.react-datepicker__day--selected:hover, .react-datepicker__day--in-selecting-range:hover, .react-datepicker__day--in-range:hover, .react-datepicker__month-text--selected:hover, .react-datepicker__month-text--in-selecting-range:hover, .react-datepicker__month-text--in-range:hover, .react-datepicker__quarter-text--selected:hover, .react-datepicker__quarter-text--in-selecting-range:hover, .react-datepicker__quarter-text--in-range:hover, .react-datepicker__year-text--selected:hover, .react-datepicker__year-text--in-selecting-range:hover, .react-datepicker__year-text--in-range:hover{
+background-color: rgb(2, 174, 150);
+}

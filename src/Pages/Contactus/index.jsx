@@ -10,12 +10,6 @@ import "../../styles/tailwind.css";
 
 
 
-
-
-
-
-
-
 const Img = ({
   className,
   src = "defaultNoData.png",

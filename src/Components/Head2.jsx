@@ -1,4 +1,4 @@
-import { Menu } from "./menu/Menu";
+import { Menu2 } from "./menu/Menu2";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 export const Head2 = () => {
@@ -29,7 +29,10 @@ export const Head2 = () => {
               />
             </div>
           </Link>
-          <div className="flex justify-end ms-auto">
+          <div className="Menuaff flex md:hidden min-w-[1.5em] min-h-[1.5em] ">
+            <Menu2></Menu2>
+          </div>
+          <div className="Menuadiff flex justify-end ms-auto">
             <div className="grid grid-flow-col auto-cols gap-3 items-center justify-center">
               <Link
                 className="text-sm md:text-base font-light px-7 py-3 text-gray-900 min-w-[max-content]"

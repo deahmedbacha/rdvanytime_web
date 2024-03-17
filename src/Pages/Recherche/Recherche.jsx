@@ -120,10 +120,7 @@ function Recherche() {
                     </button>
                   </div>
                 </div>
-                <button
-                  className="butt-phone  rounded-full bg-primary hover:bg-primary-bold text-center text-white font-medium md:w-max flex items-center justify-center h-14 py-2 px-5 text-base rtl:text-lg"
-               
-                >
+                <button className="butt-phone  rounded-full bg-primary hover:bg-primary-bold text-center text-white font-medium md:w-max flex items-center justify-center h-14 py-2 px-5 text-base rtl:text-lg">
                   <div className=" md:flex">Rechercher</div>
                 </button>
               </div>
@@ -164,7 +161,7 @@ function Recherche() {
                                 aria-hidden="true"
                                 tabIndex={-1}
                                 className="dl-link"
-                                href=""
+                                href="/Medecin"
                                 data-design-system="base"
                               >
                                 <img
@@ -179,7 +176,7 @@ function Recherche() {
                               <div className="dl-flex-row dl-justify-between dl-align-items-center">
                                 <a
                                   className="dl-link"
-                                  href=""
+                                  href="/Medecin"
                                   data-design-system="base"
                                 >
                                   <h3
@@ -231,7 +228,7 @@ function Recherche() {
                               <div key={item.id}>
                                 <StarRating
                                   rating={item.value}
-                                  starRatedColor="blue"
+                                  starRatedColor="#02ae96"
                                   numberOfStars={5}
                                   name={`rating-${item.id}`}
                                   starDimension="20px"
@@ -344,22 +341,24 @@ function Recherche() {
                                               </div>
                                             </div>
                                             <div className="availabilities-slots">
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-indisponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mar. 20 févr. 15:30"
-                                                title="mar. 20 févr. 15:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:30
-                                              </div>
+                                              <Link to="/Rdv">
+                                                <div
+                                                  className="Tappable-inactive availabilities-slot availabilities-indisponible "
+                                                  tabIndex={0}
+                                                  role="button"
+                                                  aria-label="mar. 20 févr. 15:30"
+                                                  title="mar. 20 févr. 15:30"
+                                                  data-test="available-slot"
+                                                  style={{
+                                                    webkitTapHighlightColor:
+                                                      "rgba(0, 0, 0, 0)",
+                                                    userSelect: "none",
+                                                    cursor: "pointer",
+                                                  }}
+                                                >
+                                                  15:30
+                                                </div>
+                                              </Link>
                                               <div
                                                 className="Tappable-inactive availabilities-slot availabilities-indisponible "
                                                 tabIndex={0}
@@ -2455,7 +2454,7 @@ function Recherche() {
                               <div key={item.id}>
                                 <StarRating
                                   rating={item.value}
-                                  starRatedColor="blue"
+                                  starRatedColor="#02ae96"
                                   numberOfStars={5}
                                   name={`rating-${item.id}`}
                                   starDimension="20px"
@@ -2874,7 +2873,7 @@ function Recherche() {
                               <div key={item.id}>
                                 <StarRating
                                   rating={item.value}
-                                  starRatedColor="blue"
+                                  starRatedColor="#02ae96"
                                   numberOfStars={5}
                                   name={`rating-${item.id}`}
                                   starDimension="20px"
@@ -3292,7 +3291,7 @@ function Recherche() {
                               <div key={item.id}>
                                 <StarRating
                                   rating={item.value}
-                                  starRatedColor="blue"
+                                  starRatedColor="#02ae96"
                                   numberOfStars={5}
                                   name={`rating-${item.id}`}
                                   starDimension="20px"

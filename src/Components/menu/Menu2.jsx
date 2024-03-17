@@ -2,8 +2,7 @@ import { useState } from "react";
 import "./Menu.css";
 import { Link } from "react-router-dom";
 
-
-const links = ["Vous êtes praticien ?", "À propos", "Contact", "Se connecter"];
+const links = ["Se connecter", "Vous avez déjà un compte ?"];
 
 const Layout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,13 +29,9 @@ const Layout = () => {
               to={
                 link === "Se connecter"
                   ? "/signin"
-                  : link === "Contact"
-                  ? "/Contact"
-                  : link === "À propos"
-                  ? "/Rechercher"
-                  : link === "Vous êtes praticien ?"
-                  ? "/Medecin"
-                 : "/"
+                  : link === "Vous avez déjà un compte ?"
+                  ? "/signup"
+                  : "/"
               }
               style={{ animationDelay: `0.${index + 1}s` }}
               onClick={() => onClick(index)}
@@ -50,6 +45,6 @@ const Layout = () => {
   );
 };
 
-export const Menu = () => {
+export const Menu2 = () => {
   return <Layout />;
 };
