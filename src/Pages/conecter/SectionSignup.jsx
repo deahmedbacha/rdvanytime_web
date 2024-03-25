@@ -130,7 +130,7 @@ function SectionSignup() {
                         <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                           <div
                             className="ctw-ml-2.5 undefined"
-                            style={{ marginTop: "5px" }}
+
                           >
                             <svg
                               width="1em"
@@ -197,7 +197,6 @@ function SectionSignup() {
                         <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                           <div
                             className="ctw-ml-2.5 undefined"
-                            style={{ marginTop: "5px" }}
                           >
                             <svg
                               className="ds-icon"
@@ -249,7 +248,6 @@ function SectionSignup() {
                         <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                           <div
                             className="ctw-ml-2.5 undefined"
-                            style={{ marginTop: "5px" }}
                           >
                             <svg
                               className="ds-icon"

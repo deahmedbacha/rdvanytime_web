@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="height" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-2{fill:#444}
+        </style>
+    </defs>
+    <path id="Rectangle" fill="#fff" d="M0 0H24V24H0z" opacity="0.01"/>
+    <g id="scale" transform="translate(5 3)">
+        <path id="Shape" d="M6.176 17.965H.562A.562.562 0 0 1 0 17.4V.562A.562.562 0 0 1 .562 0h5.614a.562.562 0 0 1 .561.562V17.4a.562.562 0 0 1-.561.565zm-5.053-2.807v1.684h4.491V1.123H1.123v1.684h2.806v1.122H1.123v1.685h1.684v1.123H1.123v1.684h2.806v1.123H1.123v1.685h1.684v1.122H1.123v1.685h2.806v1.122z" class="cls-2" transform="translate(0.012 0)"/>
+        <path id="Path" d="M5.62 14.2l-1.853 1.851V1.915l1.847 1.847.792-.792L3.6.163a.561.561 0 0 0-.792 0L0 2.97l.792.792 1.852-1.847v14.136L.8 14.2l-.794.8 2.807 2.8a.561.561 0 0 0 .792 0L6.411 15z" class="cls-2" transform="translate(8.034 0)"/>
+    </g>
+</svg>

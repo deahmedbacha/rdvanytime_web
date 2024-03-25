@@ -107,7 +107,7 @@
 
 .ds-input .ctw-bg-\[\#f4f7fa\] {
     --tw-bg-opacity: 1 !important;
-    background-color: rgb(244 247 250/var(--tw-bg-opacity)) !important;
+ background-color: rgba(245,245,245,var(--tw-bg-opacity));
 }
 
 .ds-input .ctw-border-transparent {
@@ -123,7 +123,7 @@
 }
 
 .ds-input .ctw-rounded-md {
-    border-radius: .375rem !important;
+border-radius: 9999px;
 }
 
 .ds-input .ctw-items-center {
@@ -285,7 +285,7 @@
 }
 
 .ds-button .ctw-rounded {
-    border-radius: .25rem !important;
+    border-radius: 9999px;
 }
 
 .ds-button .ctw-justify-center {

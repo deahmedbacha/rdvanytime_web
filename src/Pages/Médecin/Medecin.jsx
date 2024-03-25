@@ -2,32 +2,63 @@
 import "../Médecin/Medecin.css";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
-import  { useState } from "react";
-import PrenezRDV from "../Médecin/PrenezRDV.jsx";
 import { Menu2 } from "../../Components/menu/Menu2";
+import { useState, useRef, useEffect } from "react";
+
 function Medecin() {
-    const [activeItem, setActiveItem] = useState("Item 1");
+  const [activeItem, setActiveItem] = useState("Item 1");
 
-    const handleItemClick = (item) => {
-      setActiveItem(item);
+  const handleItemClick = (item) => {
+    setActiveItem(item);
+  };
+  const [showFirstContent, setShowFirstContent] = useState(false);
+
+  const handleRadioClick = () => {
+    // setShowFirstContent(!showFirstContent);
+    setShowFirstContent(true);
+  };
+  const [showLastContent, setShowLastContent] = useState(false);
+
+ 
+  const [showContent, setShowContent] = useState(true);
+
+  const handleButtonClick = () => {
+    setShowContent(!showContent);
+  };
+
+  /// set les ville sur input
+  const [inputValueVille, setInputValueVille] = useState("");
+  const ButtonClickVille = (value) => {
+    setInputValueVille(value);
+    setShowDiv2(false);
+      setShowLastContent(true);
+  };
+  ///
+  const [showDiv2, setShowDiv2] = useState(false);
+  const inputRef2 = useRef(null);
+  const divRef2 = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        inputRef2.current &&
+        !inputRef2.current.contains(event.target) &&
+        divRef2.current &&
+        !divRef2.current.contains(event.target)
+      ) {
+        setShowDiv2(false);
+      }
     };
-       const [showFirstContent, setShowFirstContent] = useState(false);
 
-       const handleRadioClick = () => {
-         // setShowFirstContent(!showFirstContent);
-         setShowFirstContent(true);
-       };
-       const [showLastContent, setShowLastContent] = useState(false);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-       const handleBoxClick = () => {
-         setShowLastContent(true);
-       };
-       const [showContent, setShowContent] = useState(true);
-
-       const handleButtonClick = () => {
-         setShowContent(!showContent);
-       };
-
+  const handleInputClick2 = () => {
+    setShowDiv2(true);
+  };
   return (
     <>
       <div className="Main">
@@ -73,10 +104,6 @@ function Medecin() {
         <main>
           <div
             className="bg-p-cover od-profile od-profile--bookable"
-            data-professional-id="96172"
-            data-entity-id="20972"
-            data-calendar-id="31312"
-            data-professional-selection="single-or-any"
           >
             <header className="od-profile-header">
               <div className="od-profile-header-wrapper">
@@ -396,7 +423,7 @@ function Medecin() {
                     </div>
                     <div className="overview">
                       <div className="average">
-                        <div className="wrapper">
+                        <div className="wrapperr">
                           <span className="grade">9.8</span>
                         </div>
                         <p className="raters">From 714 reviews</p>
@@ -592,35 +619,84 @@ function Medecin() {
                                 <div className="flow-step-label">
                                   Spécialité
                                 </div>
-                                <div className="flow-step-body">
+                                <div
+                                  className="flex flex-col sm:grid grid-cols-2 gap-4"
+                                  style={{ display: "flex", paddingTop: "3%" }}
+                                >
                                   <div
-                                    className="mdc-select mdc-select--outlined mdc-select--focused"
-                                    data-uuid="2ff8f807-35bf-487d-9c1f-7ac051473d8a"
+                                    className="rounded-full px-5 py-1 bg-p-night "
+                                    style={{ display: "flex" }}
                                   >
-                                    <i className="mdc-select__dropdown-icon"></i>
-                                    <select
-                                      className="mdc-select__native-control"
-                                      id="select-2ff8f807-35bf-487d-9c1f-7ac051473d8a"
-                                      name="profession"
-                                    >
-                                      <option
-                                        value="30"
-                                        onClick={handleBoxClick}
-                                      >
-                                        Médecine générale
-                                      </option>
-                                    </select>
-                                    <div className="mdc-notched-outline mdc-notched-outline--upgraded mdc-notched-outline--notched">
-                                      <div className="mdc-notched-outline__leading"></div>
+                                    <input
+                                      className="bg-liquide outline-clear w-full text-base sm:text-sm lg:text-sm"
+                                      placeholder="Spécialité ?"
+                                      onClick={handleInputClick2}
+                                      ref={inputRef2}
+                                      value={inputValueVille}
+                                      onChange={(e) =>
+                                        setInputValueVille(e.target.value)
+                                      }
+                                    />
+                                    {showDiv2 && (
                                       <div
-                                        className="mdc-notched-outline__notch"
-                                        style={{ width: "157.25px" }}
+                                        ref={divRef2}
+                                        className=" sm:top-13 w-full  bg-white border border-1 shadow-lg h-auto min-mobile:max-w-[max-content] min-mobile:min-w-[360px]  rounded-2xl z-50 py-4 transform transition-opacity"
+                                        style={{
+                                          top: "5.5rem",
+                                          position: "absolute",
+                                        }}
                                       >
-                                        <label className="mdc-floating-label mdc-floating-label--float-above">
-                                          Sélectionnez une spécialité
-                                        </label>
+                                        <div className="max-h-80 overflow-y-auto px-3 flex flex-col min-h-[max-content] ">
+                                          <button
+                                            onClick={() =>
+                                              ButtonClickVille(
+                                                "Médecine générale"
+                                              )
+                                            }
+                                            className="grid grid-cols-speciality-item gap-2 items-center justify-between w-full rounded-lg py-5 px-4 cursor-pointer hover:bg-primary-ice group"
+                                          >
+                                            <div></div>
+                                            <div className="rtl:text-right ltr:text-left text-sm font-medium group-hover:font-bold rtl:text-base line-clamp-2">
+                                              Médecine générale
+                                            </div>
+                                            <svg
+                                              data-name="go to arrow"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              viewBox="0 0 24 24"
+                                              className="w-6 h-6 rtl:transform rtl:rotate-180"
+                                            >
+                                              <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="12"
+                                                fill="#f2f2f2"
+                                              ></circle>
+                                              <path
+                                                d="M10.75 16.3a.74.74 0 01-.53-.22.75.75 0 010-1.06l3-3-3-3a.75.75 0 010-1.06.74.74 0 011.06 0L15.36 12l-4.08 4.08a.73.73 0 01-.53.22z"
+                                                fill="#444"
+                                              ></path>
+                                            </svg>
+                                          </button>
+                                        </div>
                                       </div>
-                                      <div className="mdc-notched-outline__trailing"></div>
+                                    )}
+                                    <div className="bee__indicators css-1wy0on6">
+                                      <span className="bee__indicator-separator css-1okebmr-indicatorSeparator"></span>
+                                      <div
+                                        className="bee__indicator bee__dropdown-indicator css-tlfecz-indicatorContainer"
+                                        aria-hidden="true"
+                                      >
+                                        <svg
+                                          height="20"
+                                          width="20"
+                                          viewBox="0 0 20 20"
+                                          aria-hidden="true"
+                                          focusable="false"
+                                          className="css-8mmkcg"
+                                        >
+                                          <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
+                                        </svg>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>

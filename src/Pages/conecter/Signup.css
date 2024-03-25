@@ -155,16 +155,9 @@
     line-height: 1.5rem !important;
 }
 
-.ds-card .ctw-rounded-md {
-    border-radius: .375rem !important;
-}
 
 
 
-.ds-input .ctw-bg-\[\#f4f7fa\] {
-    --tw-bg-opacity: 1 !important;
-    background-color: rgb(244 247 250/var(--tw-bg-opacity)) !important;
-}
 
 .ds-input .ctw-border-transparent {
     border-color: transparent !important;
@@ -624,9 +617,6 @@ a {
     border-width: 1.5px !important;
 }
 
-.ds-button .ctw-rounded {
-    border-radius: .25rem !important;
-}
 
 .ds-button .ctw-justify-center {
     justify-content: center !important;

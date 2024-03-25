@@ -1,4 +1,3 @@
-import React from "react";
 import emailjs from "@emailjs/browser";
 import { useRef, useState } from 'react';
 import './index.css'
@@ -141,7 +140,7 @@ const formRef = useRef(); // Ref for the form element
             className="text-center text-gray-600 text-lg"
             size="txtPoppinsSemiMedium18"
           >
-            Une question ou des remarques ? Écrivez-nous simplement un message !
+            Une question ou des remarques ? Écrivez-nous simplement un message !
           </Text>
         </div>
         <div className="md:h-[1173px] sm:h-[667px] h-[758px] max-w-[1196px] mx-auto relative w-full">

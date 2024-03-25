@@ -8,6 +8,10 @@ import Signup from "./Pages/conecter/Signup.jsx";
 import Rechercher from "./Pages/Recherche/Recherche.jsx";
 import Rdv from "./Pages/rdv/Rdv.jsx";
 import Medecin from "./Pages/Médecin/Medecin.jsx";
+import Parametres from "./Pages/Parametres/Parametres.jsx";
+import Profil from "./Pages/Profil/Profil.jsx";
+import Dossiers from 'Pages/Dossiers_médicaux/Dossiers.jsx';
+import Rendezvous from "Pages/Rendez-vous/Rendezvous.jsx";
 
 
 
@@ -39,6 +43,22 @@ const router = createBrowserRouter([
   {
     path: "Rdv",
     element: <Rdv />,
+  },
+  {
+    path: "Parametres",
+    element: <Parametres />,
+  },
+  {
+    path: "Profil",
+    element: <Profil />,
+  },
+  {
+    path: "Dossiers",
+    element: <Dossiers />,
+  },
+  {
+    path: "Rendezvous",
+    element: <Rendezvous />,
   },
 ]);
 

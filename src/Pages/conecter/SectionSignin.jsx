@@ -47,7 +47,7 @@ function SectionSignin() {
       <div className="sc-1bc08e0b-5 jyhvPI">
         <div>
           <div className="sc-1bc08e0b-6 cxijwo">
-            <div active="true" alone="false" className="sc-1bc08e0b-9 gMbGNQ">
+            <div    active="true" alone="false" className="sc-1bc08e0b-9 gMbGNQ">
               <div className="sc-1bc08e0b-8 eaIstY">
                 <div className="sc-1bc08e0b-7 cHqDRo">
                   <h4 className="sc-1bc08e0b-1 ewPuPZ">
@@ -67,7 +67,6 @@ function SectionSignin() {
                           <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                             <div
                               className="ctw-ml-2.5 undefined"
-                              style={{ marginTop: "5px" }}
                             >
                               <svg
                                 className="ds-icon"
@@ -115,7 +114,6 @@ function SectionSignin() {
                           <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                             <div
                               className="ctw-ml-2.5 undefined"
-                              style={{ marginTop: "5px" }}
                             >
                               <svg
                                 className="ds-icon"
@@ -197,7 +195,12 @@ function SectionSignin() {
                                 <div className="ctw-flex ctw-flex-row">
                                   <div className="ctw-flex ctw-items-center ctw-grow ctw-flex-row ctw-justify-center">
                                     <div className="ctw-cursor-[inherit] ctw-px-3 ctw-text-center">
-                                      Se connecter
+                                      <Link
+                                        to="/Profil"
+                                        style={{ color: "white" }}
+                                      >
+                                        Se connecter
+                                      </Link>
                                     </div>
                                   </div>
                                 </div>

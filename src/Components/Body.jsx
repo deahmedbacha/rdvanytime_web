@@ -112,7 +112,7 @@ import { Link } from "react-router-dom";
                              <ShoxDiv2></ShoxDiv2>
                                <div className="flex flex-col items-center justify-center">
                                  <img
-                                   alt="here"
+                                   alt="envoyer"
                                    src="src/assets/envoyer.png"
                                    loading="eager"
                                    width="18"

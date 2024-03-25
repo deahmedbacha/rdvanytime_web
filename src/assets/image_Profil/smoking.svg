@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="smoking" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-2{fill:#444}
+        </style>
+    </defs>
+    <path id="Rectangle" fill="#fff" d="M0 0H24V24H0z" opacity="0.01"/>
+    <g id="smoke" transform="translate(1 3)">
+        <path id="Shape" d="M17.681 4.774H.649A.65.65 0 0 1 0 4.125V.649A.65.65 0 0 1 .649 0h17.032a2.387 2.387 0 1 1 0 4.774zM6.164 1.3v2.176h11.517a1.089 1.089 0 1 0 0-2.178zM1.3 1.3v2.176h3.566V1.3z" class="cls-2" transform="translate(0 13.217)"/>
+        <path id="Path" d="M6.211 5.561H2.039a.741.741 0 1 1 0-1.483h4.172a2.039 2.039 0 0 0 0-4.078H4.125a.649.649 0 1 0 0 1.3h2.086a.741.741 0 0 1 0 1.483H2.039a2.039 2.039 0 1 0 0 4.079h4.172a.741.741 0 0 1 0 1.483h-.7a2.038 2.038 0 0 0-2.039 2.039v.7a.649.649 0 0 0 1.3 0v-.7a.741.741 0 0 1 .741-.741h.7a2.039 2.039 0 0 0 0-4.079z" class="cls-2" transform="translate(13.904 0.009)"/>
+    </g>
+</svg>

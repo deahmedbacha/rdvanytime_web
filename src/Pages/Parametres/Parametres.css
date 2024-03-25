@@ -1,0 +1,141 @@
+.react-responsive-modal-root {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.react-responsive-modal-root {
+  z-index: 99999 !important;
+}
+.react-responsive-modal-overlay {
+  background: rgba(0,0,0,.5);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.react-responsive-modal-container {
+  height: 100%;
+  outline: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+}
+.sidebar_share-beesiha-social-media-modal-cs__cS1e8 {
+  padding: 6px 5px 20px 10px;
+  border-radius: 12px;
+}
+.react-responsive-modal-modal {
+  max-width: 800px;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  background: #fff;
+  box-shadow: 0 12px 15px 0 rgba(0,0,0,.25);
+  margin: 6%;
+  padding: 1.2rem;
+  position: relative;
+  overflow-y: auto;
+}
+.css-2b097c-container {
+  position: relative;
+  box-sizing: border-box;
+}
+.css-7pg0cj-a11yText {
+  z-index: 9999;
+  border: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  overflow: hidden;
+  padding: 0px;
+  white-space: nowrap;
+}
+.bee-select .bee__control {
+  background-color: #f7f7f7;
+  border-color: #f7f7f7;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 50rem;
+  padding: .25rem 1.25rem;
+}
+.css-yk16xz-control {
+  -moz-box-align: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(204, 204, 204);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: default;
+  display: flex;
+  flex-wrap: wrap;
+  -moz-box-pack: justify;
+  justify-content: space-between;
+  min-height: 38px;
+  outline: 0px !important;
+  position: relative;
+  transition: all 100ms ease 0s;
+  box-sizing: border-box;
+}
+.bee-select .bee__control .bee__value-container {
+  height: 48px;
+}
+.css-1hwfws3 {
+  -moz-box-align: center;
+  align-items: center;
+  display: flex;
+  flex: 1 1 0%;
+  flex-wrap: wrap;
+  padding: 2px 8px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.bee-select .bee__control .bee__placeholder {
+  color: #6b7280;
+}
+.css-1wa3eu0-placeholder {
+  color: rgb(128, 128, 128);
+  margin-left: 2px;
+  margin-right: 2px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  box-sizing: border-box;
+}
+.css-1g6gooi {
+  margin: 2px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  visibility: visible;
+  color: rgb(51, 51, 51);
+  box-sizing: border-box;
+}
+.css-1wy0on6 {
+  -moz-box-align: center;
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.css-tlfecz-indicatorContainer {
+  color: rgb(204, 204, 204);
+  display: flex;
+  padding: 8px;
+  transition: color 150ms ease 0s;
+  box-sizing: border-box;
+}
+.css-8mmkcg {
+  display: inline-block;
+  fill: currentcolor;
+  line-height: 1;
+  stroke: currentcolor;
+  stroke-width: 0px;
+}
