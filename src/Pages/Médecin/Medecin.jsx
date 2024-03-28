@@ -4,6 +4,7 @@ import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { Menu2 } from "../../Components/menu/Menu2";
 import { useState, useRef, useEffect } from "react";
+import { Footer } from "../../Components/Footer/Footer.jsx";
 
 function Medecin() {
   const [activeItem, setActiveItem] = useState("Item 1");
@@ -2372,6 +2373,7 @@ function Medecin() {
           </div>
         </main>
       </div>
+      <Footer/>
     </>
   );
 }

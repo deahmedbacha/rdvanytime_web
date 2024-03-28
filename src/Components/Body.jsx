@@ -7,10 +7,7 @@ import iconplaystore from "../assets/Google-Play.json";
 import ShoxDiv1 from "../Components/showDiv/ShoxDiv1.jsx";
 import ShoxDiv2 from "../Components/showDiv/ShowDiv2.jsx";
 import { Link } from "react-router-dom";
-
  export const Body = () => {
-
-
    return (
      <>
        <div>
@@ -37,7 +34,7 @@ import { Link } from "react-router-dom";
              <div className="h-full w-full ">
                <div className="flex flex-col w-full mx-auto items-center md:flex-row h-full px-7 md:px-3">
                  <div className="mt-11 flex flex-col items-center justify-center w-full">
-                   <div className="w-full mx-3 uppercase text-xs text-center md:text-sm font-bold text-secondary mb-4">
+                   <div className="w-full mx-3 uppercase text-x text-center text-secondary mb-4">
                      Simplement, Rapidement &amp; Gratuitement
                    </div>
                    <div className="flex flex-col items-center justify-center text-center mx-auto">

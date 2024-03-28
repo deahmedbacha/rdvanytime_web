@@ -1,0 +1,89 @@
+.Section--spécialité .Section-wrapper::after {
+  content: "";
+  height: 400px;
+  background: url(src/assets/searchbar.png) no-repeat 50% 50%;
+    background-position-x: 50%, 50%;
+    background-position-y: 50%, 50%;
+    background-size: auto, auto;
+  aspect-ratio: 690/530;
+  -ms-grid-row-align: center;
+  align-self: center;
+  background-size: 76% auto,contain;
+  background-position: top 50% left 36%,50%;
+}
+
+@media (max-width: 1440px) {
+  .Section--spécialité .Section-wrapper::after {
+    max-width: 50%;
+    background-size: 80% auto,contain;
+  }
+}
+@media (max-width: 992px) {
+  .Section--spécialité .Section-wrapper::after {
+    max-width: none;
+    order: -1;
+    width: 320px;
+    height: 295px;
+    background-size: 82%,contain;
+    background-position: top 50% left 20px,50%;
+  }
+}
+.Section--horaire .Section-wrapper::after {
+  content: "";
+  height: 400px;
+  background: url(src/assets/planning.png) no-repeat 50% 50%;
+    background-position-x: 50%, 50%;
+    background-position-y: 50%, 50%;
+    background-size: auto, auto;
+  aspect-ratio: 690/530;
+  -ms-grid-row-align: center;
+  align-self: center;
+  background-size: 76% auto,contain;
+  background-position: top 50% left 36%,50%;
+}
+
+@media (max-width: 1440px) {
+  .Section--horaire .Section-wrapper::after {
+    max-width: 50%;
+    background-size: 80% auto,contain;
+  }
+}
+@media (max-width: 992px) {
+  .Section--horaire .Section-wrapper::after {
+    max-width: none;
+    order: -1;
+    width: 320px;
+    height: 295px;
+    background-size: 82%,contain;
+    background-position: top 50% left 20px,50%;
+  }
+}
+
+
+
+.Section--chezmoi.Section--app-fr .Section-wrapper::before {
+  background-image: url(src/assets/map.png);
+}
+.Section--chezmoi .Section-wrapper::before {
+  content: "";
+  height: 400px;
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat,no-repeat;
+  background-size: 76% auto,contain;
+  background-position: top 50% left 36%,50%;}
+@media (max-width: 1440px) {
+  .Section--chezmoi .Section-wrapper::before {
+    max-width: 50%;
+    background-size: 80% auto,contain;
+  }
+}
+@media (max-width: 992px) {
+  .Section--chezmoi .Section-wrapper::before {
+    max-width: none;
+    order: -1;
+    width: 320px;
+    height: 295px;
+    background-size: 82%,contain;
+    background-position: top 50% left 20px,50%;
+  }
+}

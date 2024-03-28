@@ -2849,7 +2849,10 @@ select {
     font-size: 0.85rem;
     line-height: 1rem
 }
-
+.text-x {
+    font-size: 1rem;
+    line-height: 1rem
+}
 .text-sxs {
     font-size: .625rem
 }
@@ -2956,7 +2959,7 @@ select {
 
 .text-secondary {
     --tw-text-opacity: 1;
-    color: #8ce2d0;
+    color: #02ae96;
 }
 
 .text-black {
@@ -5688,8 +5691,8 @@ width: 90%;
 }
 
 .imag_back {
-    background: url("src/assets/img_background.png") 0% 0% / cover no-repeat; /* background shorthand */
-    background-position: right 87%;
+    background: url("src/assets/background_img.png") 0% 0% / cover no-repeat; /* background shorthand */
+    background-position: right 67%;
 }
 
 
@@ -5809,4 +5812,18 @@ width: 90%;
 .border {
   border-width: 0;
 }
+}
+.displayicon{
+    display: none;
+}
+@media(max-width: 1024px) {
+.displayicon{
+    display: flex;
+}
+}
+
+@media (max-width: 768px) {
+  .rowfine {
+    flex-direction: column;
+  }
 }

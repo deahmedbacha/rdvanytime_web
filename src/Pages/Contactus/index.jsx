@@ -6,6 +6,7 @@ import "../../styles/color.css";
 import "../../styles/font.css";
 import "../../styles/index.css";
 import "../../styles/tailwind.css";
+import { Footer } from "../../Components/Footer/Footer.jsx";
 
 
 
@@ -430,6 +431,7 @@ const formRef = useRef(); // Ref for the form element
           />
         </div>
       </div>
+<Footer></Footer>
     </>
   );
 };

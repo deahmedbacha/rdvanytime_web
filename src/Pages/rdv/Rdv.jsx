@@ -12,6 +12,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import Relationn from "Components/showDiv/Relationn";
+import { Footer } from "../../Components/Footer/Footer.jsx";
 
 function Rdv() {
   const [showFirstContent, setShowFirstContent] = useState(false);
@@ -1282,6 +1283,7 @@ function Rdv() {
           </div>
         </main>
       </div>
+      <Footer/>
       {AjouterProche && (
         <div>
           <div className="react-responsive-modal-root" data-testid="root">

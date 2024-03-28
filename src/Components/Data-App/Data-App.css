@@ -1,0 +1,244 @@
+.Section {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+.Section-wrapper {
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1440px;
+  display: flex;
+  padding: 0 70px 75px;
+    padding-right: 70px;
+    padding-left: 70px;
+  align-items: center;
+  
+}
+.Section--data .Section-content {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.Section-content {
+  display: block;
+}
+.Section-title {
+  font-family: Ubuntu,Arial,sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 1.3333333;
+  color: #4a4e4f;
+  margin: 0;
+    margin-top: 0px;
+  padding-top: 21px;
+}
+.Section-desc {
+  margin: 18px 0 32px;
+  font-size: 20px;
+  line-height: 1.6;
+}
+.Button, .Button:link, .Button:visited {
+  text-decoration: none;
+}
+
+.Button {
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  background-color: #012bb4;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 500;
+  padding: 18px 20px;
+  border-radius: 4px;
+  transition: background-color .11s,transform .11s ease-out;
+}
+
+.Section--data .Section-wrapper::after {
+  content: "";
+  width: 690px;
+  height: 530px;
+  background: url(src/Components/Data-App/data.png) no-repeat 50% 50%,url(https://www.onedoc.ch/assets/images/section-data.svg) no-repeat 50% 50%;
+    background-position-x: 50%, 50%;
+    background-position-y: 50%, 50%;
+    background-size: auto, auto;
+  aspect-ratio: 690/530;
+  -ms-grid-row-align: center;
+  align-self: center;
+  background-size: 76% auto,contain;
+  background-position: top 50% left 36%,50%;
+}
+.Section-wrapper::after, .Section-wrapper::before {
+  display: block;
+  flex-shrink: 0;
+}
+.Section--app.Section--app-fr .Section-wrapper::before {
+  background-image: url(src/Components/Data-App/Project1-portrait.png),url(https://www.onedoc.ch/assets/images/section-app.svg);
+}
+
+.Section--app .Section-wrapper::before {
+  content: "";
+  width: 630px;
+  aspect-ratio: 1/1;
+  -ms-grid-row-align: center;
+  align-self: center;
+  background-repeat: no-repeat,no-repeat;
+  background-position: 50% 0,50% 50%;
+  background-size: contain;
+}
+.Section-wrapper::after, .Section-wrapper::before {
+  display: block;
+  flex-shrink: 0;
+}
+
+.Section--app .Section-content {
+  margin-left: 133px;
+  margin-right: 10px;
+}
+.Section-qrcode {
+  margin-top: 24px;
+}
+.Section-legend {
+  margin: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  font-size: 14px;
+  line-height: 2.2;
+  margin-top: 8px;
+  margin-bottom: 52px;
+
+}
+.Section-badge + .Section-badge {
+  margin-right: 0;
+}
+@media (max-width: 1440px) {
+  .Section-badge {
+    height: 50px;
+  }
+}
+.Section-badge {
+  display: inline-flex;
+  margin-right: 13px;
+  height: 60px;
+  transition: background-color .11s,transform .11s ease-out;
+}
+.Section-badge img {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  max-height: 100%;
+  display: block;
+}
+@media (max-width: 1440px) {
+  .Section--app .Section-content {
+    margin-left: 50px;
+  }
+}
+.Section--app .Section-title {
+  padding-top: 0;
+}
+@media (max-width: 1440px) {
+  .Section--app .Section-wrapper::before {
+    max-width: 46%;
+  }
+}
+@media (max-width: 1440px) {
+  .Section--data .Section-wrapper::after {
+    max-width: 50%;
+    background-size: 80% auto,contain;
+  }
+}
+@media (max-width: 1440px) {
+  .Section-desc {
+    font-size: 18px;
+  }
+}
+@media (max-width: 1440px) {
+  .Section-title {
+    font-size: 40px;
+  }
+}
+@media (max-width: 1440px) {
+  .Section-wrapper {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+@media (max-width: 992px) {
+  .Section--data {
+    padding-top: 82px;
+  }
+}
+@media (max-width: 992px) {
+  .Section-wrapper {
+    padding: 0 20px;
+    flex-direction: column;
+  }
+}
+@media (max-width: 992px) {
+  .Section-content {
+    display: contents;
+  }
+}
+@media (max-width: 992px) {
+  .Section-title {
+    order: -1;
+    font-size: 32px;
+    line-height: 1.5;
+    padding-top: 0;
+    text-align: center;
+  }
+}
+@media (max-width: 992px) {
+  .Section-desc {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 14px 0 16px;
+  }
+}
+@media (max-width: 992px) {
+  .Section--data .Section-wrapper::after {
+    max-width: none;
+    order: -1;
+    width: 320px;
+    height: 295px;
+    background-size: 82%,contain;
+    background-position: top 50% left 20px,50%;
+  }
+}
+@media (max-width: 992px) {
+  .Section--app {
+    padding-top: 82px;
+  }
+}
+@media (max-width: 992px) {
+  .Section--app .Section-wrapper::before {
+    max-width: none;
+    width: 320px;
+    height: 330px;
+    background-size: auto 100%,270px auto;
+    margin-bottom: 12px;
+    margin-top: 12px;
+  }
+}
+@media (max-width: 992px) {
+  .Section-qrcode {
+    display: none;
+  }
+}
+@media (max-width: 992px) {
+  .Section-badge {
+    height: 45px;
+    margin-top: 4px;
+  }
+}
+@media (max-width: 992px) {
+  .Section-legend {
+    display: none;
+  }
+}
+
+

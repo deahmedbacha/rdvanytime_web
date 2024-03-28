@@ -3,6 +3,8 @@ import { useState } from "react";
 import "./Parametres.css";
 import Informations from "./Informations";
 import Proches from "./Proches.jsx";
+import { Footer } from "../../Components/Footer/Footer.jsx";
+
 export const Parametres = () => {
   const [checkboxes, setCheckboxes] = useState({
     checkbox1: true,
@@ -32,8 +34,8 @@ export const Parametres = () => {
             style={{ marginLeft: "14%", width: "70%" }}
           >
             <div className="mx-5 pt-1 flex flex-col flex-1">
-            <Informations></Informations>
-            <Proches></Proches>
+              <Informations></Informations>
+              <Proches></Proches>
 
               <div
                 className="relative w-full bg-white shadow-sh-112-8 p-11 me-5 mb-3 rounded flex flex-1 first:mt-6 last:mb-10"
@@ -232,9 +234,8 @@ export const Parametres = () => {
             </div>
           </div>
         </main>
-
-      
       </body>
+      <Footer />
     </>
   );
 };

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="11.19" height="12.465" viewBox="0 0 11.19 12.465">
+    <defs>
+        <linearGradient id="linear-gradient" x1=".915" x2="-.383" y1="6.614" y2="5.945" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#00a0ff"/>
+            <stop offset=".007" stop-color="#00a1ff"/>
+            <stop offset=".26" stop-color="#00beff"/>
+            <stop offset=".512" stop-color="#00d2ff"/>
+            <stop offset=".76" stop-color="#00dfff"/>
+            <stop offset="1" stop-color="#00e3ff"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1="1.076" x2="-1.305" y1="17.1" y2="17.1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ffe000"/>
+            <stop offset=".409" stop-color="#ffbd00"/>
+            <stop offset=".775" stop-color="orange"/>
+            <stop offset="1" stop-color="#ff9c00"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-3" x1=".862" x2="-.501" y1="10.863" y2="9.093" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ff3a44"/>
+            <stop offset="1" stop-color="#c31162"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-4" x1="-.188" x2=".421" y1="13.583" y2="12.793" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#32a071"/>
+            <stop offset=".068" stop-color="#2da771"/>
+            <stop offset=".476" stop-color="#15cf74"/>
+            <stop offset=".801" stop-color="#06e775"/>
+            <stop offset="1" stop-color="#00f076"/>
+        </linearGradient>
+        <style>
+            .cls-6{isolation:isolate;opacity:.12}
+        </style>
+    </defs>
+    <g id="playstore_icon" transform="translate(-9.972 -7.141)">
+        <path id="Tracé_4476" fill="url(#linear-gradient)" d="M10.2 7.5a.97.97 0 0 0-.224.681V18.9a.97.97 0 0 0 .224.681l.036.035 6-6v-.146l-6-6z" transform="translate(0 -0.168)"/>
+        <path id="Tracé_4477" fill="url(#linear-gradient-2)" d="M24.9 19.87l-2-2v-.142l2-2 .045.026 2.371 1.346a.736.736 0 0 1 0 1.4l-2.371 1.348z" transform="translate(-6.662 -4.424)"/>
+        <path id="Tracé_4478" fill="url(#linear-gradient-3)" d="M18.522 22.048L16.475 20l-6.04 6.04a.788.788 0 0 0 1.007.03l7.08-4.022" transform="translate(-0.239 -6.628)"/>
+        <path id="Tracé_4479" fill="url(#linear-gradient-4)" d="M18.522 11.326L11.442 7.3a.788.788 0 0 0-1.007.03l6.04 6.04z" transform="translate(-0.239)"/>
+        <g id="Groupe_40571" transform="translate(9.972 15.375)">
+            <path id="Tracé_4480" d="M18.477 24.132l-7.035 4a.806.806 0 0 1-.971.005l-.036.036.036.035a.806.806 0 0 0 .971-.005l7.08-4.022z" transform="translate(-10.211 -24.132)" style="isolation:isolate" opacity="0.2"/>
+            <path id="Tracé_4481" d="M10.2 31.594a.968.968 0 0 1-.224-.68v.071a.97.97 0 0 0 .224.681l.036-.036z" class="cls-6" transform="translate(-9.972 -27.627)"/>
+        </g>
+        <path id="Tracé_4482" d="M29.445 20.631L27.029 22l.045.045 2.371-1.345a.851.851 0 0 0 .508-.7.9.9 0 0 1-.508.631z" class="cls-6" transform="translate(-8.791 -6.629)"/>
+        <path id="Tracé_4483" d="M11.2 7.374l9.451 5.369a.9.9 0 0 1 .508.629.85.85 0 0 0-.508-.7L11.2 7.3c-.677-.385-1.231-.065-1.231.711v.071c.003-.773.557-1.092 1.231-.708z" transform="translate(0 0)" style="isolation:isolate" fill="#fff" opacity="0.25"/>
+    </g>
+</svg>

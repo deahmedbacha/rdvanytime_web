@@ -1,5 +1,7 @@
 import { Headconect } from "../../Components/Headconect";
 import { useState } from "react";
+import { Footer } from "../../Components/Footer/Footer.jsx";
+
 export const Profil = () => {
 
   const [AjouterChronique, setShowAjouterChronique] = useState(false);
@@ -15,7 +17,7 @@ export const Profil = () => {
       <body>
         <Headconect></Headconect>
         <main
-          className=" grid-cols-profile-area h-vh-header mt-20 bg-p-cover overflow-hidden "
+          className=" grid-cols-profile-area mt-20 bg-p-cover overflow-hidden "
           style={{ display: "flex" }}
         >
           <div
@@ -254,6 +256,7 @@ export const Profil = () => {
           </div>
         )}
       </body>
+      < Footer/>
     </>
   );
 };

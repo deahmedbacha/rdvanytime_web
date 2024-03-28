@@ -32,18 +32,24 @@ export const Head = () => {
             </Link>
             <div className="hidden lg:flex">
               <div className="grid grid-flow-col md:gap-2 lg:gap-7">
-                <a className=" font-normal text-center align-middle text-sm text-[#2b2a35] opacity-80 sm:text-xs lg:text-sm xl:text-base hover:text-primary cursor">
-                  Qu&#x27;est ce que c&#x27;est ?
-                </a>
-                <a className=" font-normal text-center align-middle text-sm text-[#2b2a35] opacity-80 sm:text-xs lg:text-sm xl:text-base hover:text-primary cursor">
-                  Fonctionnalités
+                <a
+                  className=" font-normal text-center align-middle text-sm text-[#2b2a35] opacity-80 sm:text-xs lg:text-sm xl:text-base hover:text-primary cursor"
+                  href="#benefits"
+                >
+                  Pourquoi RDVanytime
                 </a>
                 <a
+                  className=" font-normal text-center align-middle text-sm text-[#2b2a35] opacity-80 sm:text-xs lg:text-sm xl:text-base hover:text-primary cursor"
+                  href="#Marche"
+                >
+                  Comment ça marche ?
+                </a>
+                <Link
                   className="font-normal text-sm text-[#2b2a35] opacity-80 sm:text-xs lg:text-sm xl:text-base hover:text-primary"
-                  href=""
+                  to="/Apropos"
                 >
                   À propos
-                </a>
+                </Link>
                 <Link
                   className="font-normal text-sm text-[#2b2a35] opacity-80 sm:text-xs lg:text-sm xl:text-base hover:text-primary"
                   to="/contact"
@@ -67,7 +73,7 @@ export const Head = () => {
                 </div>
                 <div className="h-full bg-gray-200 py-5 w-px"></div>
                 <div className="flex md:hidden min-w-[1.5em] min-h-[1.5em] ">
-            <Menu></Menu> 
+                  <Menu></Menu>
                 </div>
                 <div className="hidden md:flex md:w-[max-content]">
                   <a

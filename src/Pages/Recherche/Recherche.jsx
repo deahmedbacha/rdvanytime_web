@@ -9,7 +9,8 @@ import calender from "../../assets/calonder.json";
 import StarRating from "react-star-ratings";
 import "../Recherche/Recherche.css"
 import { Link } from "react-router-dom";
-import Head2 from "Components/Head2.jsx";
+import Head2 from "Components/Head2.jsx"
+import { Footer } from "../../Components/Footer/Footer.jsx";
 function Recherche() {
     const ratings1 = [
       { id: 1, value: 3.5 },
@@ -3695,6 +3696,7 @@ function Recherche() {
           </section>
         </section>
       </div>
+      <Footer/>
     </>
   );
 }

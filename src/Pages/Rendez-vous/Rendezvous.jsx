@@ -10,6 +10,8 @@ import HealingIcon from "@mui/icons-material/Healing";
 import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { Footer } from "../../Components/Footer/Footer.jsx";
+
 export const Profil = () => {
   const [showNextContent, setShowNextContent] = useState(1);
   const [current1, setCurrent1] = useState(
@@ -1574,6 +1576,7 @@ export const Profil = () => {
           </div>
         </main>
       </body>
+      <Footer/>
     </>
   );
 };

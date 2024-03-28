@@ -556,8 +556,8 @@ input[type="radio"] {
   border-radius: 50%;
 }
 .mdc-radio .mdc-radio__native-control:enabled + .mdc-radio__background .mdc-radio__inner-circle, .mdc-radio .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
-  border-color: #02ae96;
-  border-color: var(--mdc-theme-secondary,#02ae96);
+  border-color: #012bb4;
+
 }
 .mdc-radio__inner-circle, .mdc-radio__native-control {
   position: absolute;
@@ -578,7 +578,7 @@ input[type="radio"] {
   background-color: #02ae96;
 }
 .od-book .flow-step-body .radio-set .radio-set-item:not(.radio-set-item--disabled) .mdc-radio .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__inner-circle, .od-book .flow-step-body .radio-set .radio-set-item:not(.radio-set-item--disabled) .mdc-radio .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle, .od-profile .flow-step-body .radio-set .radio-set-item:not(.radio-set-item--disabled) .mdc-radio .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__inner-circle, .od-profile .flow-step-body .radio-set .radio-set-item:not(.radio-set-item--disabled) .mdc-radio .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
-  border-color: #02ae96;
+  border-color: #012bb4;
 }
 .mdc-radio__native-control:checked + .mdc-radio__background .mdc-radio__inner-circle {
   transform: scale(.5);

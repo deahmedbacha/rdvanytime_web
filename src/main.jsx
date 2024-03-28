@@ -12,8 +12,8 @@ import Parametres from "./Pages/Parametres/Parametres.jsx";
 import Profil from "./Pages/Profil/Profil.jsx";
 import Dossiers from 'Pages/Dossiers_médicaux/Dossiers.jsx';
 import Rendezvous from "Pages/Rendez-vous/Rendezvous.jsx";
-
-
+import Benefits from "Components/Benefits/Benefits.jsx";
+import Apropos from "Pages/Apropos/Apropos.jsx"
 
 const router = createBrowserRouter([
   {
@@ -59,6 +59,14 @@ const router = createBrowserRouter([
   {
     path: "Rendezvous",
     element: <Rendezvous />,
+  },
+  {
+    path: "Benefits",
+    element: <Benefits />,
+  },
+  {
+    path: "Apropos",
+    element: <Apropos />,
   },
 ]);
 

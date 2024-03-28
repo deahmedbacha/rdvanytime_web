@@ -2,6 +2,7 @@ import { Headconect } from "../../Components/Headconect";
 import Switch from "./Switch.jsx";
 import Groupage from "./Groupage.jsx";
 import { useState } from "react";
+import { Footer } from "../../Components/Footer/Footer.jsx";
 
 export const Profil = () => {
   const [showNextContent, setShowNextContent] = useState(1);
@@ -1318,6 +1319,7 @@ export const Profil = () => {
           </div>
         )}
       </body>
+      <Footer/>
     </>
   );
 };
