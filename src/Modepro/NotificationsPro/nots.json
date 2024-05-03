@@ -1,0 +1,35 @@
+[
+  {
+    "account": "Dr Belhadj abdelillah",
+    "profilePicture": "src/assets/avatar_doctor.jpg",
+    "type": "D",
+    "didWhat": "votre rendez-vous avec le Dr Belhadj abdelillah est terminé avec succés.",
+    "time": "1m",
+    "read": false
+  },
+    {
+    "account": "Vos modifications ont été approuvées",
+    "profilePicture": "https://switchmedical.co.uk/wp-content/uploads/2022/05/sm_call_recording_reduce_errors.svg",
+    "type": "modifications",
+    "didWhat": "",
+    "time": "1 week",
+    "read": false
+  },
+    {
+    "account": "ahmed bacha",
+    "profilePicture": "src/Modepro/NotificationsPro/notification_errors-svg.svg",
+    "type": "message",
+    "didWhat": "je t'ai envoyé un message privé",
+    "message": "Cher Djamel, vous avez rendez-vous avec Dr Hakim Lokmane le mar. 25mai - 09:30",
+    "time": "5 days",
+    "read": true
+  },
+  {
+    "account": "ahmed bacha",
+    "profilePicture": "src/assets/avatar_doctor.jpg",
+    "type": "group",
+    "didWhat": "left the group",
+    "time": "2 weeks",
+    "read": true
+  }
+]

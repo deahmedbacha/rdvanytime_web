@@ -14,7 +14,12 @@ import Dossiers from 'Pages/Dossiers_médicaux/Dossiers.jsx';
 import Rendezvous from "Pages/Rendez-vous/Rendezvous.jsx";
 import Benefits from "Components/Benefits/Benefits.jsx";
 import Apropos from "Pages/Apropos/Apropos.jsx"
-
+import Modepro  from 'Modepro/Modepro.jsx';
+import Signinpro from 'Modepro/Signinpro.jsx';
+import Profilpro from 'Modepro/Profilpro/Profilpro.jsx';
+import Patientspro from "./Modepro/Patientspro/Patientspro.jsx"
+import Agenda from "./Modepro/Agenda/Agenda.jsx"
+import NotificationsPro from "./Modepro/NotificationsPro/NotificationsPro.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -67,6 +72,30 @@ const router = createBrowserRouter([
   {
     path: "Apropos",
     element: <Apropos />,
+  },
+  {
+    path: "Modepro",
+    element: <Modepro />,
+  },
+  {
+    path: "Signinpro",
+    element: <Signinpro />,
+  },
+  {
+    path: "Profilpro",
+    element: <Profilpro />,
+  },
+  {
+    path: "Patientspro",
+    element: <Patientspro />,
+  },
+  {
+    path: "Agenda",
+    element: <Agenda />,
+  },
+  {
+    path: "NotificationsPro",
+    element: <NotificationsPro />,
   },
 ]);
 

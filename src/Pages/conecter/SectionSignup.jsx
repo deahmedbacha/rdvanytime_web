@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 function SectionSignup() {
   //number:
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [phoneNumber, setphoneNumber] = useState("");
   const [isValidnumbre, setIsValidnumbre] = useState(true);
   const [isValidcharacter, setIsValidcharacter] = useState(true);
   //email:
@@ -50,16 +51,68 @@ function SectionSignup() {
   const handleChangeNumber = (event) => {
     const inputValue = event.target.value;
     const numericRegex = /^[0-9]*$/; // Regex to match only numeric characters
-    const mobileNumberRegex = /^\d{10}$/; // Check if the input value contains only numeric characters
+    const phoneNumberRegex = /^\d{10}$/; // Check if the input value contains only numeric characters
     if (numericRegex.test(inputValue) || inputValue === "") {
-      setMobileNumber(inputValue);
+      setphoneNumber(inputValue);
       setIsValidcharacter(true);
-      setMobileNumber(inputValue);
-      setIsValidnumbre(mobileNumberRegex.test(inputValue));
+      setphoneNumber(inputValue);
+      setIsValidnumbre(phoneNumberRegex.test(inputValue));
     } else {
       setIsValidcharacter(false);
     }
   };
+  
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'firstName':
+        setFirstName(value);
+        break;
+      case 'lastName':
+        setLastName(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'phoneNumber':
+        setphoneNumber(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    console.log('Button clicked!');
+    e.preventDefault();
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
+    };
+    try {
+        const response = await axios.post('http://localhost:5000/register', formData);
+        console.log('Button clicked!');
+        console.log(response.data); // assuming server responds with a message
+        window.location.href = 'http://localhost:5173/signin'; 
+        // Handle success, e.g., show a success message to the user
+    } catch (error) {
+      console.log('Button clicked!2');
+        console.error('Registration failed:', error.response.data); // log the error
+        // Handle error, e.g., show an error message to the user
+    }
+};
+
+
   return (
     <>
       <div className="sc-aaf087d9-6 gpRMrZ">
@@ -77,17 +130,22 @@ function SectionSignup() {
               <div className="ctw-flex md:ctw-p-10 md:ctw-my-5">
                 <div className="sc-5ffdb2e4-9 bSGjar">
                   <div>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                       <div className="sc-5ffdb2e4-25 fznPme">
                         <div className="ds-input">
                           <div className="ds-avec-label"></div>
                           <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                             <input
+                             value={firstName}
+                             onChange={handleChange}
                               type="text"
                               label="Prénom"
                               placeholder="Prénom"
-                              id="input-7e77dbde-8581-b8b0-b11e-351358926bda"
+                              id="firstName"
+                              name="firstName"
                               className="ctw-outline-none ctw-bg-transparent ctw-w-full ctw-rounded-md ctw-text-base ctw-border-none ctw-truncate ctw-ml-2 false undefined"
+                              required 
+                              
                             />
                           </div>
                           <div className="ds-avec-label">
@@ -106,8 +164,11 @@ function SectionSignup() {
                             <input
                               type="text"
                               label="Nom"
+                              value={lastName}
+                             onChange={handleChange}
                               placeholder="Nom"
-                              id="input-99869e3e-690a-19cf-ba18-18cf9e265317"
+                              id="lastName"
+                              name="lastName"
                               className="ctw-outline-none ctw-bg-transparent ctw-w-full ctw-rounded-md ctw-text-base ctw-border-none ctw-truncate ctw-ml-2 false undefined"
                             />
                           </div>
@@ -130,7 +191,7 @@ function SectionSignup() {
                         <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                           <div
                             className="ctw-ml-2.5 undefined"
-
+                            style={{ marginTop: "5px" }}
                           >
                             <svg
                               width="1em"
@@ -149,10 +210,13 @@ function SectionSignup() {
                           <input
                             type="text"
                             label="Téléphone"
-                            value={mobileNumber}
-                            onChange={handleChangeNumber}
+                            value={phoneNumber}
+                            onChange={
+                              handleChangeNumber// Call the second function here
+                            }
                             placeholder="Téléphone"
-                            id="input-288feaa2-dccd-5bc9-3c87-bed0fb11d108"
+                            id="phoneNumber"
+                            name="phoneNumber"
                             className="ctw-outline-none ctw-bg-transparent ctw-w-full ctw-rounded-md ctw-text-base ctw-border-none ctw-truncate ctw-ml-2 false undefined"
                           />
                         </div>
@@ -197,6 +261,7 @@ function SectionSignup() {
                         <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                           <div
                             className="ctw-ml-2.5 undefined"
+                            style={{ marginTop: "5px" }}
                           >
                             <svg
                               className="ds-icon"
@@ -214,9 +279,12 @@ function SectionSignup() {
                             type="text"
                             label="Adresse mail"
                             value={email}
-                            onChange={handleChangeemail}
+                            onChange={
+                              handleChangeemail
+                            }
                             placeholder="Saisir une adresse mail valide"
-                            id="input-288feaa2-dccd-5bc9-3c87-bed0fb11d108"
+                            id="email"
+                            name="email"
                             className="ctw-outline-none ctw-bg-transparent ctw-w-full ctw-rounded-md ctw-text-base ctw-border-none ctw-truncate ctw-ml-2 false undefined"
                           />
                         </div>
@@ -248,6 +316,7 @@ function SectionSignup() {
                         <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                           <div
                             className="ctw-ml-2.5 undefined"
+                            style={{ marginTop: "5px" }}
                           >
                             <svg
                               className="ds-icon"
@@ -265,9 +334,12 @@ function SectionSignup() {
                             type={isValidPassword ? "text" : "password"}
                             label="Mot de passe"
                             value={password}
-                            onChange={handleChangepass}
+                            onChange={
+                              handleChangepass 
+                            }
                             placeholder="Mot de passe"
-                            id="input-c30ee21f-99f6-8261-d7e8-563d2e4960f5"
+                            id="password"
+                            name="password"
                             className="ctw-outline-none ctw-bg-transparent ctw-w-full ctw-rounded-md ctw-text-base ctw-border-none ctw-truncate ctw-ml-2 false undefined"
                           />
                           <svg
@@ -350,8 +422,8 @@ function SectionSignup() {
                           style={{ height: "100%", width: "100%" }}
                         >
                           <button
-                            onClick={handleLogin}
                             type="submit"
+                            onClick={handleSubmit}
                             className="ctw-select-none ctw-flex ctw-box-border ctw-items-center ctw-justify-center ctw-font-bold ctw-underline-offset-4 ctw-min-w-min ctw-w-full ctw-transition-all ctw-duration-300 ctw-outline-none ctw-bg-primary-500 ctw-text-white ctw-border-solid ctw-border-[1.5px] ctw-border-primary-500 hover:ctw-shadow-lg hover:ctw-bg-primary-700 hover:ctw-border-primary-700 focus:ctw-shadow-lg focus:ctw-bg-primary-700 focus:ctw-border-primary-700 ctw-cursor-pointer ctw-h-10 ctw-text-[1rem] ctw-rounded"
                           >
                             <div className="ctw-flex ctw-flex-row">
@@ -391,7 +463,7 @@ function SectionSignup() {
                             style={{ height: "100%", width: "100%" }}
                           >
                             <button
-                              type="submit"
+                            
                               style={{
                                 border: "1px solid rgb(30, 29, 29",
                                 color: "rgb(30, 29, 29)",

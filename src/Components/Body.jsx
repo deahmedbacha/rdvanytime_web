@@ -7,7 +7,31 @@ import iconplaystore from "../assets/Google-Play.json";
 import ShoxDiv1 from "../Components/showDiv/ShoxDiv1.jsx";
 import ShoxDiv2 from "../Components/showDiv/ShowDiv2.jsx";
 import { Link } from "react-router-dom";
+import useEffect from "react";
  export const Body = () => {
+  const ville = "";
+  const type = "";
+  localStorage.setItem("ville", ville);
+  localStorage.setItem("type", type);
+    localStorage.removeItem("recherche");
+    const recherche=",";
+    localStorage.setItem("recherche", recherche);
+  const setRecherche = () => {
+    // Get values from local storage
+    const ville = localStorage.getItem("ville");
+    const type = localStorage.getItem("type");
+  
+    // Check if both values exist (optional)
+    
+    // Combine values with a delimiter (e.g., comma)
+    const recherche = `${type},${ville}`;
+  
+    // Store combined string in local storage
+    localStorage.setItem("recherche", recherche);
+    localStorage.removeItem("ville");
+    localStorage.removeItem("type");
+    console.log("Recherche set to:", recherche);
+  }
    return (
      <>
        <div>
@@ -122,6 +146,7 @@ import { Link } from "react-router-dom";
                            <Link
                              className="rounded-full bg-primary hover:bg-primary-bold text-center text-white font-medium md:w-max flex items-center justify-center h-14 py-2 px-5 text-base rtl:text-lg"
                              to="/Rechercher"
+                             onClick={setRecherche}
                            >
                              Rechercher
                            </Link>

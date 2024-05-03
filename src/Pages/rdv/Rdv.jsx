@@ -2,8 +2,8 @@ import "../Médecin/Medecin.css";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import SectionSignin from "../conecter/SectionSignin.jsx";  
-import SectionSignup from "../conecter/SectionSignup.jsx";  
+import SectionSignin from "../conecter/SectionSignin.jsx";
+import SectionSignup from "../conecter/SectionSignup.jsx";
 import { Menu2 } from "../../Components/menu/Menu2";
 import EventIcon from "@mui/icons-material/Event";
 import HealingIcon from "@mui/icons-material/Healing";
@@ -57,11 +57,6 @@ function Rdv() {
     setShowSigninContent(true);
   };
 
-  const [showVousContent, setShowVousContent] = useState(false);
-
-  const handlechoixClick = (event) => {
-    setShowVousContent(event.target.value);
-  };
 
   /// set les ville sur input
   const [inputValueVille, setInputValueVille] = useState("");
@@ -96,14 +91,14 @@ function Rdv() {
   const handleInputClick2 = () => {
     setShowDiv2(true);
   };
-    const [AjouterProche, setShowAjouterProche] = useState(false);
-    const AjouterProcheClick = () => {
-      setShowAjouterProche(true);
-    };
+  const [AjouterProche, setShowAjouterProche] = useState(false);
+  const AjouterProcheClick = () => {
+    setShowAjouterProche(true);
+  };
 
-    const DisableProcheClick = () => {
-      setShowAjouterProche(false);
-    };
+  const DisableProcheClick = () => {
+    setShowAjouterProche(false);
+  };
   return (
     <>
       <div className="Main">
@@ -545,271 +540,217 @@ function Rdv() {
                             {/* @ts-ignore */}
 
                             <div className="cw-info">
-                              <form className="cw-form" name="info">
-                                <section
-                                  className="cw-form-section"
-                                  style={{ marginBottom: "1.5%" }}
-                                >
-                                  <h2 className="cw-form-section-title">
-                                    Pour qui prenez-vous rendez-vous?
-                                  </h2>
-                                  <div className="cw-form-row">
+                              <div>
+                                <section className="cw-form-section cw-form-section--user">
+                                  <div className="user-info-header">
+                                    <h2 className="cw-form-section-title">
+                                      À propos de vous
+                                    </h2>
+                                  </div>
+                                  <div className="user-info">
+                                    <h3>Vos informations de base</h3>
+                                    <div className="cw-form-row">
+                                      <div
+                                        className="radio-set"
+                                        data-uuid="037c4ff1-f221-4576-bbb6-da9f77c0080c"
+                                        style={{ marginBottom: "10px" }}
+                                      >
+                                        <div className="radio-set-item">
+                                          <div
+                                            className="mdc-form-field"
+                                            data-uuid="409cce71-3e8a-4ce6-8779-89481f3ce679"
+                                          >
+                                            <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
+                                              <input
+                                                type="radio"
+                                                className="mdc-radio__native-control"
+                                                name="gender"
+                                                value="Homme"
+                                                required=""
+                                              />
+                                              <div className="mdc-radio__background">
+                                                <div className="mdc-radio__outer-circle"></div>
+                                                <div className="mdc-radio__inner-circle"></div>
+                                              </div>
+                                            </div>
+                                            <label htmlFor="radio-409cce71-3e8a-4ce6-8779-89481f3ce679">
+                                              Homme
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div className="radio-set-item">
+                                          <div
+                                            className="mdc-form-field"
+                                            data-uuid="3b962c17-6c7a-4450-8304-17724ec58a90"
+                                          >
+                                            <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
+                                              <input
+                                                type="radio"
+                                                className="mdc-radio__native-control"
+                                                name="gender"
+                                                value="Femme"
+                                                required=""
+                                              />
+                                              <div className="mdc-radio__background">
+                                                <div className="mdc-radio__outer-circle"></div>
+                                                <div className="mdc-radio__inner-circle"></div>
+                                              </div>
+                                            </div>
+                                            <label htmlFor="radio-3b962c17-6c7a-4450-8304-17724ec58a90">
+                                              Femme
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                     <div
-                                      className="radio-set"
-                                      style={{ marginBottom: "10px" }}
+                                      className="rounded-full px-5 py-1 bg-p-night w-full"
+                                      style={{ marginBottom: "2%" }}
                                     >
-                                      <div className="radio-set-item">
-                                        <div
-                                          className="mdc-form-field"
-                                          data-uuid="ce76cf6b-59ae-469b-85eb-e444bc8bd532"
-                                        >
-                                          <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                            <input
-                                              type="radio"
-                                              className="mdc-radio__native-control"
-                                              id="option1"
-                                              name="who"
-                                              value="option1"
-                                              required=""
-                                              checked={
-                                                showVousContent === "option1"
-                                              }
-                                              onClick={handlechoixClick}
-                                            />
-                                            <div className="mdc-radio__background">
-                                              <div className="mdc-radio__outer-circle"></div>
-                                              <div className="mdc-radio__inner-circle"></div>
-                                            </div>
-                                          </div>
-                                          <label htmlFor="radio-ce76cf6b-59ae-469b-85eb-e444bc8bd532">
-                                            Vous-même
-                                          </label>
-                                        </div>
-                                      </div>
-                                      <div className="radio-set-item">
-                                        <div className="mdc-form-field">
-                                          <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                            <input
-                                              type="radio"
-                                              className="mdc-radio__native-control"
-                                              id="option2"
-                                              name="who"
-                                              value="option2"
-                                              required=""
-                                              checked={
-                                                showVousContent === "option2"
-                                              }
-                                              onClick={handlechoixClick}
-                                            />
-                                            <div className="mdc-radio__background">
-                                              <div className="mdc-radio__outer-circle"></div>
-                                              <div className="mdc-radio__inner-circle"></div>
-                                            </div>
-                                          </div>
-                                          <label htmlFor="radio-72db4515-d52f-43d1-a9ad-91782132f016">
-                                            Un proche (enfant, parent, etc.)
-                                          </label>
-                                        </div>
-                                      </div>
+                                      <input
+                                        type="text"
+                                        placeholder="Nom de famille"
+                                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
+                                        style={{
+                                          boxShadow: "none !important",
+                                          backgroundColor: "transparent",
+                                        }}
+                                        name="Nom de famille"
+                                      />
+                                    </div>
+                                    <div
+                                      className="rounded-full px-5 py-1 bg-p-night w-full"
+                                      style={{ marginBottom: "2%" }}
+                                    >
+                                      <input
+                                        type="text"
+                                        placeholder="Prénom"
+                                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
+                                        style={{
+                                          boxShadow: "none !important",
+                                          backgroundColor: "transparent",
+                                        }}
+                                        name="Prénom"
+                                      />
+                                    </div>
+                                    <div
+                                      className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center"
+                                      style={{ marginBottom: "2%" }}
+                                    >
+                                      <input
+                                        type="date"
+                                        placeholder="Date de naissance"
+                                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
+                                        style={{
+                                          boxShadow: "none !important",
+                                          backgroundColor: "transparent",
+                                        }}
+                                        name="Date de naissance"
+                                        value="Invalid date"
+                                      />
                                     </div>
                                   </div>
-                                </section>
-                              </form>
-                              {showVousContent === "option1" && (
-                                <div>
-                                  <section className="cw-form-section cw-form-section--user">
-                                    <div className="user-info-header">
-                                      <h2 className="cw-form-section-title">
-                                        À propos de vous
-                                      </h2>
-                                    </div>
-                                    <div className="user-info">
-                                      <h3>Vos informations de base</h3>
-                                      <div className="cw-form-row">
+                                  <div className="user-address">
+                                    <h3
+                                      style={{
+                                        marginBottom: "3%",
+                                      }}
+                                    >
+                                      Votre adresse (domicile)
+                                    </h3>
+                                    <div className="grid grid-rows-2 gap-2">
+                                      <div className="flex w-full flex-col lg:grid grid-rows-2 gap-2">
                                         <div
-                                          className="radio-set"
-                                          data-uuid="037c4ff1-f221-4576-bbb6-da9f77c0080c"
-                                          style={{ marginBottom: "10px" }}
+                                          className="flex flex-col lg:grid grid-cols-2 gap-2 lg:gap-4"
+                                          style={{ display: "grid" }}
                                         >
-                                          <div className="radio-set-item">
-                                            <div
-                                              className="mdc-form-field"
-                                              data-uuid="409cce71-3e8a-4ce6-8779-89481f3ce679"
-                                            >
-                                              <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
+                                          <div style={{ width: "150%" }}>
+                                            <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                                              <div
+                                                className="rounded-full w-full text-base bg-transparent shadow-none focus:bg-transparent react-tel-input"
+                                                style={{
+                                                  boxShadow: "none !important",
+                                                  direction: "ltr",
+                                                }}
+                                              >
                                                 <input
-                                                  type="radio"
-                                                  className="mdc-radio__native-control"
-                                                  name="gender"
-                                                  value="Homme"
-                                                  required=""
+                                                  type="text"
+                                                  className="outline-none h-12 border-none w-full bg-transparent px-0 z-10 relative !font-main htmlForm-control"
+                                                  style={{
+                                                    unicodeBidi: "plaintext",
+                                                    direction: "ltr",
+                                                    backgroundColor:
+                                                      "transparent",
+                                                  }}
+                                                  placeholder="Rue*"
                                                 />
-                                                <div className="mdc-radio__background">
-                                                  <div className="mdc-radio__outer-circle"></div>
-                                                  <div className="mdc-radio__inner-circle"></div>
-                                                </div>
                                               </div>
-                                              <label htmlFor="radio-409cce71-3e8a-4ce6-8779-89481f3ce679">
-                                                Homme
-                                              </label>
                                             </div>
                                           </div>
-                                          <div className="radio-set-item">
-                                            <div
-                                              className="mdc-form-field"
-                                              data-uuid="3b962c17-6c7a-4450-8304-17724ec58a90"
-                                            >
-                                              <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                                <input
-                                                  type="radio"
-                                                  className="mdc-radio__native-control"
-                                                  name="gender"
-                                                  value="Femme"
-                                                  required=""
-                                                />
-                                                <div className="mdc-radio__background">
-                                                  <div className="mdc-radio__outer-circle"></div>
-                                                  <div className="mdc-radio__inner-circle"></div>
-                                                </div>
-                                              </div>
-                                              <label htmlFor="radio-3b962c17-6c7a-4450-8304-17724ec58a90">
-                                                Femme
-                                              </label>
+                                          <div
+                                            style={{
+                                              width: "100%",
+                                              paddingLeft: "50%",
+                                            }}
+                                          >
+                                            <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                                              <input
+                                                type="text"
+                                                placeholder="N°"
+                                                className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
+                                                style={{
+                                                  boxShadow: "none !important",
+                                                  backgroundColor:
+                                                    "transparent",
+                                                }}
+                                              />
                                             </div>
                                           </div>
                                         </div>
                                       </div>
-                                      <div
-                                        className="rounded-full px-5 py-1 bg-p-night w-full"
-                                        style={{ marginBottom: "2%" }}
-                                      >
-                                        <input
-                                          type="text"
-                                          placeholder="Nom de famille"
-                                          className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                          style={{
-                                            boxShadow: "none !important",
-                                            backgroundColor: "transparent",
-                                          }}
-                                          name="Nom de famille"
-                                        />
-                                      </div>
-                                      <div
-                                        className="rounded-full px-5 py-1 bg-p-night w-full"
-                                        style={{ marginBottom: "2%" }}
-                                      >
-                                        <input
-                                          type="text"
-                                          placeholder="Prénom"
-                                          className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                          style={{
-                                            boxShadow: "none !important",
-                                            backgroundColor: "transparent",
-                                          }}
-                                          name="Prénom"
-                                        />
-                                      </div>
-                                      <div
-                                        className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center"
-                                        style={{ marginBottom: "2%" }}
-                                      >
-                                        <input
-                                          type="date"
-                                          placeholder="Date de naissance"
-                                          className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
-                                          style={{
-                                            boxShadow: "none !important",
-                                            backgroundColor: "transparent",
-                                          }}
-                                          name="Date de naissance"
-                                          value="Invalid date"
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="user-address">
-                                      <h3
-                                        style={{
-                                          marginBottom: "3%",
-                                        }}
-                                      >
-                                        Votre adresse (domicile)
-                                      </h3>
-                                      <div
-                                        className="flex flex-col sm:grid grid-cols-2 gap-4"
-                                        style={{ display: "ruby" }}
-                                      >
+
+                                      <div className="flex w-full flex-col lg:grid grid-rows-2 gap-2">
                                         <div
-                                          className="rounded-full px-5 py-1 bg-p-night "
-                                          style={{
-                                            width: "79%",
-                                            marginRight: "1.5%",
-                                            marginBottom: "2%",
-                                          }}
+                                          className="flex flex-col lg:grid grid-cols-2 gap-2 lg:gap-4"
+                                          style={{ display: "grid" }}
                                         >
-                                          <input
-                                            type="text"
-                                            placeholder="Rue*"
-                                            className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                            style={{
-                                              boxShadow: "none !important",
-                                              backgroundColor: "transparent",
-                                            }}
-                                            name="Rue"
-                                          />
-                                        </div>
-                                        <div
-                                          className="rounded-full px-5 py-1 bg-p-night "
-                                          style={{ width: "20%" }}
-                                        >
-                                          <input
-                                            type="text"
-                                            placeholder="N°"
-                                            className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                            style={{
-                                              boxShadow: "none !important",
-                                              backgroundColor: "transparent",
-                                            }}
-                                            name="N"
-                                          />
-                                        </div>
-                                      </div>
-                                      <div
-                                        className="flex flex-col sm:grid grid-cols-2 gap-4"
-                                        style={{ display: "ruby" }}
-                                      >
-                                        <div
-                                          className="rounded-full px-5 py-1 bg-p-night "
-                                          style={{
-                                            width: "25%",
-                                            marginRight: "1.5%",
-                                            marginBottom: "2%",
-                                          }}
-                                        >
-                                          <input
-                                            type="text"
-                                            placeholder="code postal*"
-                                            className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                            style={{
-                                              boxShadow: "none !important",
-                                              backgroundColor: "transparent",
-                                            }}
-                                            name="code postal"
-                                          />
-                                        </div>
-                                        <div
-                                          className="rounded-full px-5 py-1 bg-p-night "
-                                          style={{ width: "74%" }}
-                                        >
-                                          <input
-                                            type="text"
-                                            placeholder="Ville*"
-                                            className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                            style={{
-                                              boxShadow: "none !important",
-                                              backgroundColor: "transparent",
-                                            }}
-                                            name="Ville"
-                                          />
+                                          <div style={{ width: "100%" }}>
+                                            <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                                              <div
+                                                className="rounded-full w-full text-base bg-transparent shadow-none focus:bg-transparent react-tel-input"
+                                                style={{
+                                                  boxShadow: "none !important",
+                                                  direction: "ltr",
+                                                }}
+                                              >
+                                                <input
+                                                  type="text"
+                                                  className="outline-none h-12 border-none w-full bg-transparent px-0 z-10 relative !font-main htmlForm-control"
+                                                  style={{
+                                                    unicodeBidi: "plaintext",
+                                                    direction: "ltr",
+                                                    backgroundColor:
+                                                      "transparent",
+                                                  }}
+                                                  placeholder="Code postal*"
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div style={{ width: "100%" }}>
+                                            <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                                              <input
+                                                type="text"
+                                                placeholder="Ville*"
+                                                className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
+                                                style={{
+                                                  boxShadow: "none !important",
+                                                  backgroundColor:
+                                                    "transparent",
+                                                }}
+                                              />
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
                                       <div
@@ -832,262 +773,50 @@ function Rdv() {
                                         </div>
                                       </div>
                                     </div>
-                                  </section>
-                                  <section className="cw-form-section cw-form-section--comment">
-                                    <h2
-                                      className="cw-form-section-title"
-                                      style={{
-                                        marginBottom: "3%",
-                                      }}
-                                    >
-                                      Raison de la visite / Renseignements
-                                      complémentaires
-                                    </h2>
-                                    <div
-                                      className=" px-5 py-1 bg-p-night w-full"
-                                      style={{
-                                        marginBottom: "2%",
-                                        borderRadius: "30px",
-                                      }}
-                                    >
-                                      <textarea
-                                        type="text"
-                                        placeholder=" Transmettre un message au personnel soignant (optionnel)"
-                                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                        style={{
-                                          boxShadow: "none !important",
-                                          backgroundColor: "transparent",
-                                          height: "100px",
-                                        }}
-                                        name="message"
-                                      />
-                                    </div>
-                                  </section>
-                                  <div className="cw-form-buttons cw-form-buttons-full">
-                                    <button
-                                      className="mdc-button mdc-button--unelevated mdc-ripple-upgraded"
-                                      type="submit"
-                                      onClick={() => handleNextClick(4)}
-                                    >
-                                      <span className="mdc-button__label">
-                                        Confirmer rendez-vous
-                                      </span>
-                                    </button>
                                   </div>
-                                </div>
-                              )}
-                              {showVousContent === "option2" && (
-                                <div>
-                                  <section className="cw-form-section cw-form-section--user">
-                                    <div className="user-info-header">
-                                      <h2 className="cw-form-section-title">
-                                        Mes proches
-                                      </h2>
-                                    </div>
-                                    <div className="w-full flex flex-col mx-auto flex-1">
-                                      <div className="w-full max-w-xl mx-auto">
-                                        <div className="max-w-xl mx-auto">
-                                          <div className="flex flex-col items-center justify-center">
-                                            <svg
-                                              width="2em"
-                                              height="2em"
-                                              viewBox="0 0 40 40"
-                                            >
-                                              <path
-                                                fill="currentColor"
-                                                d="M36.611 34.313H3.389c-2.084 0-2.867-1.762-2.989-2.692l-.004-11.79a.52.52 0 0 1 .034-.182L5.093 7.661a3.132 3.132 0 0 1 3.02-1.974h23.758a3.15 3.15 0 0 1 3.043 1.992l4.655 11.97a.52.52 0 0 1 .034.182v11.725c-.125.996-.907 2.757-2.992 2.757zM1.396 19.925v11.631c.021.119.301 1.758 1.993 1.758h33.222c1.738 0 1.986-1.748 1.996-1.822l-.004-11.566l-4.628-11.9c-.025-.069-.502-1.337-2.087-1.337H8.131c-1.629 0-2.094 1.304-2.099 1.317L1.396 19.925z"
-                                              ></path>
-                                              <path
-                                                fill="currentColor"
-                                                d="M27.166 22.618h-14.33a.502.502 0 0 1-.497-.553c.122-1.151-.032-2.005-.449-2.468c-.412-.458-1.044-.423-1.101-.419l-5.573.005a.5.5 0 0 1-.464-.683l3.489-8.814a.5.5 0 0 1 .465-.316h22.588a.5.5 0 0 1 .465.316l3.441 8.695a.5.5 0 0 1-.398.803H29.278c-.077-.006-.115-.009-.171-.009c-.231 0-.666.055-.997.423c-.416.464-.571 1.316-.448 2.468a.496.496 0 0 1-.496.552zm-13.792-1h13.253c-.048-1.186.2-2.089.739-2.688c.815-.906 1.984-.74 1.983-.741l4.697-.004l-3.093-7.815H9.046l-3.093 7.815h4.749c.015-.003.09-.009.192-.009c.397 0 1.149.098 1.74.754c.539.599.788 1.502.74 2.688z"
-                                              ></path>
-                                            </svg>
-                                            <div className="font-medium text-xs text-center text-gray-500 mt-2">
-                                              Aucun proches
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="font-normal text-xs text-gray-500 text-center mt-9">
-                                          Ajoutez vos proches à votre compte et
-                                          gérez leurs rendez-vous en toute
-                                          simplicité.
-                                        </div>
-                                      </div>
-                                      <div
-                                        className="w-max self-center "
-                                        style={{ paddingTop: "1.5%" }}
-                                      >
-                                        <button
-                                          onClick={AjouterProcheClick}
-                                          style={{
-                                            backgroundColor: "#012bb4",
-                                          }}
-                                          className="rounded-full bg-primary hover:bg-primary-bold h-12 text-center text-white font-bold flex items-center justify-center px-8 mt-4 text-base sm:text-base lg:text-base disabled:bg-gray-100 disabled:border disabled:text-black disabled:select-none disabled:pointer-events-none min-w-[100px] py-3"
-                                        >
-                                          <div className="me-2">
-                                            Ajouter un proche
-                                          </div>
-                                          <svg
-                                            className="fill-current text-white rtl:transhtmlForm rtl:rotate-180"
-                                            width="1.4em"
-                                            height="1.4em"
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"></path>
-                                          </svg>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </section>
-                                  <section className="cw-form-section cw-form-section--user">
-                                    <div className="user-info-header">
-                                      <h2 className="cw-form-section-title">
-                                        À propos de vous
-                                      </h2>
-                                    </div>
-                                    <div className="user-info">
-                                      <h3>Vos informations de base</h3>
-                                      <div className="cw-form-row">
-                                        <div
-                                          className="radio-set"
-                                          style={{ marginBottom: "10px" }}
-                                        >
-                                          <div className="radio-set-item">
-                                            <div className="mdc-form-field">
-                                              <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                                <input
-                                                  type="radio"
-                                                  className="mdc-radio__native-control"
-                                                  name="gender"
-                                                  value="Homme"
-                                                  required=""
-                                                />
-                                                <div className="mdc-radio__background">
-                                                  <div className="mdc-radio__outer-circle"></div>
-                                                  <div className="mdc-radio__inner-circle"></div>
-                                                </div>
-                                              </div>
-                                              <label htmlFor="radio-409cce71-3e8a-4ce6-8779-89481f3ce679">
-                                                Homme
-                                              </label>
-                                            </div>
-                                          </div>
-                                          <div className="radio-set-item">
-                                            <div
-                                              className="mdc-form-field"
-                                              data-uuid="3b962c17-6c7a-4450-8304-17724ec58a90"
-                                            >
-                                              <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                                <input
-                                                  type="radio"
-                                                  className="mdc-radio__native-control"
-                                                  name="gender"
-                                                  value="Femme"
-                                                  required=""
-                                                />
-                                                <div className="mdc-radio__background">
-                                                  <div className="mdc-radio__outer-circle"></div>
-                                                  <div className="mdc-radio__inner-circle"></div>
-                                                </div>
-                                              </div>
-                                              <label htmlFor="radio-3b962c17-6c7a-4450-8304-17724ec58a90">
-                                                Femme
-                                              </label>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div
-                                        className="rounded-full px-5 py-1 bg-p-night w-full"
-                                        style={{ marginBottom: "2%" }}
-                                      >
-                                        <input
-                                          type="text"
-                                          placeholder="Nom de famille"
-                                          className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                          style={{
-                                            boxShadow: "none !important",
-                                            backgroundColor: "transparent",
-                                          }}
-                                          name="Nom de famille"
-                                        />
-                                      </div>
-                                      <div
-                                        className="rounded-full px-5 py-1 bg-p-night w-full"
-                                        style={{ marginBottom: "2%" }}
-                                      >
-                                        <input
-                                          type="text"
-                                          placeholder="Prénom"
-                                          className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                          style={{
-                                            boxShadow: "none !important",
-                                            backgroundColor: "transparent",
-                                          }}
-                                          name="Prénom"
-                                        />
-                                      </div>
-                                      <div
-                                        className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center"
-                                        style={{ marginBottom: "2%" }}
-                                      >
-                                        <input
-                                          type="date"
-                                          placeholder="Date de naissance"
-                                          className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
-                                          style={{
-                                            boxShadow: "none !important",
-                                            backgroundColor: "transparent",
-                                          }}
-                                          name="Date de naissance"
-                                        />
-                                      </div>
-                                    </div>
-                                  </section>
-                                  <section className="cw-form-section cw-form-section--comment">
-                                    <h2
-                                      className="cw-form-section-title"
+                                </section>
+                                <section className="cw-form-section cw-form-section--comment">
+                                  <h2
+                                    className="cw-form-section-title"
+                                    style={{
+                                      marginBottom: "3%",
+                                    }}
+                                  >
+                                    Raison de la visite / Renseignements
+                                    complémentaires
+                                  </h2>
+                                  <div
+                                    className=" px-5 py-1 bg-p-night w-full"
+                                    style={{
+                                      marginBottom: "2%",
+                                      borderRadius: "30px",
+                                    }}
+                                  >
+                                    <textarea
+                                      type="text"
+                                      placeholder=" Transmettre un message au personnel soignant (optionnel)"
+                                      className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
                                       style={{
-                                        marginBottom: "3%",
+                                        boxShadow: "none !important",
+                                        backgroundColor: "transparent",
+                                        height: "100px",
                                       }}
-                                    >
-                                      Raison de la visite / Renseignements
-                                      complémentaires
-                                    </h2>
-                                    <div
-                                      className=" px-5 py-1 bg-p-night w-full"
-                                      style={{
-                                        marginBottom: "2%",
-                                        borderRadius: "30px",
-                                      }}
-                                    >
-                                      <textarea
-                                        type="text"
-                                        placeholder=" Transmettre un message au personnel soignant (optionnel)"
-                                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                                        style={{
-                                          boxShadow: "none !important",
-                                          backgroundColor: "transparent",
-                                          height: "100px",
-                                        }}
-                                        name="message"
-                                      />
-                                    </div>
-                                  </section>
-
-                                  <div className="cw-form-buttons cw-form-buttons-full">
-                                    <button
-                                      className="mdc-button mdc-button--unelevated mdc-ripple-upgraded"
-                                      type="submit"
-                                      onClick={() => handleNextClick(4)}
-                                    >
-                                      <span className="mdc-button__label">
-                                        Confirmer rendez-vous
-                                      </span>
-                                    </button>
+                                      name="message"
+                                    />
                                   </div>
+                                </section>
+                                <div className="cw-form-buttons cw-form-buttons-full">
+                                  <button
+                                    className="mdc-button mdc-button--unelevated mdc-ripple-upgraded"
+                                    type="submit"
+                                    onClick={() => handleNextClick(4)}
+                                  >
+                                    <span className="mdc-button__label">
+                                      Confirmer rendez-vous
+                                    </span>
+                                  </button>
                                 </div>
-                              )}
+                              </div>
                             </div>
                             {/* @ts*/}
                           </div>
@@ -1283,7 +1012,7 @@ function Rdv() {
           </div>
         </main>
       </div>
-      <Footer/>
+      <Footer />
       {AjouterProche && (
         <div>
           <div className="react-responsive-modal-root" data-testid="root">

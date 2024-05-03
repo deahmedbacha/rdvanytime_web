@@ -43,12 +43,14 @@ function ShoxDiv1() {
    const ButtonClickSpes = (value) => {
      setInputValueSpes(value);
       setShowDiv1(false);
+       console.log(value);
+       localStorage.setItem("type", value);
    };
    ///
    const [showDiv1, setShowDiv1] = useState(false);
    const inputRef1 = useRef(null);
    const divRef1 = useRef(null);
-
+   const inputRef = useRef(null);
    useEffect(() => {
      const handleClickOutside = (event) => {
        if (
@@ -58,6 +60,7 @@ function ShoxDiv1() {
          !divRef1.current.contains(event.target)
        ) {
          setShowDiv1(false);
+         
        }
        
      };
@@ -65,13 +68,13 @@ function ShoxDiv1() {
      document.addEventListener("mousedown", handleClickOutside);
      return () => {
        document.removeEventListener("mousedown", handleClickOutside);
+       
      };
    }, []);
 
    const handleInputClick1 = () => {
      setShowDiv1(true);
    };
-
 
   return (
     <>

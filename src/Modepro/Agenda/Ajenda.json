@@ -1,0 +1,184 @@
+[
+     {
+    "id": 12,
+    "title": "abdou",
+    "lastName": "Belhadj",
+    "notes": "maladier",
+    "start": "2024-04-29T09:00:00", 
+    "allDay": false,
+    "color": "#012bb4",
+    "phoneNumber":"0664189325",
+    "email":"blhabdou75@gmail.com",
+    "taille":"1.70",
+    "poids":"55",
+    "blood_type":"A-",
+    "Fumeur":true,
+    "Alcool":false,
+    "Marie":true,
+   "maladieCronique": [
+  "Diabète de type 2",
+  "Hypertension artérielle",
+  "Asthme",
+  "Arthrite rhumatoïde",
+  "Maladie de Crohn",
+  "Dépression chronique",
+  "Sclérose en plaques",
+  "Maladie pulmonaire obstructive chronique (MPOC)",
+  "Insuffisance rénale chronique",
+  "Cancer en rémission"
+],
+   "chirurgie": [
+    "Appendicectomie",
+    "Opération du genou"
+  ],
+  "allergie": [
+    "Arachides",
+    "Pollen"
+  ],
+  "medicament": [
+    "Metformine",
+    "Antidépresseurs"
+  ],
+   "status":"Approved",
+   "rue":"wlad boudjamaa beni saf",
+   "rueNumero":"09",
+   "ville":"ain temochent",
+   "codePostale":"460012",
+   "pays":"dz",
+   "dateNaissance":"2002-03-01",
+   "sexe":true ,
+  "files": [
+    {
+      "name": "exemple1.txt",
+      "type": "text/plain",
+      "size": "10KB",
+      "path": "https://www.enssib.fr/bibliotheque-numerique/documents/60263-les-distributions-de-prix-dans-les-debuts-de-la-troisieme-republique-1870-1914-a-lyon.pdf"
+    },
+    {
+      "name": "exemple2.jpg",
+      "type": "image/jpeg",
+      "size": "500KB",
+      "path": "/Users/abdou/Desktop/pro/Screenshot 2024-04-20 at 00-04-53 Myconsultation pro Logiciel médical en ligne 2 mois gratuits.png"
+    },
+    {
+      "name": "exemple3.pdf",
+      "type": "application/pdf",
+      "size": "1MB",
+      "path": "https://www.enssib.fr/bibliotheque-numerique/documents/60263-les-distributions-de-prix-dans-les-debuts-de-la-troisieme-republique-1870-1914-a-lyon.pdf"
+    }
+  ]
+  },
+  {
+  "id": 13,
+  "title": "Fatima",
+  "lastName": "Ziani",
+  "notes": "patient régulier",
+  "start": "2024-05-05T10:30:00",
+  "allDay": false,
+  "color": "#b34a12",
+  "phoneNumber": "0655874123",
+  "email": "fatima.ziani@example.com",
+  "taille": "1.65",
+  "poids": "70",
+  "blood_type": "B+",
+  "Fumeur": false,
+  "Alcool": false,
+  "Marie": false,
+  "maladieCronique": [
+    "Hypertension artérielle",
+    "Cholestérol élevé",
+    "Arthrose",
+    "Fibromyalgie"
+  ],
+  "chirurgie": [
+    "Césarienne"
+  ],
+  "allergie": [
+    "Pénicilline",
+    "Acariens"
+  ],
+  "medicament": [
+    "Atorvastatine",
+    "Paracétamol"
+  ],
+  "status": "Pending",
+  "rue": "123 Rue de la République",
+  "rueNumero": "A12",
+  "ville": "Paris",
+  "codePostale": "75001",
+  "pays": "France",
+  "dateNaissance": "1985-07-15",
+  "sexe": false,
+  "files": [
+    {
+      "name": "rapport_médical.pdf",
+      "type": "application/pdf",
+      "size": "2.5MB",
+      "path": "https://www.example.com/rapport_medical.pdf"
+    },
+    {
+      "name": "radiographie.jpg",
+      "type": "image/jpeg",
+      "size": "800KB",
+      "path": "https://www.example.com/radiographie.jpg"
+    }
+  ]
+},
+{
+  "id": 14,
+  "title": "Jean",
+  "lastName": "Dupont",
+  "notes": "suivi régulier",
+  "start": "2024-05-10T14:00:00",
+  "allDay": false,
+  "color": "#8c3682",
+  "phoneNumber": "0612345678",
+  "email": "jean.dupont@example.com",
+  "taille": "1.80",
+  "poids": "85",
+  "blood_type": "O+",
+  "Fumeur": true,
+  "Alcool": true,
+  "Marie": true,
+  "maladieCronique": [
+    "Diabète de type 1",
+    "Hypercholestérolémie",
+    "Arthrose cervicale"
+  ],
+  "chirurgie": [
+    "Chirurgie cardiaque"
+  ],
+  "allergie": [
+    "Amoxicilline",
+    "Acariens"
+  ],
+  "medicament": [
+    "Insuline",
+    "Statines"
+  ],
+  "status": "Approved",
+  "rue": "456 Avenue Victor Hugo",
+  "rueNumero": "B25",
+  "ville": "Lyon",
+  "codePostale": "69001",
+  "pays": "France",
+  "dateNaissance": "1970-10-25",
+  "sexe": true,
+  "files": [
+    {
+      "name": "ordonnance.pdf",
+      "type": "application/pdf",
+      "size": "1.2MB",
+      "path": "https://www.example.com/ordonnance.pdf"
+    },
+    {
+      "name": "radiographie.jpeg",
+      "type": "image/jpeg",
+      "size": "600KB",
+      "path": "https://www.example.com/radiographie.jpeg"
+    }
+  ]
+}
+
+
+]

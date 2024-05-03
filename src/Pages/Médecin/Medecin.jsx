@@ -3,10 +3,220 @@ import "../Médecin/Medecin.css";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { Menu2 } from "../../Components/menu/Menu2";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
+import React, { useState } from 'react';
 import { Footer } from "../../Components/Footer/Footer.jsx";
-
+import { Head } from "../../Components/Head.jsx";
+import axios from "axios";
 function Medecin() {
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  
+
+
+
+  //calendrier
+  const DoctorCalendar = ({ doctorId }) => {
+    const [dates, setDates] = useState([]);
+    const [unavailableTimeSlots, setUnavailableTimeSlots] = useState([]);
+
+    useEffect(() => {
+      const fetchUnavailableTimeSlots = async () => {
+        try {
+          const response = await axios.post('http://localhost:5000/doc-calender', { doc_id: doctorId });
+          console.log(response.data.dateTime);
+          setUnavailableTimeSlots(response.data.dateTime);
+        } catch (error) {
+          console.error('Error fetching unavailable time slots:', error);
+        }
+      };
+  
+      fetchUnavailableTimeSlots();
+    }, [doctorId]);
+  
+    const generateDates = (start, end) => {
+      const dateList = [];
+      let currentDate = new Date(start);
+  
+      while (currentDate <= end) {
+        dateList.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+  
+      setDates(dateList);
+    };
+  
+    useEffect(() => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const end = new Date();
+      end.setDate(tomorrow.getDate() + 3); // Show dates for the next 4 days starting from tomorrow
+    
+      generateDates(tomorrow, end);
+    }, []);
+  
+    const handleNextWeek = () => {
+      const newStartDate = new Date(dates[dates.length - 1]);
+      newStartDate.setDate(newStartDate.getDate() + 1); // Move start date to the next 4 days
+      const newEndDate = new Date(newStartDate);
+      newEndDate.setDate(newEndDate.getDate() + 3); // Move end date to the next 4 days
+    
+      generateDates(newStartDate, newEndDate);
+    };
+    
+    const handlePrevWeek = () => {
+      const prevStartDate = new Date(dates[0]);
+      prevStartDate.setDate(prevStartDate.getDate() - 4); // Move start date to the previous 4 days
+    
+      generateDates(prevStartDate, new Date(prevStartDate).setDate(prevStartDate.getDate() + 3));
+    };
+  
+    const formatDate = (date) => {
+      const options = { month: 'short', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    };
+  
+    const getDayName = (date) => {
+      const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+      return days[date.getDay()];
+    };
+  
+    const getTimeSlots = (date) => {
+      try {
+        const timeSlots = [];
+        const isFriday = getDayName(date) === 'Vendredi';
+        for (let hour = 8; hour < 17; hour++) {
+          for (let minute = 0; minute < 60; minute += 30) {
+            if (isFriday) {
+              const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+              timeSlots.push({
+                slotClass: 'availabilities-empty-slot',
+                time: (<div className="availabilities-empty-slot-dash"></div>),
+                onClick: null,
+              });
+            } else {
+              const roundedMinute = Math.floor(minute / 30) * 30;
+              const time = `${hour.toString().padStart(2, '0')}:${roundedMinute.toString().padStart(2, '0')}`;
+              const dateTimeToCheck = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), hour, roundedMinute));
+              const formattedDateTime = dateTimeToCheck.toISOString();
+              const available = !unavailableTimeSlots.includes(formattedDateTime);
+              const slotClass = `Tappable-inactive availabilities-slot ${available ? 'availabilities-disponible' : 'availabilities-indisponible'}`;
+              const onClick = available ? () => handleTimeSlotClick(doctorId, date, time) : null;
+              timeSlots.push({ time, slotClass, onClick });
+            }
+          }
+        }
+        return timeSlots;
+      } catch (error) {
+        console.error('Error fetching unavailable time slots:', error);
+        return [];
+      }
+    };
+  const handleTimeSlotClick = (docId, date, time) => {
+    const [hours, minutes] = time.split(':');
+    
+    const dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
+    dateTime.setHours(dateTime.getHours() + 1);
+    
+    // Check if the date is valid
+    if (isNaN(dateTime.getTime())) {
+      console.error('Invalid date:', dateTime);
+      return;
+    }
+  
+    // Store the doc_id and clicked time in local storage
+    localStorage.setItem('doc_id', docId);
+    localStorage.setItem('clicked_time', dateTime.toISOString());
+    console.log('Time slot clicked!');
+    window.location.href = 'http://localhost:5173/Rdv';
+  };
+  
+    return (
+      <div className="dl-search-result-calendar">
+        <div style={{ overflow: "visible", width: "0px" }}>
+          <div className="dl-desktop-availabilities-days" style={{ opacity: "1" }}>
+            <div className="availabilities-pagination">
+              <button
+                onClick={handlePrevWeek}
+                disabled={dates[0] <= new Date().setDate(new Date().getDate() + 1)} // Disable back button if start date is tomorrow or earlier
+              >
+                <div className="dl-icon-wrapper dl-position-relative">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                    className="dl-icon dl-icon-primary-110 dl-icon-small"
+                    data-icon-name="solid/chevron-left"
+                    data-design-system="oxygen"
+                    data-design-system-component="Icon"
+                  >
+                    <path d="M10.977 3.494c0 .211-.07.399-.211.54l-3.961 3.96 3.96 3.985a.723.723 0 0 1 0 1.054.723.723 0 0 1-1.054 0l-4.5-4.5a.723.723 0 0 1 0-1.054l4.5-4.5a.723.723 0 0 1 1.055 0c.14.14.21.328.21.515Z"></path>
+                  </svg>
+                </div>
+              </button>
+            </div>
+            {dates.map((date, index) => (
+              <div key={index} className="availabilities-day">
+                <div className="availabilities-day-title">
+                  <div className="availabilities-day-name">{getDayName(date)}</div>
+                  <div className="availabilities-day-date">{formatDate(date)}</div>
+                </div>
+                <div className="availabilities-slots">
+                  {getTimeSlots(date).map((slot, index) => (
+                    <div
+                      key={index}
+                      className={slot.slotClass}
+                      style={{
+                        tapHighlightColor: "rgba(0, 0, 0, 0)",
+                        userSelect: "none",
+                        cursor: slot.onClick ? "pointer" : "not-allowed", // Change cursor to "not-allowed" for unavailable slots
+                      }}
+                      onClick={slot.onClick}
+                    >
+                      {slot.time}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div className="availabilities-pagination">
+              <button
+                onClick={handleNextWeek}
+                disabled={dates[dates.length - 1] >= new Date().setDate(new Date().getDate() + 30)} // Disable next button if end date is 30 days from today
+              >
+                <div className="dl-icon-wrapper dl-position-relative">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                    className="dl-icon dl-icon-primary-110 dl-icon-small"
+                    data-icon-name="solid/chevron-right"
+                    data-design-system="oxygen"
+                    data-design-system-component="Icon"
+                  >
+                    <path d="M5.006 12.518c0-.211.07-.399.21-.54l3.962-3.96-3.961-3.985a.723.723 0 0 1 0-1.054.723.723 0 0 1 1.054 0l4.5 4.5a.723.723 0 0 1 0 1.054l-4.5 4.5a.723.723 0 0 1-1.054 0 .727.727 0 0 1-.211-.515Z"></path>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
   const [activeItem, setActiveItem] = useState("Item 1");
 
   const handleItemClick = (item) => {
@@ -38,74 +248,49 @@ function Medecin() {
   const [showDiv2, setShowDiv2] = useState(false);
   const inputRef2 = useRef(null);
   const divRef2 = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        inputRef2.current &&
-        !inputRef2.current.contains(event.target) &&
-        divRef2.current &&
-        !divRef2.current.contains(event.target)
-      ) {
-        setShowDiv2(false);
+  
+  const fetchDoctorData = async () => {
+    try {
+      const docId = localStorage.getItem('doc_id');
+      if (docId) {
+        const response = await axios.post("http://localhost:5000/doctorbyid", { docId });
+        setDoctorData({ ...response.data });
+      } else {
+        setError('Doctor ID not found in local storage');
       }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    } catch (err) {
+      setError('Error fetching doctor data');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+  
+    fetchDoctorData();
+    console.log(doctorData);
+    
   }, []);
 
   const handleInputClick2 = () => {
     setShowDiv2(true);
   };
+
+
+  const [doctorData, setDoctorData] = useState({});
+
+
+
   return (
     <>
       <div className="Main">
         {/**Header */}
-        <header className="Header">
-          <div className="w-full h-full py-3 flex md:gap-12 items-center justify-between px-3 md:px-8 md:px-5 lg:px-9 shadow-sh-112-8">
-            <Link
-              className="ps-3 lg:w-52 !h-[56px] !w-[124px] flex items-center justify-start"
-              to="/"
-            >
-              <div className=" md:flex md:items-center md:justify-center">
-                <img
-                  src={logo}
-                  width="124"
-                  height="56"
-                  className="lg:w-52"
-                  alt=""
-                  loading="eager"
-                />
-              </div>
-            </Link>
-            <div className="Menuaff flex md:hidden min-w-[1.5em] min-h-[1.5em] ">
-              <Menu2></Menu2>
-            </div>
-            <div className="Menuadiff flex justify-end ms-auto">
-              <div className="grid grid-flow-col auto-cols gap-3 items-center justify-center">
-                <Link
-                  className="text-sm md:text-base font-light px-7 py-3 text-gray-900 min-w-[max-content]"
-                  to="/Signup"
-                >
-                  Vous avez déjà un compte ?
-                </Link>
-                <Link
-                  className="text-sm md:text-base font-semibold rounded-3xl px-7 py-3 bg-primary-ice text-white"
-                  to="/Signin"
-                >
-                  Se connecter
-                </Link>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Head></Head>
         <main>
           <div
             className="bg-p-cover od-profile od-profile--bookable"
           >
+            <br /><br /><br /><br />
             <header className="od-profile-header">
               <div className="od-profile-header-wrapper">
                 <div className="od-profile-header-picture">
@@ -117,10 +302,10 @@ function Medecin() {
                 </div>
                 <div className="od-profile-header-description">
                   <h1 className="od-profile-header-description-name">
-                    Dr BELHADJ ABDELILLAH
+                    Dr {doctorData.firstName} {doctorData.lastName}
                   </h1>
                   <h2 className="od-profile-header-description-specialty">
-                    Médecin généraliste
+                    {doctorData.type}
                   </h2>
                 </div>
               </div>
@@ -290,7 +475,7 @@ function Medecin() {
                     <div className="od-profile-card-section-map-image">
                       <iframe
                         className="od-profile-googlemaps"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14468796.894767692!2d-8.965395742697925!3d27.704281253446712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7e8a6a28037bd1%3A0x7140bee3abd7f8a2!2zQWxnw6lyaWU!5e0!3m2!1sfr!2sdz!4v1708558499416!5m2!1sfr!2sdz"
+                        src={doctorData.map}
                         width="330"
                         height="322"
                         style={{ border: "0" }}
@@ -324,17 +509,7 @@ function Medecin() {
                         <div className="od-profile-expandable-text">
                           <p>
                             <span style={{ backgroundColor: "initial" }}>
-                              je suis passionné par le domaine médical depuis
-                              aussi longtemps que je me souvienne. En tant que
-                              médecin, j&apos;ai le privilège d&apos;être au
-                              carrefour entre la science, l&apos;empathie et le
-                              dévouement envers le bien-être des autres. Depuis
-                              que j&apos;ai décidé de me lancer dans ce domaine,
-                              chaque jour a été une aventure. Chaque patient que
-                              je rencontre apporte avec lui son histoire unique,
-                              ses défis et ses espoirs. Et je considère cela
-                              comme un honneur de pouvoir les accompagner dans
-                              leur parcours de santé.
+                              {doctorData.description}
                             </span>
                           </p>
                         </div>
@@ -371,7 +546,7 @@ function Medecin() {
                     <div className="od-profile-card-section-body cw-rich-text">
                       <div className="od-profile-expandable">
                         <div className="od-profile-expandable-text">
-                          <p>Depuis 2013</p>
+                          <p>Depuis {doctorData.experience}</p>
                         </div>
                       </div>
                     </div>
@@ -389,8 +564,8 @@ function Medecin() {
                     <div className="od-profile-card-section-body cw-rich-text">
                       <div className="od-profile-expandable">
                         <div className="od-profile-expandable-text">
-                          <p>0664189325</p>
-                          <p>abdouBLH75@gmail.com</p>
+                          <p>{doctorData.phoneNumber}</p>
+                          <p>{doctorData.email}</p>
                         </div>
                       </div>
                     </div>
@@ -425,20 +600,20 @@ function Medecin() {
                     <div className="overview">
                       <div className="average">
                         <div className="wrapperr">
-                          <span className="grade">9.8</span>
+                          <span className="grade">{doctorData.rating*2}</span>
                         </div>
-                        <p className="raters">From 714 reviews</p>
+                        <p className="raters">From {doctorData.reviews} reviews</p>
                       </div>
                       <div className="average-bars">
                         <div className="bar average-bar">
-                          <div className="text">Reviews by 714 patient</div>
+                          <div className="text">Reviews by {doctorData.reviews} patient</div>
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: "95%" }}
+                              style={{ width: `${doctorData.rating*2 * 10}%` }}
                             ></div>
                           </div>
-                          <div className="grade">9.5</div>
+                          <div className="grade">{doctorData.rating*2}</div>
                         </div>
 
                         <div className="bar bar--pink">
@@ -446,10 +621,10 @@ function Medecin() {
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: "95%" }}
+                              style={{ width: `${doctorData.punctuality * 10}%` }}
                             ></div>
                           </div>
-                          <div className="grade">9.5</div>
+                          <div className="grade">{doctorData.punctuality}</div>
                         </div>
                         <div className="bar bar--pink">
                           <div className="text">
@@ -458,10 +633,10 @@ function Medecin() {
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: "98%" }}
+                              style={{ width: `${doctorData.cabinet * 10}%` }}
                             ></div>
                           </div>
-                          <div className="grade">9.8</div>
+                          <div className="grade">{doctorData.cabinet}</div>
                         </div>
                         <div className="bar bar--pink">
                           <div className="text">
@@ -470,10 +645,10 @@ function Medecin() {
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: "99%" }}
+                              style={{ width: `${doctorData.pathologie * 10}%` }}
                             ></div>
                           </div>
-                          <div className="grade">9.9</div>
+                          <div className="grade">{doctorData.pathologie}</div>
                         </div>
                         <div className="bar bar--pink">
                           <div className="text">
@@ -482,10 +657,10 @@ function Medecin() {
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: "98%" }}
+                              style={{ width: `${doctorData.effets * 10}%` }}
                             ></div>
                           </div>
-                          <div className="grade">9.8</div>
+                          <div className="grade">{doctorData.effets}</div>
                         </div>
                       </div>
                     </div>
@@ -567,7 +742,7 @@ function Medecin() {
                                     </div>
                                     <label htmlFor="radio-52f93e42-7c64-4c4f-a45e-0d7c81f3be1f">
                                       Ceci est ma première consultation avec Dr.
-                                      Abdelillah
+                                      {doctorData.lastName}
                                     </label>
                                   </div>
                                 </div>
@@ -591,7 +766,7 @@ function Medecin() {
                                       </div>
                                     </div>
                                     <label htmlFor="radio-fab6428d-b07b-45c5-bfd8-6f701ae9c479">
-                                      Je suis déjà suivi(e) par Dr. Abdelillah
+                                      Je suis déjà suivi(e) par {doctorData.lastName}
                                     </label>
                                   </div>
                                 </div>
@@ -651,14 +826,14 @@ function Medecin() {
                                           <button
                                             onClick={() =>
                                               ButtonClickVille(
-                                                "Médecine générale"
+                                                `${doctorData.type}`
                                               )
                                             }
                                             className="grid grid-cols-speciality-item gap-2 items-center justify-between w-full rounded-lg py-5 px-4 cursor-pointer hover:bg-primary-ice group"
                                           >
                                             <div></div>
                                             <div className="rtl:text-right ltr:text-left text-sm font-medium group-hover:font-bold rtl:text-base line-clamp-2">
-                                              Médecine générale
+                                            {doctorData.type}
                                             </div>
                                             <svg
                                               data-name="go to arrow"
@@ -726,1638 +901,7 @@ function Medecin() {
                                   style={{ marginTop: "10px" }}
                                 >
                                   <div className="dl-desktop-availabilities-inner">
-                                    {showContent ? (
-                                      <div>
-                                        <div
-                                          className="dl-desktop-availabilities-days"
-                                          style={{ opacity: "1" }}
-                                        >
-                                          <div className="availabilities-pagination availabilities-pagination-disabled">
-                                            <button
-                                              aria-label="Disponibilités précédentes"
-                                              title="Disponibilités précédentes"
-                                              tabIndex={0}
-                                              className="Tappable-inactive dl-icon-button dl-availabilities-pagination-icon-button dl-icon-button-small dl-icon-button-primary"
-                                              role="button"
-                                              type="button"
-                                              disabled=""
-                                              data-design-system="oxygen"
-                                              data-design-system-component="IconButton"
-                                              style={{
-                                                webkitTapHighlightColor:
-                                                  "rgba(0, 0, 0, 0)",
-                                                userSelect: "none",
-                                                cursor: "pointer",
-                                              }}
-                                            >
-                                              <div className="dl-icon-wrapper dl-position-relative">
-                                                <svg
-                                                  width="16"
-                                                  height="16"
-                                                  viewBox="0 0 16 16"
-                                                  fill="currentColor"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  aria-hidden="true"
-                                                  focusable="false"
-                                                  className="dl-icon dl-icon-primary-110 dl-icon-small"
-                                                  data-icon-name="solid/chevron-left"
-                                                  data-design-system="oxygen"
-                                                  data-design-system-component="Icon"
-                                                >
-                                                  <path d="M10.977 3.494c0 .211-.07.399-.211.54l-3.961 3.96 3.96 3.985a.723.723 0 0 1 0 1.054.723.723 0 0 1-1.054 0l-4.5-4.5a.723.723 0 0 1 0-1.054l4.5-4.5a.723.723 0 0 1 1.055 0c.14.14.21.328.21.515Z"></path>
-                                                </svg>
-                                              </div>
-                                            </button>
-                                          </div>
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                mercredi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                21 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-indisponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 09:15"
-                                                title="mer. 21 févr. 09:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 09:45"
-                                                title="mer. 21 févr. 09:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 10:15"
-                                                title="mer. 21 févr. 10:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 10:30"
-                                                title="mer. 21 févr. 10:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:30
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                jeudi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                22 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-indisponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:00"
-                                                title="jeu. 22 févr. 09:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:15"
-                                                title="jeu. 22 févr. 09:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-indisponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:30"
-                                                title="jeu. 22 févr. 09:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:45"
-                                                title="jeu. 22 févr. 09:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:45
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                vendredi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                23 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 09:00"
-                                                title="ven. 23 févr. 09:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 09:15"
-                                                title="ven. 23 févr. 09:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 09:30"
-                                                title="ven. 23 févr. 09:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 10:00"
-                                                title="ven. 23 févr. 10:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  webkitTapHighlightColor:
-                                                    "rgba(0, 0, 0, 0)",
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:00
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                samedi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                24 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-pagination">
-                                            <button
-                                              aria-label="Disponibilités suivantes"
-                                              title="Disponibilités suivantes"
-                                              tabIndex={0}
-                                              className="Tappable-inactive dl-icon-button dl-availabilities-pagination-icon-button dl-icon-button-small dl-icon-button-primary"
-                                              role="button"
-                                              type="button"
-                                              data-design-system="oxygen"
-                                              data-design-system-component="IconButton"
-                                              style={{
-                                                webkitTapHighlightColor:
-                                                  "rgba(0, 0, 0, 0)",
-                                                userSelect: "none",
-                                                cursor: "pointer",
-                                              }}
-                                            >
-                                              <div className="dl-icon-wrapper dl-position-relative">
-                                                <svg
-                                                  width="16"
-                                                  height="16"
-                                                  viewBox="0 0 16 16"
-                                                  fill="currentColor"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  aria-hidden="true"
-                                                  focusable="false"
-                                                  className="dl-icon dl-icon-primary-110 dl-icon-small"
-                                                  data-icon-name="solid/chevron-right"
-                                                  data-design-system="oxygen"
-                                                  data-design-system-component="Icon"
-                                                >
-                                                  <path d="M5.006 12.518c0-.211.07-.399.21-.54l3.962-3.96-3.961-3.985a.723.723 0 0 1 0-1.054.723.723 0 0 1 1.054 0l4.5 4.5a.723.723 0 0 1 0 1.054l-4.5 4.5a.723.723 0 0 1-1.054 0 .727.727 0 0 1-.211-.515Z"></path>
-                                                </svg>
-                                              </div>
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div>
-                                        <div
-                                          className="dl-desktop-availabilities-days"
-                                          style={{ opacity: "1" }}
-                                        >
-                                          <div className="availabilities-pagination availabilities-pagination-disabled">
-                                            <button
-                                              aria-label="Disponibilités précédentes"
-                                              title="Disponibilités précédentes"
-                                              tabIndex={0}
-                                              className="Tappable-inactive dl-icon-button dl-availabilities-pagination-icon-button dl-icon-button-small dl-icon-button-primary"
-                                              role="button"
-                                              type="button"
-                                              disabled=""
-                                              data-design-system="oxygen"
-                                              data-design-system-component="IconButton"
-                                              style={{
-                                                userSelect: "none",
-                                                cursor: "pointer",
-                                              }}
-                                            >
-                                              <div className="dl-icon-wrapper dl-position-relative">
-                                                <svg
-                                                  width="16"
-                                                  height="16"
-                                                  viewBox="0 0 16 16"
-                                                  fill="currentColor"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  aria-hidden="true"
-                                                  focusable="false"
-                                                  className="dl-icon dl-icon-primary-110 dl-icon-small"
-                                                  data-icon-name="solid/chevron-left"
-                                                  data-design-system="oxygen"
-                                                  data-design-system-component="Icon"
-                                                >
-                                                  <path d="M10.977 3.494c0 .211-.07.399-.211.54l-3.961 3.96 3.96 3.985a.723.723 0 0 1 0 1.054.723.723 0 0 1-1.054 0l-4.5-4.5a.723.723 0 0 1 0-1.054l4.5-4.5a.723.723 0 0 1 1.055 0c.14.14.21.328.21.515Z"></path>
-                                                </svg>
-                                              </div>
-                                            </button>
-                                          </div>
-
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                mercredi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                21 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-indisponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 09:00"
-                                                title="mer. 21 févr. 09:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 09:15"
-                                                title="mer. 21 févr. 09:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 09:30"
-                                                title="mer. 21 févr. 09:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 09:45"
-                                                title="mer. 21 févr. 09:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 10:00"
-                                                title="mer. 21 févr. 10:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 10:15"
-                                                title="mer. 21 févr. 10:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 10:30"
-                                                title="mer. 21 févr. 10:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 10:45"
-                                                title="mer. 21 févr. 10:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 11:00"
-                                                title="mer. 21 févr. 11:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 11:15"
-                                                title="mer. 21 févr. 11:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 11:30"
-                                                title="mer. 21 févr. 11:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 11:45"
-                                                title="mer. 21 févr. 11:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 16:45"
-                                                title="mer. 21 févr. 16:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 17:00"
-                                                title="mer. 21 févr. 17:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 17:15"
-                                                title="mer. 21 févr. 17:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 17:30"
-                                                title="mer. 21 févr. 17:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 17:45"
-                                                title="mer. 21 févr. 17:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 18:00"
-                                                title="mer. 21 févr. 18:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                18:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 18:15"
-                                                title="mer. 21 févr. 18:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                18:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 18:30"
-                                                title="mer. 21 févr. 18:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                18:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 18:45"
-                                                title="mer. 21 févr. 18:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                18:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="mer. 21 févr. 19:00"
-                                                title="mer. 21 févr. 19:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                19:00
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                jeudi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                22 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-indisponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:00"
-                                                title="jeu. 22 févr. 09:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:15"
-                                                title="jeu. 22 févr. 09:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-indisponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:30"
-                                                title="jeu. 22 févr. 09:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 09:45"
-                                                title="jeu. 22 févr. 09:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 10:00"
-                                                title="jeu. 22 févr. 10:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 10:15"
-                                                title="jeu. 22 févr. 10:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 10:30"
-                                                title="jeu. 22 févr. 10:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 10:45"
-                                                title="jeu. 22 févr. 10:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 11:00"
-                                                title="jeu. 22 févr. 11:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 11:15"
-                                                title="jeu. 22 févr. 11:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 11:30"
-                                                title="jeu. 22 févr. 11:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 11:45"
-                                                title="jeu. 22 févr. 11:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 12:00"
-                                                title="jeu. 22 févr. 12:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                12:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 14:00"
-                                                title="jeu. 22 févr. 14:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                14:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 14:15"
-                                                title="jeu. 22 févr. 14:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                14:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 14:30"
-                                                title="jeu. 22 févr. 14:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                14:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 14:45"
-                                                title="jeu. 22 févr. 14:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                14:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 15:00"
-                                                title="jeu. 22 févr. 15:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 15:15"
-                                                title="jeu. 22 févr. 15:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 15:30"
-                                                title="jeu. 22 févr. 15:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 15:45"
-                                                title="jeu. 22 févr. 15:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 16:00"
-                                                title="jeu. 22 févr. 16:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 16:15"
-                                                title="jeu. 22 févr. 16:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 16:30"
-                                                title="jeu. 22 févr. 16:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 16:45"
-                                                title="jeu. 22 févr. 16:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 17:00"
-                                                title="jeu. 22 févr. 17:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 17:15"
-                                                title="jeu. 22 févr. 17:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 17:30"
-                                                title="jeu. 22 févr. 17:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 17:45"
-                                                title="jeu. 22 févr. 17:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                17:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="jeu. 22 févr. 18:00"
-                                                title="jeu. 22 févr. 18:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                18:00
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                vendredi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                23 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 09:00"
-                                                title="ven. 23 févr. 09:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 09:15"
-                                                title="ven. 23 févr. 09:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 09:30"
-                                                title="ven. 23 févr. 09:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 09:45"
-                                                title="ven. 23 févr. 09:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                09:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 10:00"
-                                                title="ven. 23 févr. 10:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 10:15"
-                                                title="ven. 23 févr. 10:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 10:30"
-                                                title="ven. 23 févr. 10:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 10:45"
-                                                title="ven. 23 févr. 10:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                10:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 11:00"
-                                                title="ven. 23 févr. 11:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 11:15"
-                                                title="ven. 23 févr. 11:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 11:30"
-                                                title="ven. 23 févr. 11:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 11:45"
-                                                title="ven. 23 févr. 11:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                11:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 14:45"
-                                                title="ven. 23 févr. 14:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                14:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 15:00"
-                                                title="ven. 23 févr. 15:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 15:15"
-                                                title="ven. 23 févr. 15:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 15:30"
-                                                title="ven. 23 févr. 15:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:30
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 15:45"
-                                                title="ven. 23 févr. 15:45"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                15:45
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 16:00"
-                                                title="ven. 23 févr. 16:00"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:00
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 16:15"
-                                                title="ven. 23 févr. 16:15"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:15
-                                              </div>
-                                              <div
-                                                className="Tappable-inactive availabilities-slot availabilities-disponible "
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label="ven. 23 févr. 16:30"
-                                                title="ven. 23 févr. 16:30"
-                                                data-test="available-slot"
-                                                style={{
-                                                  userSelect: "none",
-                                                  cursor: "pointer",
-                                                }}
-                                              >
-                                                16:30
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-day">
-                                            <div className="availabilities-day-title">
-                                              <div className="availabilities-day-name">
-                                                samedi
-                                              </div>
-                                              <div className="availabilities-day-date">
-                                                24 févr.
-                                              </div>
-                                            </div>
-                                            <div className="availabilities-slots">
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                              <div className="availabilities-empty-slot">
-                                                <div className="availabilities-empty-slot-dash"></div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="availabilities-pagination">
-                                            <button
-                                              aria-label="Disponibilités suivantes"
-                                              title="Disponibilités suivantes"
-                                              tabIndex={0}
-                                              className="Tappable-inactive dl-icon-button dl-availabilities-pagination-icon-button dl-icon-button-small dl-icon-button-primary"
-                                              role="button"
-                                              type="button"
-                                              data-design-system="oxygen"
-                                              data-design-system-component="IconButton"
-                                              style={{
-                                                userSelect: "none",
-                                                cursor: "pointer",
-                                              }}
-                                            >
-                                              <div className="dl-icon-wrapper dl-position-relative">
-                                                <svg
-                                                  width="16"
-                                                  height="16"
-                                                  viewBox="0 0 16 16"
-                                                  fill="currentColor"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  aria-hidden="true"
-                                                  focusable="false"
-                                                  className="dl-icon dl-icon-primary-110 dl-icon-small"
-                                                  data-icon-name="solid/chevron-right"
-                                                  data-design-system="oxygen"
-                                                  data-design-system-component="Icon"
-                                                >
-                                                  <path d="M5.006 12.518c0-.211.07-.399.21-.54l3.962-3.96-3.961-3.985a.723.723 0 0 1 0-1.054.723.723 0 0 1 1.054 0l4.5 4.5a.723.723 0 0 1 0 1.054l-4.5 4.5a.723.723 0 0 1-1.054 0 .727.727 0 0 1-.211-.515Z"></path>
-                                                </svg>
-                                              </div>
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {/** */}
-
-                                    <button
-                                      onClick={handleButtonClick}
-                                      className="Tappable-inactive dl-button-tertiary-primary dl-button dl-button-block dl-button-size-medium"
-                                      type="button"
-                                      data-design-system="oxygen"
-                                      data-design-system-component="Button"
-                                      style={{
-                                        webkitTapHighlightColor:
-                                          "rgba(0, 0, 0, 0)",
-                                        userSelect: "none",
-                                        cursor: "pointer",
-                                      }}
-                                    >
-                                      {showContent
-                                        ? "Voir plus d'horaires"
-                                        : "Voir moins d'horaires"}
-                                    </button>
+                                    <DoctorCalendar doctorId={localStorage.getItem('doc_id')}/>
                                   </div>
                                 </div>
                               </div>

@@ -1,0 +1,65 @@
+#calendar_wizard_content {
+  text-align: center;
+}
+#calendar_wizard_content > form[data-form="hours"] {
+  width: 100%;
+  /* max-width: 700px; */
+}
+#calendar_wizard_content > form {
+  display: inline-block;
+  text-align: left;
+  margin-top: 20px;
+  width: 600px;
+}
+.liner{
+  display: flex;
+  padding: 15px 10px;
+  overflow: unset;
+  clear: both;
+}
+.day-name_wrap{
+  display: inline-block;
+  min-width: 105px;
+  padding-top: 5px;
+}
+.day-name {
+  cursor: pointer;
+  padding-left: 5px;
+}
+.wizard-hours-wrapper {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.hour_wrap {
+  display: flex;
+  padding-left: 10%;
+}
+.hour {
+  /* width: 79px; */
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 0;
+  font-size: .9em;
+  border: 1px solid transparent;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+  font-family: Verdana,Arial,sans-serif;
+  font-size: 1em;
+}
+.hour_wrap span:nth-child(4)::before ,.hour_wrap span:nth-child(2)::before {
+  content: "-";
+}
+.continue-link {
+  cursor: pointer;
+  padding-top: 5px;
+}
+.gap-3{
+  gap: 3rem;
+}
+.gap-5{
+  gap: 5rem;
+}

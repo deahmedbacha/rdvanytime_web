@@ -2,7 +2,6 @@ import { Headconect } from "../../Components/Headconect";
 import { useState } from "react";
 import "./Parametres.css";
 import Informations from "./Informations";
-import Proches from "./Proches.jsx";
 import { Footer } from "../../Components/Footer/Footer.jsx";
 
 export const Parametres = () => {
@@ -23,10 +22,10 @@ export const Parametres = () => {
 
   return (
     <>
+      <Headconect></Headconect>
       <body>
-        <Headconect></Headconect>
         <main
-          className=" grid-cols-profile-area h-vh-header mt-20 bg-p-cover overflow-hidden "
+          className=" grid-cols-profile-area mt-20 bg-p-cover overflow-hidden "
           style={{ display: "flex" }}
         >
           <div
@@ -35,8 +34,6 @@ export const Parametres = () => {
           >
             <div className="mx-5 pt-1 flex flex-col flex-1">
               <Informations></Informations>
-              <Proches></Proches>
-
               <div
                 className="relative w-full bg-white shadow-sh-112-8 p-11 me-5 mb-3 rounded flex flex-1 first:mt-6 last:mb-10"
                 style={{ borderRadius: "1.5rem" }}

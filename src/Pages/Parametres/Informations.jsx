@@ -324,7 +324,6 @@ export const Informations = () => {
                             backgroundColor: "transparent",
                           }}
                           name="email"
-                          value=""
                         />
                       </div>
                     </div>
@@ -415,74 +414,89 @@ export const Informations = () => {
                   </div>
                 </div>
                 <div className="grid grid-rows-2 gap-2">
-                  <div
-                    className="flex flex-col sm:grid grid-cols-2 gap-4"
-                    style={{ display: "ruby" }}
-                  >
+                  <div className="flex w-full flex-col lg:grid grid-rows-2 gap-2">
                     <div
-                      className="rounded-full px-5 py-1 bg-p-night "
-                      style={{ width: "79%", marginRight: "1.5%" }}
+                      className="flex flex-col lg:grid grid-cols-2 gap-2 lg:gap-4"
+                      style={{ display: "grid" }}
                     >
-                      <input
-                        type="text"
-                        placeholder="Rue*"
-                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                        style={{
-                          boxShadow: "none !important",
-                          backgroundColor: "transparent",
-                        }}
-                        name="Rue"
-                      />
-                    </div>
-                    <div
-                      className="rounded-full px-5 py-1 bg-p-night "
-                      style={{ width: "20%" }}
-                    >
-                      <input
-                        type="text"
-                        placeholder="N°"
-                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                        style={{
-                          boxShadow: "none !important",
-                          backgroundColor: "transparent",
-                        }}
-                        name="N"
-                      />
+                      <div style={{ width: "150%" }}>
+                        <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                          <div
+                            className="rounded-full w-full text-base bg-transparent shadow-none focus:bg-transparent react-tel-input"
+                            style={{
+                              boxShadow: "none !important",
+                              direction: "ltr",
+                            }}
+                          >
+                            <input
+                              type="text"
+                              className="outline-none h-12 border-none w-full bg-transparent px-0 z-10 relative !font-main htmlForm-control"
+                              style={{
+                                unicodeBidi: "plaintext",
+                                direction: "ltr",
+                                backgroundColor: "transparent",
+                              }}
+                              placeholder="Rue*"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ width: "100%", paddingLeft: "50%" }}>
+                        <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                          <input
+                            type="text"
+                            placeholder="N°"
+                            className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
+                            style={{
+                              boxShadow: "none !important",
+                              backgroundColor: "transparent",
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div
-                    className="flex flex-col sm:grid grid-cols-2 gap-4"
-                    style={{ display: "ruby" }}
-                  >
+
+                  <div className="flex w-full flex-col lg:grid grid-rows-2 gap-2">
                     <div
-                      className="rounded-full px-5 py-1 bg-p-night "
-                      style={{ width: "25%", marginRight: "1.5%" }}
+                      className="flex flex-col lg:grid grid-cols-2 gap-2 lg:gap-4"
+                      style={{ display: "grid" }}
                     >
-                      <input
-                        type="text"
-                        placeholder="code postal*"
-                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                        style={{
-                          boxShadow: "none !important",
-                          backgroundColor: "transparent",
-                        }}
-                        name="code postal"
-                      />
-                    </div>
-                    <div
-                      className="rounded-full px-5 py-1 bg-p-night "
-                      style={{ width: "74%" }}
-                    >
-                      <input
-                        type="text"
-                        placeholder="Ville*"
-                        className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
-                        style={{
-                          boxShadow: "none !important",
-                          backgroundColor: "transparent",
-                        }}
-                        name="Ville"
-                      />
+                      <div style={{ width: "100%" }}>
+                        <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                          <div
+                            className="rounded-full w-full text-base bg-transparent shadow-none focus:bg-transparent react-tel-input"
+                            style={{
+                              boxShadow: "none !important",
+                              direction: "ltr",
+                            }}
+                          >
+                            <input
+                              type="text"
+                              className="outline-none h-12 border-none w-full bg-transparent px-0 z-10 relative !font-main htmlForm-control"
+                              style={{
+                                unicodeBidi: "plaintext",
+                                direction: "ltr",
+                                backgroundColor: "transparent",
+                              }}
+                              placeholder="Code postal*"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ width: "100%"}}>
+                        <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
+                          <input
+                            type="text"
+                            placeholder="Ville*"
+                            className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
+                            style={{
+                              boxShadow: "none !important",
+                              backgroundColor: "transparent",
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div

@@ -1,0 +1,198 @@
+.mainnotif{
+  max-width: 700px;
+  width: 100%;
+  background: #fff;
+  box-shadow: 3rem 3rem 7rem #0001;
+  flex-shrink: 0;
+  border-radius:1em;
+  margin: 5%;
+}
+
+#header{
+  padding:2em;
+  display: flex;
+  justify-content: space-between;
+}
+
+#header h1{
+  font-size:1.5rem;
+}
+
+#header #badge{
+  padding:.1em .5em;
+  font-size:.8em;
+  background:#012bb4;
+  color:#fff;
+  border-radius:.2em;
+  margin-left:.5rem;
+}
+
+#badge.hidden{
+  visibility: hidden;
+  opacity: 0;
+}
+
+#header button{
+  border:0;
+  background: transparent;
+  color:hsl(219, 14%, 63%);
+  cursor: pointer;
+  font-size:1em;
+}
+
+#header button:hover{
+  color:#012bb4
+}
+
+#main{
+  padding:0 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap:.75rem;
+}
+
+.notification{
+  padding:1em;
+  border-radius: .5em;
+  display: flex;
+  align-items: flex-start;
+  gap:1em;
+  color:hsl(219, 14%, 63%)
+}
+
+.notification.unread{
+  background: hsl(210, 60%, 98%);
+}
+
+.notification.marked .profile-img::before{
+  content:'✓';
+  position: absolute;
+  width:3rem;
+  height:3rem;
+  background: #012bb4;
+  display: grid;
+  z-index: 2;
+  border-radius:50%;
+  place-items: center;
+  font-weight: 800;
+  font-size:1.5em;
+  color:#fff;
+  top:0;
+  left:0;
+  animation: markedRead 1s ease-in-out;
+  opacity: 0;
+}
+
+@keyframes markedRead{
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+.profile-img{
+  position: relative;
+}
+
+.profile-img img{
+  width:3rem;
+  vertical-align: bottom;
+  border-radius: 50%;
+}
+
+.notification.unread .notification-header *:last-child::after{
+  content:'';
+  height:.5em;
+  width:.5em;
+  border-radius: 50%;
+  background: hsl(1, 90%, 64%);
+  display: inline-block;
+  margin-left: .5em;
+}
+
+.notification-content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap:.5em
+}
+
+.accountName, .toWhat{
+  text-decoration: none;
+  font-weight: 800;
+  cursor:pointer;
+}
+
+.accountName{
+  color:hsl(224, 21%, 14%);
+  padding:0 .2rem 0 0
+}
+
+.accountName:hover{
+  color:#012bb4;
+}
+
+.toWhat{
+  padding:0 0 0 .2rem;
+}
+
+.toWhat.notGroup:hover{
+  color:#012bb4
+}
+
+.toWhat.notGroup{
+  color:hsl(219, 12%, 42%);
+}
+
+.toWhat.group{
+  color:#012bb4;
+}
+
+.notification-time{
+  font-size:.8em;
+}
+
+.message{
+  padding:1em;
+  border:1px solid #ccc;
+  border-radius: .25em;
+  cursor:pointer;
+  color:hsl(219, 14%, 63%)
+}
+
+.message:hover{
+  background: hsl(211, 68%, 94%);;
+}
+
+.image-link img{
+  width:3em;
+  border-radius: .5em;
+}
+
+.image-link img:hover{
+  box-shadow: 0 0 0 1px #fff,0 0 0 3px #ccc;
+}
+
+
+@media screen and (max-width:600px) {
+  .mainnotif{
+    height:100%;
+    max-height: 100%;
+    border-radius: 0;
+    margin: 5%;
+  }
+
+ #header{
+    padding:1.5em .75rem;
+  }
+
+  #main{
+    padding:0 .75rem 1rem;
+  }
+
+#header button{
+    font-size:.8rem;
+  }
+}

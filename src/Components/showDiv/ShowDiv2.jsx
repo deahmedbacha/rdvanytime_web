@@ -8,12 +8,13 @@ function ShoxDiv2() {
   const ButtonClickVille = (value) => {
     setInputValueVille(value);
      setShowDiv2(false);
+     console.log(value);
+     localStorage.setItem("ville", value);
   };
   ///
   const [showDiv2, setShowDiv2] = useState(false);
   const inputRef2 = useRef(null);
   const divRef2 = useRef(null);
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (

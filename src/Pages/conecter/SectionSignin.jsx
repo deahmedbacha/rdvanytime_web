@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 function SectionSignin() {
+
+
+  
   //email:
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -9,6 +13,8 @@ function SectionSignin() {
   const [isValidPassword, setIsValidPassword] = useState(true);
   //login
   const [, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   //email:
   const handleChangeemail = (event) => {
     const { value } = event.target;
@@ -38,6 +44,35 @@ function SectionSignin() {
       alert("Invalid email or password");
     }
   };
+
+  const handleSubmit = async (e) => {
+    const formData = {
+      email: email,
+      password: password,
+    };
+    e.preventDefault();
+    try {
+        const response = await axios.post('http://localhost:5000/login', formData);
+        console.log('Button clicked!1');
+        console.log(response.data); // assuming server responds with a token
+        // Store token in local storage or session storage
+        localStorage.setItem('token', response.data.token);
+        // Redirect to home page
+        window.location.href = 'http://localhost:5173/';        
+    } catch (error) {
+        console.error('Login failed:', error.response.data); // log the error
+        // Handle error, e.g., show an error message to the user
+    }
+};
+
+
+
+
+
+
+
+
+
   //afficher/masqué password :
   const toggleShowPassword = () => {
     setIsValidPassword(!isValidPassword);
@@ -47,7 +82,7 @@ function SectionSignin() {
       <div className="sc-1bc08e0b-5 jyhvPI">
         <div>
           <div className="sc-1bc08e0b-6 cxijwo">
-            <div    active="true" alone="false" className="sc-1bc08e0b-9 gMbGNQ">
+            <div active="true" alone="false" className="sc-1bc08e0b-9 gMbGNQ">
               <div className="sc-1bc08e0b-8 eaIstY">
                 <div className="sc-1bc08e0b-7 cHqDRo">
                   <h4 className="sc-1bc08e0b-1 ewPuPZ">
@@ -56,7 +91,7 @@ function SectionSignin() {
                 </div>
                 <div className="sc-5ffdb2e4-9 bSGjar">
                   <div>
-                    <form>
+                    <form onSubmit={handleSubmit} >
                       <div className="ctw-flex ctw-flex-col ctw-gap-3">
                         <div className="ds-input">
                           <div className="ds-avec-label">
@@ -67,6 +102,7 @@ function SectionSignin() {
                           <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                             <div
                               className="ctw-ml-2.5 undefined"
+                              style={{ marginTop: "5px" }}
                             >
                               <svg
                                 className="ds-icon"
@@ -114,6 +150,7 @@ function SectionSignin() {
                           <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                             <div
                               className="ctw-ml-2.5 undefined"
+                              style={{ marginTop: "5px" }}
                             >
                               <svg
                                 className="ds-icon"
@@ -188,19 +225,14 @@ function SectionSignin() {
                               style={{ height: "100%", width: "100%" }}
                             >
                               <button
-                                onClick={handleLogin}
+                                onClick={handleSubmit}
                                 type="submit"
                                 className="ctw-select-none ctw-flex ctw-box-border ctw-items-center ctw-justify-center ctw-font-bold ctw-underline-offset-4 ctw-min-w-min ctw-w-full ctw-transition-all ctw-duration-300 ctw-outline-none ctw-bg-primary-500 ctw-text-white ctw-border-solid ctw-border-[1.5px] ctw-border-primary-500 hover:ctw-shadow-lg hover:ctw-bg-primary-700 hover:ctw-border-primary-700 focus:ctw-shadow-lg focus:ctw-bg-primary-700 focus:ctw-border-primary-700 ctw-cursor-pointer ctw-h-10 ctw-text-[1rem] ctw-rounded"
                               >
                                 <div className="ctw-flex ctw-flex-row">
                                   <div className="ctw-flex ctw-items-center ctw-grow ctw-flex-row ctw-justify-center">
                                     <div className="ctw-cursor-[inherit] ctw-px-3 ctw-text-center">
-                                      <Link
-                                        to="/Profil"
-                                        style={{ color: "white" }}
-                                      >
-                                        Se connecter
-                                      </Link>
+                                      Se connecter
                                     </div>
                                   </div>
                                 </div>
