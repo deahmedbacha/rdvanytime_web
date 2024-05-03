@@ -7,7 +7,7 @@ const Doctor = require('./models/Doctor');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 const authmiddleware = require("./middlewares/auth")
 const Appointment = require('./models/Appointment'); 
 const Notification = require('./models/notification');
@@ -50,59 +50,113 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        // Check if user exists
-        let user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ msg: 'Invalid credentials' });
-        }
+  try {
+      // Check if user exists
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(400).json({ msg: 'Invalid credentials' });
+      }
 
-        // Validate password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid credentials' });
-        }
+      // Validate password
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(400).json({ msg: 'Invalid credentials' });
+      }
 
-        // User authenticated, generate token
-        const payload = {
-            user: {
-                id: user._id,
-                firstName: user.firstName, // Assuming user.firstName contains the first name
-                lastName: user.lastName // Assuming user.lastName contains the last
-            }
-        };
-        
-        jwt.sign(payload, "Blitz", {}, (err, token) => {
-            if (err) throw err;
-            res.json({ token });
-        });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-    }
+      // User authenticated, generate token
+      const payload = {
+          user: {
+              id: user._id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email // Include email in token payload if needed
+          }
+      };
+      
+      jwt.sign(payload, "Blitz", { expiresIn: '1h' }, (err, token) => {
+          if (err) {
+              console.error(err.message);
+              res.status(500).send('Server Error');
+          } else {
+              res.json({ token });
+          }
+      });
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+  }
 });
-app.post ("/get-user",authmiddleware, async (req, res) => {
 
-    try{
-        const user = await User.findOne({_firstName: req.body.firstName,_lastName:req.body.lastName,_phoneNumber:req.body.phoneNumber});
-        if (!user) {
-            return res
-              .status(200)
-              .send({message:"User doesnt exist",success:false});
-        }else {
-            res.status(200).send({success:true, data: {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                phoneNumber: user.phoneNumber
-            }});
-        }
-    }catch(error){
-        res
-          .status(500);
+app.post("/get-user", authmiddleware, async (req, res) => {
+  try {
+    // Access user information from req.user
+    const user = await User.findOne({
+      firstName: req.user.user.firstName, // Access firstName from req.user.user
+      lastName: req.user.user.lastName, // Access lastName from req.user.user
+       // Assuming phoneNumber is not nested in the user object
+    });
+    console.log("User Model Query:", User.findOne({
+      firstName: req.user.user.firstName,
+      lastName: req.user.user.lastName,
+    }).toString());
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    } else {
+      res.status(200).json({
+        data: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phoneNumber: user.phoneNumber,
+          email: user.email,
+          taille: user.taille,
+          poids: user.poids,
+          blood_type: user.blood_type,
+          Fumeur: user.Fumeur,
+          Alcool: user.Alcool,
+          Marie: user.Marie,
+          maladieCronique: user.maladieCronique,
+          chirurgie: user.chirurgie,
+          allergie: user.allergie,
+          medicament: user.medicament,
+          rue: user.rue,
+          rueNumero: user.rueNumero,
+          ville: user.ville,
+          codePostale: user.codePostale,
+          dateNaissance: user.dateNaissance,
+          sexe: user.sexe,
+          pays: user.pays,
+        },
+      });
     }
-})
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false });
+  }
+});
+app.put('/update-user', authmiddleware, async (req, res) => {
+  try {
+    // Access user information from req.user
+    const userId = req.user.user.id;
+
+    // Update user data
+    const updatedUserData = req.body;
+
+    // Find and update the user document in the database
+    const user = await User.findByIdAndUpdate(userId, updatedUserData, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found', success: false });
+    }
+
+    res.status(200).json({ message: 'User data updated successfully', success: true, data: user });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal Server Error', success: false });
+  }
+});
 
 app.post('/search-doctors', (req, res) => {
   const ville = req.body.ville;
@@ -170,7 +224,7 @@ app.post('/doc-calender', (req, res) => {
 
 
   app.post('/add-appointment', (req, res) => {
-    const { doctorId, patientId, dateTime, reason, notes } = req.body;
+    const { doctorId, patientId, dateTime, notes } = req.body;
   
     // Check if the appointment already exists
     Appointment.find({ doctorId, patientId, dateTime })
@@ -180,7 +234,7 @@ app.post('/doc-calender', (req, res) => {
         }
   
         // Create a new appointment
-        const appointment = new Appointment({ doctorId, patientId, dateTime, reason, notes });
+        const appointment = new Appointment({ doctorId, patientId, dateTime, notes });
         res.json({ msg: 'Appointment added successfully' });
         return appointment.save();
         
@@ -379,4 +433,4 @@ app.post('/notifications/client', async (req, res) => {
 
 
 
-app.listen(4000, () => console.log(`Server running on port ${4000}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

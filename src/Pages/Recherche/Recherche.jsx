@@ -24,7 +24,7 @@ const DoctorCalendar = ({ doctorId }) => {
     const fetchUnavailableTimeSlots = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:4000/doc-calender",
+          "http://localhost:5000/doc-calender",
           { doc_id: doctorId }
         );
 
@@ -304,7 +304,7 @@ function Recherche() {
         console.log(type);
         console.log(ville);
         const response = await axios.post(
-          "http://localhost:4000/search-doctors",
+          "http://localhost:5000/search-doctors",
           { type, ville }
         );
 
