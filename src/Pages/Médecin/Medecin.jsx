@@ -9,13 +9,10 @@ import { Footer } from "../../Components/Footer/Footer.jsx";
 import { Head } from "../../Components/Head.jsx";
 import axios from "axios";
 function Medecin() {
-  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  
-
-
+  const [showAllSlots, setShowAllSlots] = useState(false);
+  const [slotsToShow, setSlotsToShow] = useState(5); // Ajout de l'état pour suivre le nombre de créneaux à afficher
 
   //calendrier
   const DoctorCalendar = ({ doctorId }) => {
@@ -25,197 +22,279 @@ function Medecin() {
     useEffect(() => {
       const fetchUnavailableTimeSlots = async () => {
         try {
-          const response = await axios.post('http://localhost:5000/doc-calender', { doc_id: doctorId });
+          const response = await axios.post(
+            "http://localhost:4000/doc-calender",
+            { doc_id: doctorId }
+          );
           console.log(response.data.dateTime);
           setUnavailableTimeSlots(response.data.dateTime);
         } catch (error) {
-          console.error('Error fetching unavailable time slots:', error);
+          console.error("Error fetching unavailable time slots:", error);
         }
       };
-  
+
       fetchUnavailableTimeSlots();
     }, [doctorId]);
-  
+
     const generateDates = (start, end) => {
       const dateList = [];
       let currentDate = new Date(start);
-  
+
       while (currentDate <= end) {
         dateList.push(new Date(currentDate));
         currentDate.setDate(currentDate.getDate() + 1);
       }
-  
+
       setDates(dateList);
     };
-  
+
     useEffect(() => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const end = new Date();
       end.setDate(tomorrow.getDate() + 3); // Show dates for the next 4 days starting from tomorrow
-    
+
       generateDates(tomorrow, end);
     }, []);
-  
+
     const handleNextWeek = () => {
       const newStartDate = new Date(dates[dates.length - 1]);
       newStartDate.setDate(newStartDate.getDate() + 1); // Move start date to the next 4 days
       const newEndDate = new Date(newStartDate);
       newEndDate.setDate(newEndDate.getDate() + 3); // Move end date to the next 4 days
-    
+
       generateDates(newStartDate, newEndDate);
     };
-    
+
     const handlePrevWeek = () => {
       const prevStartDate = new Date(dates[0]);
       prevStartDate.setDate(prevStartDate.getDate() - 4); // Move start date to the previous 4 days
-    
-      generateDates(prevStartDate, new Date(prevStartDate).setDate(prevStartDate.getDate() + 3));
+
+      generateDates(
+        prevStartDate,
+        new Date(prevStartDate).setDate(prevStartDate.getDate() + 3)
+      );
     };
-  
+
     const formatDate = (date) => {
-      const options = { month: 'short', day: 'numeric' };
-      return date.toLocaleDateString('en-US', options);
+      const options = { month: "short", day: "numeric" };
+      return date.toLocaleDateString("en-US", options);
     };
-  
+
     const getDayName = (date) => {
-      const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+      const days = [
+        "Dimanche",
+        "Lundi",
+        "Mardi",
+        "Mercredi",
+        "Jeudi",
+        "Vendredi",
+        "Samedi",
+      ];
       return days[date.getDay()];
     };
-  
+
     const getTimeSlots = (date) => {
       try {
         const timeSlots = [];
-        const isFriday = getDayName(date) === 'Vendredi';
+        const isFriday = getDayName(date) === "Vendredi";
+        const maxSlotsToShow = showAllSlots ? Infinity : slotsToShow; // Utiliser l'état pour déterminer le nombre de créneaux à afficher
         for (let hour = 8; hour < 17; hour++) {
           for (let minute = 0; minute < 60; minute += 30) {
+            if (timeSlots.length >= maxSlotsToShow) break; // Limiter le nombre de créneaux affichés
             if (isFriday) {
-              const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+              const time = `${hour.toString().padStart(2, "0")}:${minute
+                .toString()
+                .padStart(2, "0")}`;
               timeSlots.push({
-                slotClass: 'availabilities-empty-slot',
-                time: (<div className="availabilities-empty-slot-dash"></div>),
+                slotClass: "availabilities-empty-slot",
+                time: <div className="availabilities-empty-slot-dash"></div>,
                 onClick: null,
               });
             } else {
               const roundedMinute = Math.floor(minute / 30) * 30;
-              const time = `${hour.toString().padStart(2, '0')}:${roundedMinute.toString().padStart(2, '0')}`;
-              const dateTimeToCheck = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), hour, roundedMinute));
+              const time = `${hour.toString().padStart(2, "0")}:${roundedMinute
+                .toString()
+                .padStart(2, "0")}`;
+              const dateTimeToCheck = new Date(
+                Date.UTC(
+                  date.getFullYear(),
+                  date.getMonth(),
+                  date.getDate(),
+                  hour,
+                  roundedMinute
+                )
+              );
               const formattedDateTime = dateTimeToCheck.toISOString();
-              const available = !unavailableTimeSlots.includes(formattedDateTime);
-              const slotClass = `Tappable-inactive availabilities-slot ${available ? 'availabilities-disponible' : 'availabilities-indisponible'}`;
-              const onClick = available ? () => handleTimeSlotClick(doctorId, date, time) : null;
+              const available =
+                !unavailableTimeSlots.includes(formattedDateTime);
+              const slotClass = `Tappable-inactive availabilities-slot ${
+                available
+                  ? "availabilities-disponible"
+                  : "availabilities-indisponible"
+              }`;
+              const onClick = available
+                ? () => handleTimeSlotClick(doctorId, date, time)
+                : null;
               timeSlots.push({ time, slotClass, onClick });
             }
           }
         }
         return timeSlots;
       } catch (error) {
-        console.error('Error fetching unavailable time slots:', error);
+        console.error("Error fetching unavailable time slots:", error);
         return [];
       }
     };
-  const handleTimeSlotClick = (docId, date, time) => {
-    const [hours, minutes] = time.split(':');
-    
-    const dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
-    dateTime.setHours(dateTime.getHours() + 1);
-    
-    // Check if the date is valid
-    if (isNaN(dateTime.getTime())) {
-      console.error('Invalid date:', dateTime);
-      return;
-    }
-  
-    // Store the doc_id and clicked time in local storage
-    localStorage.setItem('doc_id', docId);
-    localStorage.setItem('clicked_time', dateTime.toISOString());
-    console.log('Time slot clicked!');
-    window.location.href = 'http://localhost:5173/Rdv';
-  };
-  
+    const handleTimeSlotClick = (docId, date, time) => {
+      const [hours, minutes] = time.split(":");
+
+      const dateTime = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        hours,
+        minutes
+      );
+      dateTime.setHours(dateTime.getHours() + 1);
+
+      // Check if the date is valid
+      if (isNaN(dateTime.getTime())) {
+        console.error("Invalid date:", dateTime);
+        return;
+      }
+
+      // Store the doc_id and clicked time in local storage
+      localStorage.setItem("doc_id", docId);
+      localStorage.setItem("clicked_time", dateTime.toISOString());
+      console.log("Time slot clicked!");
+      window.location.href = "http://localhost:5173/Rdv";
+    };
+const handleButtonClick = () => {
+  setShowAllSlots(!showAllSlots);
+  if (!showAllSlots) {
+    // Si on passe à l'affichage de tous les créneaux, on met à jour l'état pour afficher tous les créneaux
+    setSlotsToShow(Infinity);
+  } else {
+    // Si on passe à l'affichage de moins d'horaires, on réinitialise l'état pour n'afficher que 5 créneaux
+    setSlotsToShow(5);
+  }
+};
+
     return (
       <div className="dl-search-result-calendar">
-        <div style={{ overflow: "visible", width: "0px" }}>
-          <div className="dl-desktop-availabilities-days" style={{ opacity: "1" }}>
-            <div className="availabilities-pagination">
-              <button
-                onClick={handlePrevWeek}
-                disabled={dates[0] <= new Date().setDate(new Date().getDate() + 1)} // Disable back button if start date is tomorrow or earlier
-              >
-                <div className="dl-icon-wrapper dl-position-relative">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                    focusable="false"
-                    className="dl-icon dl-icon-primary-110 dl-icon-small"
-                    data-icon-name="solid/chevron-left"
-                    data-design-system="oxygen"
-                    data-design-system-component="Icon"
-                  >
-                    <path d="M10.977 3.494c0 .211-.07.399-.211.54l-3.961 3.96 3.96 3.985a.723.723 0 0 1 0 1.054.723.723 0 0 1-1.054 0l-4.5-4.5a.723.723 0 0 1 0-1.054l4.5-4.5a.723.723 0 0 1 1.055 0c.14.14.21.328.21.515Z"></path>
-                  </svg>
+        <div
+          className="dl-desktop-availabilities-days"
+          style={{ opacity: "1" }}
+        >
+          <div className="availabilities-pagination">
+            <button
+              onClick={handlePrevWeek}
+              disabled={
+                dates[0] <= new Date().setDate(new Date().getDate() + 1)
+              } // Disable back button if start date is tomorrow or earlier
+            >
+              <div className="dl-icon-wrapper dl-position-relative">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  focusable="false"
+                  className="dl-icon dl-icon-primary-110 dl-icon-small"
+                  data-icon-name="solid/chevron-left"
+                  data-design-system="oxygen"
+                  data-design-system-component="Icon"
+                >
+                  <path d="M10.977 3.494c0 .211-.07.399-.211.54l-3.961 3.96 3.96 3.985a.723.723 0 0 1 0 1.054.723.723 0 0 1-1.054 0l-4.5-4.5a.723.723 0 0 1 0-1.054l4.5-4.5a.723.723 0 0 1 1.055 0c.14.14.21.328.21.515Z"></path>
+                </svg>
+              </div>
+            </button>
+          </div>
+          {dates.map((date, index) => (
+            <div key={index} className="availabilities-day">
+              <div className="availabilities-day-title">
+                <div className="availabilities-day-name">
+                  {getDayName(date)}
                 </div>
-              </button>
-            </div>
-            {dates.map((date, index) => (
-              <div key={index} className="availabilities-day">
-                <div className="availabilities-day-title">
-                  <div className="availabilities-day-name">{getDayName(date)}</div>
-                  <div className="availabilities-day-date">{formatDate(date)}</div>
-                </div>
-                <div className="availabilities-slots">
-                  {getTimeSlots(date).map((slot, index) => (
-                    <div
-                      key={index}
-                      className={slot.slotClass}
-                      style={{
-                        tapHighlightColor: "rgba(0, 0, 0, 0)",
-                        userSelect: "none",
-                        cursor: slot.onClick ? "pointer" : "not-allowed", // Change cursor to "not-allowed" for unavailable slots
-                      }}
-                      onClick={slot.onClick}
-                    >
-                      {slot.time}
-                    </div>
-                  ))}
+                <div className="availabilities-day-date">
+                  {formatDate(date)}
                 </div>
               </div>
-            ))}
-            <div className="availabilities-pagination">
-              <button
-                onClick={handleNextWeek}
-                disabled={dates[dates.length - 1] >= new Date().setDate(new Date().getDate() + 30)} // Disable next button if end date is 30 days from today
-              >
-                <div className="dl-icon-wrapper dl-position-relative">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                    focusable="false"
-                    className="dl-icon dl-icon-primary-110 dl-icon-small"
-                    data-icon-name="solid/chevron-right"
-                    data-design-system="oxygen"
-                    data-design-system-component="Icon"
+              <div className="availabilities-slots">
+                {getTimeSlots(date).map((slot, index) => (
+                  <div
+                    key={index}
+                    className={slot.slotClass}
+                    style={{
+                      tapHighlightColor: "rgba(0, 0, 0, 0)",
+                      userSelect: "none",
+                      cursor: slot.onClick ? "pointer" : "not-allowed", // Change cursor to "not-allowed" for unavailable slots
+                    }}
+                    onClick={slot.onClick}
                   >
-                    <path d="M5.006 12.518c0-.211.07-.399.21-.54l3.962-3.96-3.961-3.985a.723.723 0 0 1 0-1.054.723.723 0 0 1 1.054 0l4.5 4.5a.723.723 0 0 1 0 1.054l-4.5 4.5a.723.723 0 0 1-1.054 0 .727.727 0 0 1-.211-.515Z"></path>
-                  </svg>
-                </div>
-              </button>
+                    {slot.time}
+                  </div>
+                ))}
+              </div>
             </div>
+          ))}
+          <div className="availabilities-pagination">
+            <button
+              onClick={handleNextWeek}
+              disabled={
+                dates[dates.length - 1] >=
+                new Date().setDate(new Date().getDate() + 30)
+              } // Disable next button if end date is 30 days from today
+            >
+              <div className="dl-icon-wrapper dl-position-relative">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  focusable="false"
+                  className="dl-icon dl-icon-primary-110 dl-icon-small"
+                  data-icon-name="solid/chevron-right"
+                  data-design-system="oxygen"
+                  data-design-system-component="Icon"
+                >
+                  <path d="M5.006 12.518c0-.211.07-.399.21-.54l3.962-3.96-3.961-3.985a.723.723 0 0 1 0-1.054.723.723 0 0 1 1.054 0l4.5 4.5a.723.723 0 0 1 0 1.054l-4.5 4.5a.723.723 0 0 1-1.054 0 .727.727 0 0 1-.211-.515Z"></path>
+                </svg>
+              </div>
+            </button>
           </div>
+        </div>
+        <button
+          onClick={handleButtonClick}
+          className="Tappable-inactive dl-button-tertiary-primary dl-button dl-button-block dl-button-size-medium"
+          type="button"
+          data-design-system="oxygen"
+          data-design-system-component="Button"
+          style={{
+            webkitTapHighlightColor: "rgba(0, 0, 0, 0)",
+            userSelect: "none",
+            cursor: "pointer",
+          }}
+        >
+          {showAllSlots ? "Voir moins d'horaires" : "Voir plus d'horaires"}
+        </button>
+
+        <div className="availabilities-substition-description" style={{marginTop: "16px",
+  paddingLeft: "12%"}}>
+          <div className="availabilities-substitution-indicator-disponible"></div>
+          <span className="availabilities-substition-name">Disponible</span>
+
+          <div className="availabilities-substitution-indicator-indisponible"></div>
+          <span className="availabilities-substition-name">Indisponible</span>
         </div>
       </div>
     );
   };
-
-
 
   const [activeItem, setActiveItem] = useState("Item 1");
 
@@ -230,7 +309,6 @@ function Medecin() {
   };
   const [showLastContent, setShowLastContent] = useState(false);
 
- 
   const [showContent, setShowContent] = useState(true);
 
   const handleButtonClick = () => {
@@ -242,55 +320,49 @@ function Medecin() {
   const ButtonClickVille = (value) => {
     setInputValueVille(value);
     setShowDiv2(false);
-      setShowLastContent(true);
+    setShowLastContent(true);
   };
   ///
   const [showDiv2, setShowDiv2] = useState(false);
   const inputRef2 = useRef(null);
   const divRef2 = useRef(null);
-  
+
   const fetchDoctorData = async () => {
     try {
-      const docId = localStorage.getItem('doc_id');
+      const docId = localStorage.getItem("doc_id");
       if (docId) {
-        const response = await axios.post("http://localhost:5000/doctorbyid", { docId });
+        const response = await axios.post("http://localhost:4000/doctorbyid", {
+          docId,
+        });
         setDoctorData({ ...response.data });
       } else {
-        setError('Doctor ID not found in local storage');
+        setError("Doctor ID not found in local storage");
       }
     } catch (err) {
-      setError('Error fetching doctor data');
+      setError("Error fetching doctor data");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-  
     fetchDoctorData();
     console.log(doctorData);
-    
   }, []);
 
   const handleInputClick2 = () => {
     setShowDiv2(true);
   };
 
-
   const [doctorData, setDoctorData] = useState({});
-
-
 
   return (
     <>
       <div className="Main">
         {/**Header */}
-        <Head></Head>
+        <Head brand="Header"/>
         <main>
-          <div
-            className="bg-p-cover od-profile od-profile--bookable"
-          >
-            <br /><br /><br /><br />
+          <div className="bg-p-cover od-profile od-profile--bookable">
             <header className="od-profile-header">
               <div className="od-profile-header-wrapper">
                 <div className="od-profile-header-picture">
@@ -600,20 +672,26 @@ function Medecin() {
                     <div className="overview">
                       <div className="average">
                         <div className="wrapperr">
-                          <span className="grade">{doctorData.rating*2}</span>
+                          <span className="grade">{doctorData.rating * 2}</span>
                         </div>
-                        <p className="raters">From {doctorData.reviews} reviews</p>
+                        <p className="raters">
+                          From {doctorData.reviews} reviews
+                        </p>
                       </div>
                       <div className="average-bars">
                         <div className="bar average-bar">
-                          <div className="text">Reviews by {doctorData.reviews} patient</div>
+                          <div className="text">
+                            Reviews by {doctorData.reviews} patient
+                          </div>
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: `${doctorData.rating*2 * 10}%` }}
+                              style={{
+                                width: `${doctorData.rating * 2 * 10}%`,
+                              }}
                             ></div>
                           </div>
-                          <div className="grade">{doctorData.rating*2}</div>
+                          <div className="grade">{doctorData.rating * 2}</div>
                         </div>
 
                         <div className="bar bar--pink">
@@ -621,7 +699,9 @@ function Medecin() {
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: `${doctorData.punctuality * 10}%` }}
+                              style={{
+                                width: `${doctorData.punctuality * 10}%`,
+                              }}
                             ></div>
                           </div>
                           <div className="grade">{doctorData.punctuality}</div>
@@ -645,7 +725,9 @@ function Medecin() {
                           <div className="line">
                             <div
                               className="line__inner"
-                              style={{ width: `${doctorData.pathologie * 10}%` }}
+                              style={{
+                                width: `${doctorData.pathologie * 10}%`,
+                              }}
                             ></div>
                           </div>
                           <div className="grade">{doctorData.pathologie}</div>
@@ -766,7 +848,8 @@ function Medecin() {
                                       </div>
                                     </div>
                                     <label htmlFor="radio-fab6428d-b07b-45c5-bfd8-6f701ae9c479">
-                                      Je suis déjà suivi(e) par {doctorData.lastName}
+                                      Je suis déjà suivi(e) par{" "}
+                                      {doctorData.lastName}
                                     </label>
                                   </div>
                                 </div>
@@ -833,7 +916,7 @@ function Medecin() {
                                           >
                                             <div></div>
                                             <div className="rtl:text-right ltr:text-left text-sm font-medium group-hover:font-bold rtl:text-base line-clamp-2">
-                                            {doctorData.type}
+                                              {doctorData.type}
                                             </div>
                                             <svg
                                               data-name="go to arrow"
@@ -901,7 +984,9 @@ function Medecin() {
                                   style={{ marginTop: "10px" }}
                                 >
                                   <div className="dl-desktop-availabilities-inner">
-                                    <DoctorCalendar doctorId={localStorage.getItem('doc_id')}/>
+                                    <DoctorCalendar
+                                      doctorId={localStorage.getItem("doc_id")}
+                                    />
                                   </div>
                                 </div>
                               </div>
@@ -917,7 +1002,7 @@ function Medecin() {
           </div>
         </main>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

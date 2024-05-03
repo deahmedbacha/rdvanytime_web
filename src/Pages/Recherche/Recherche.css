@@ -175,7 +175,7 @@ a.dl-button {
 }
 .dl-search-result-calendar {
   flex: 1 0 0%;
-  padding: 16px;
+  padding-top: 16px;
 }
 .dl-desktop-availabilities.dl-desktop-availabilities-flat {
   padding: 0;
@@ -261,8 +261,8 @@ svg:not(:root) {
   margin: 0 4px;
 }
 .availabilities-day-title {
-  font-size: 14px;
-  margin-bottom: 24px;
+  font-size: 13px;
+  margin-bottom: 20px;
   text-align: center;
 }
 /*
@@ -299,7 +299,7 @@ svg:not(:root) {
 .availabilities-substition-description {
   align-items: center;
   display: flex;
-  margin-top: 16px;
+  margin: 16px;
   padding-left: 20%;
 }
 .availabilities-substitution-indicator {

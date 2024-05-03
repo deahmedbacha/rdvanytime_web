@@ -7,7 +7,7 @@ const Doctor = require('./models/Doctor');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 const authmiddleware = require("./middlewares/auth")
 const Appointment = require('./models/Appointment'); 
 const Notification = require('./models/notification');
@@ -379,4 +379,4 @@ app.post('/notifications/client', async (req, res) => {
 
 
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(4000, () => console.log(`Server running on port ${4000}`));

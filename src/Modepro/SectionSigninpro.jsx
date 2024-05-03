@@ -7,6 +7,8 @@ function SectionSigninpro() {
   //password:
   const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValidPassword2, setIsValidPassword2] = useState(false);
+
   //login
   const [, setIsLoggedIn] = useState(false);
   //email:
@@ -40,7 +42,7 @@ function SectionSigninpro() {
   };
   //afficher/masqué password :
   const toggleShowPassword = () => {
-    setIsValidPassword(!isValidPassword);
+     setIsValidPassword2(!isValidPassword2);
   };
   return (
     <>
@@ -124,7 +126,7 @@ function SectionSigninpro() {
                               </svg>
                             </div>
                             <input
-                              type={isValidPassword ? "text" : "password"}
+                              type={isValidPassword2 ? "text" : "password"}
                               id="password"
                               name="password"
                               value={password}
@@ -140,7 +142,7 @@ function SectionSigninpro() {
                               viewBox="0 0 16 16"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              {isValidPassword ? "Hide" : "Show"}
+                              {isValidPassword2 ? "Hide" : "Show"}
                               <path
                                 d="M13.359 11.238C15.06 9.72 16 8 16 8C16 8 13 2.5 7.99999 2.5C7.03958 2.50331 6.09005 2.70342 5.20999 3.088L5.97999 3.859C6.62743 3.62315 7.31094 3.50168 7.99999 3.5C10.12 3.5 11.879 4.668 13.168 5.957C13.7883 6.58069 14.3445 7.26513 14.828 8C14.77 8.087 14.706 8.183 14.633 8.288C14.298 8.768 13.803 9.408 13.168 10.043C13.003 10.208 12.831 10.371 12.651 10.529L13.359 11.238Z"
                                 fill="black"
@@ -265,7 +267,7 @@ function SectionSigninpro() {
                       </div>
                     </div>
                     <div className="sc-bee96ab4-0 XYQTO">
-                      <div>Nouveau sur Avec ?</div>
+                      <div>Nouveau sur RDVanytime ?</div>
                       <div className="ctw-text-primary-500 ctw-cursor-pointer">
                         <Link to="/Modepro">S&apos;inscrire </Link>
                       </div>

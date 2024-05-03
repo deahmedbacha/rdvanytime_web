@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 function SectionSignup() {
   //number:
   const [phoneNumber, setphoneNumber] = useState("");
@@ -12,6 +12,8 @@ function SectionSignup() {
   //password:
   const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValidPassword2, setIsValidPassword2] = useState(false);
+
   //login
   const [, setIsLoggedIn] = useState(false);
   //email:
@@ -45,7 +47,7 @@ function SectionSignup() {
   };
   //afficher/masqué password :
   const toggleShowPassword = () => {
-    setIsValidPassword(!isValidPassword);
+    setIsValidPassword2(!isValidPassword2);
   };
   //
   const handleChangeNumber = (event) => {
@@ -61,27 +63,27 @@ function SectionSignup() {
       setIsValidcharacter(false);
     }
   };
-  
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
-  
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case 'firstName':
+      case "firstName":
         setFirstName(value);
         break;
-      case 'lastName':
+      case "lastName":
         setLastName(value);
         break;
-      case 'email':
+      case "email":
         setEmail(value);
         break;
-      case 'phoneNumber':
+      case "phoneNumber":
         setphoneNumber(value);
         break;
-      case 'password':
+      case "password":
         setPassword(value);
         break;
       default:
@@ -90,7 +92,7 @@ function SectionSignup() {
   };
 
   const handleSubmit = async (e) => {
-    console.log('Button clicked!');
+    console.log("Button clicked!");
     e.preventDefault();
     const formData = {
       firstName,
@@ -100,18 +102,20 @@ function SectionSignup() {
       password,
     };
     try {
-        const response = await axios.post('http://localhost:5000/register', formData);
-        console.log('Button clicked!');
-        console.log(response.data); // assuming server responds with a message
-        window.location.href = 'http://localhost:5173/signin'; 
-        // Handle success, e.g., show a success message to the user
+      const response = await axios.post(
+        "http://localhost:4000/register",
+        formData
+      );
+      console.log("Button clicked!");
+      console.log(response.data); // assuming server responds with a message
+      window.location.href = "http://localhost:5173/signin";
+      // Handle success, e.g., show a success message to the user
     } catch (error) {
-      console.log('Button clicked!2');
-        console.error('Registration failed:', error.response.data); // log the error
-        // Handle error, e.g., show an error message to the user
+      console.log("Button clicked!2");
+      console.error("Registration failed:", error.response.data); // log the error
+      // Handle error, e.g., show an error message to the user
     }
-};
-
+  };
 
   return (
     <>
@@ -136,16 +140,15 @@ function SectionSignup() {
                           <div className="ds-avec-label"></div>
                           <div className="ctw-flex ctw-flex-row ctw-items-center ctw-justify-items-center ctw-mt-0.5 ctw-border ctw-border-solid ctw-box-border ctw-rounded-md ctw-w-full ctw-h-10 ctw-text[#1e1d1d] ctw-bg-[#f4f7fa] ctw-border-transparent false undefined">
                             <input
-                             value={firstName}
-                             onChange={handleChange}
+                              value={firstName}
+                              onChange={handleChange}
                               type="text"
                               label="Prénom"
                               placeholder="Prénom"
                               id="firstName"
                               name="firstName"
                               className="ctw-outline-none ctw-bg-transparent ctw-w-full ctw-rounded-md ctw-text-base ctw-border-none ctw-truncate ctw-ml-2 false undefined"
-                              required 
-                              
+                              required
                             />
                           </div>
                           <div className="ds-avec-label">
@@ -165,7 +168,7 @@ function SectionSignup() {
                               type="text"
                               label="Nom"
                               value={lastName}
-                             onChange={handleChange}
+                              onChange={handleChange}
                               placeholder="Nom"
                               id="lastName"
                               name="lastName"
@@ -212,7 +215,7 @@ function SectionSignup() {
                             label="Téléphone"
                             value={phoneNumber}
                             onChange={
-                              handleChangeNumber// Call the second function here
+                              handleChangeNumber // Call the second function here
                             }
                             placeholder="Téléphone"
                             id="phoneNumber"
@@ -279,9 +282,7 @@ function SectionSignup() {
                             type="text"
                             label="Adresse mail"
                             value={email}
-                            onChange={
-                              handleChangeemail
-                            }
+                            onChange={handleChangeemail}
                             placeholder="Saisir une adresse mail valide"
                             id="email"
                             name="email"
@@ -331,12 +332,10 @@ function SectionSignup() {
                             </svg>
                           </div>
                           <input
-                            type={isValidPassword ? "text" : "password"}
+                            type={isValidPassword2 ? "text" : "password"}
                             label="Mot de passe"
                             value={password}
-                            onChange={
-                              handleChangepass 
-                            }
+                            onChange={handleChangepass}
                             placeholder="Mot de passe"
                             id="password"
                             name="password"
@@ -350,7 +349,7 @@ function SectionSignup() {
                             viewBox="0 0 16 16"
                             xmlns="http://www.w3.org/2000/svg"
                           >
-                            {isValidPassword ? "Hide" : "Show"}
+                            {isValidPassword2 ? "Hide" : "Show"}
                             <path
                               d="M13.359 11.238C15.06 9.72 16 8 16 8C16 8 13 2.5 7.99999 2.5C7.03958 2.50331 6.09005 2.70342 5.20999 3.088L5.97999 3.859C6.62743 3.62315 7.31094 3.50168 7.99999 3.5C10.12 3.5 11.879 4.668 13.168 5.957C13.7883 6.58069 14.3445 7.26513 14.828 8C14.77 8.087 14.706 8.183 14.633 8.288C14.298 8.768 13.803 9.408 13.168 10.043C13.003 10.208 12.831 10.371 12.651 10.529L13.359 11.238Z"
                               fill="black"
@@ -463,7 +462,6 @@ function SectionSignup() {
                             style={{ height: "100%", width: "100%" }}
                           >
                             <button
-                            
                               style={{
                                 border: "1px solid rgb(30, 29, 29",
                                 color: "rgb(30, 29, 29)",
@@ -509,7 +507,7 @@ function SectionSignup() {
                       </div>
                     </div>
                     <div className="sc-bee96ab4-0 XYQTO">
-                      <div>Déjà un compte Avec ?</div>
+                      <div>Déjà un compte RDVanytime ?</div>
                       <div className="ctw-text-primary-500 ctw-cursor-pointer">
                         <Link to="/Signin"> Se connecter</Link>
                       </div>

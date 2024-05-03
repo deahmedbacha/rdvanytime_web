@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Padding } from "@mui/icons-material";
 function SectionSignin() {
-
-
-  
   //email:
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   //password:
   const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(true);
+  const [isValidPassword2, setIsValidPassword2] = useState(false);
+
   //login
   const [, setIsLoggedIn] = useState(false);
   const [error, setError] = useState(null);
@@ -52,30 +54,27 @@ function SectionSignin() {
     };
     e.preventDefault();
     try {
-        const response = await axios.post('http://localhost:5000/login', formData);
-        console.log('Button clicked!1');
-        console.log(response.data); // assuming server responds with a token
-        // Store token in local storage or session storage
-        localStorage.setItem('token', response.data.token);
-        // Redirect to home page
-        window.location.href = 'http://localhost:5173/';        
+      const response = await axios.post(
+        "http://localhost:4000/login",
+        formData
+      );
+      console.log("Button clicked!1");
+      console.log(response.data); // assuming server responds with a token
+      // Store token in local storage or session storage
+      localStorage.setItem("token", response.data.token);
+      // Redirect to home page
+      window.location.href = "http://localhost:5173/";
     } catch (error) {
-        console.error('Login failed:', error.response.data); // log the error
-        // Handle error, e.g., show an error message to the user
+      console.error("Login failed:", error.response.data); // log the error
+       toast.error("Mot de passe incorrect");
+      // Handle error, e.g., show an error message to the user
     }
-};
 
-
-
-
-
-
-
-
+  };
 
   //afficher/masqué password :
   const toggleShowPassword = () => {
-    setIsValidPassword(!isValidPassword);
+     setIsValidPassword2(!isValidPassword2);
   };
   return (
     <>
@@ -91,7 +90,7 @@ function SectionSignin() {
                 </div>
                 <div className="sc-5ffdb2e4-9 bSGjar">
                   <div>
-                    <form onSubmit={handleSubmit} >
+                    <form onSubmit={handleSubmit}>
                       <div className="ctw-flex ctw-flex-col ctw-gap-3">
                         <div className="ds-input">
                           <div className="ds-avec-label">
@@ -165,7 +164,7 @@ function SectionSignin() {
                               </svg>
                             </div>
                             <input
-                              type={isValidPassword ? "text" : "password"}
+                              type={isValidPassword2 ? "text" : "password"}
                               id="password"
                               name="password"
                               value={password}
@@ -181,7 +180,7 @@ function SectionSignin() {
                               viewBox="0 0 16 16"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              {isValidPassword ? "Hide" : "Show"}
+                              {isValidPassword2 ? "Hide" : "Show"}
                               <path
                                 d="M13.359 11.238C15.06 9.72 16 8 16 8C16 8 13 2.5 7.99999 2.5C7.03958 2.50331 6.09005 2.70342 5.20999 3.088L5.97999 3.859C6.62743 3.62315 7.31094 3.50168 7.99999 3.5C10.12 3.5 11.879 4.668 13.168 5.957C13.7883 6.58069 14.3445 7.26513 14.828 8C14.77 8.087 14.706 8.183 14.633 8.288C14.298 8.768 13.803 9.408 13.168 10.043C13.003 10.208 12.831 10.371 12.651 10.529L13.359 11.238Z"
                                 fill="black"
@@ -229,6 +228,7 @@ function SectionSignin() {
                                 type="submit"
                                 className="ctw-select-none ctw-flex ctw-box-border ctw-items-center ctw-justify-center ctw-font-bold ctw-underline-offset-4 ctw-min-w-min ctw-w-full ctw-transition-all ctw-duration-300 ctw-outline-none ctw-bg-primary-500 ctw-text-white ctw-border-solid ctw-border-[1.5px] ctw-border-primary-500 hover:ctw-shadow-lg hover:ctw-bg-primary-700 hover:ctw-border-primary-700 focus:ctw-shadow-lg focus:ctw-bg-primary-700 focus:ctw-border-primary-700 ctw-cursor-pointer ctw-h-10 ctw-text-[1rem] ctw-rounded"
                               >
+                                <ToastContainer style={{marginTop:"5%"}}/>
                                 <div className="ctw-flex ctw-flex-row">
                                   <div className="ctw-flex ctw-items-center ctw-grow ctw-flex-row ctw-justify-center">
                                     <div className="ctw-cursor-[inherit] ctw-px-3 ctw-text-center">
@@ -301,7 +301,7 @@ function SectionSignin() {
                       </div>
                     </div>
                     <div className="sc-bee96ab4-0 XYQTO">
-                      <div>Nouveau sur Avec ?</div>
+                      <div>Nouveau sur RDVanytime ?</div>
                       <div className="ctw-text-primary-500 ctw-cursor-pointer">
                         <Link to="/Signup">S&apos;inscrire </Link>
                       </div>

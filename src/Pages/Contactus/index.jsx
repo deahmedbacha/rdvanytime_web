@@ -128,7 +128,7 @@ const formRef = useRef(); // Ref for the form element
 
   return (
     <>
-    <Head></Head>
+      <Head brand="fixed h-20 end-0 w-full opacity-100 bg-white top-0 z-[49]" />
       <div className="bg-gray-50 flex flex-col font-poppins gap-[50px] items-center justify-end mx-auto pt-[122px] md:px-10 sm:px-5 px-[122px] w-full">
         <div className="flex flex-col gap-[18px] justify-start mt-3.5">
           <Text

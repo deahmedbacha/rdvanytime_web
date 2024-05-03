@@ -11,7 +11,7 @@ import "../Pages/Body.css";
 function Index() {
     return (
       <>
-        <Head />
+        <Head brand="fixed h-20 end-0 w-full opacity-100 bg-white top-0 z-[49]" />
         <Body />
         <Benefits />
         <Marche />

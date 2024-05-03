@@ -38,6 +38,8 @@ function TabledesPatients() {
       ProchainRDV: "2024-05-10",
     },
   ]);
+
+  
   return (
     <div>
       <table className="table">
