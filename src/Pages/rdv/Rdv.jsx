@@ -21,7 +21,7 @@ function Rdv() {
 
   const token = localStorage.getItem('token');
 
-    fetch('http://localhost:5000/get-user', {
+    fetch('http://localhost:4000/get-user', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -123,7 +123,7 @@ if (hommeInput) {
     console.error("Homme input element not found.");
 }
       // Send the updated user data to the server
-      fetch('http://localhost:5000/update-user', {
+      fetch('http://localhost:4000/update-user', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ if (hommeInput) {
       const datee = localStorage.getItem('clicked_time');
       const dateTime = datee;
       const notes = document.getElementById('notes_take').value;
-      const response = await fetch('http://localhost:5000/add-appointment', {
+      const response = await fetch('http://localhost:4000/add-appointment', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -352,7 +352,7 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
       try {
         const docId = localStorage.getItem('doc_id');
         if (docId) {
-          const response = await axios.post("http://localhost:5000/doctorbyid", { docId });
+          const response = await axios.post("http://localhost:4000/doctorbyid", { docId });
           setDoctorData({ ...response.data });
         } else {
           setError('Doctor ID not found in local storage');
