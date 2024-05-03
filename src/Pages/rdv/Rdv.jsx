@@ -13,9 +13,254 @@ import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import Relationn from "Components/showDiv/Relationn";
 import { Footer } from "../../Components/Footer/Footer.jsx";
-
+import Head from "../../Components/Head";
+import axios from "axios";
 function Rdv() {
+
+  const [popupEventSexe, setSexe] = useState(null);
+
+  const token = localStorage.getItem('token');
+
+    fetch('http://localhost:5000/get-user', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  .then(response => response.json())
+  .then(response => {
+    // Access form elements
+    const nameInput = document.querySelector('input[name="Prénom"]');
+    const surnameInput = document.querySelector('input[name="Nom de famille"]');
+    const dateOfBirthInput = document.querySelector('input[name="Date de naissance"]');
+    const paysInput = document.querySelector('input[name="Pays"]');
+    const rueInput = document.querySelector('input[name="Rue"]');
+    const rueNumeroInput = document.querySelector('input[name="rueNumero"]');
+    const villeInput = document.querySelector('input[name="ville"]');
+    const codePostaleInput = document.querySelector('input[name="codePostale"]');
+    const sexeInput = document.querySelector('input[name="Homme"]');
+    codePostaleInput.value = response.data.codePostale;
+    villeInput.value = response.data.ville;
+    nameInput.value = response.data.firstName;
+    surnameInput.value = response.data.lastName;
+
+    if (response.data.sexe === true) {
+      handleGenderChange("Homme");
+    }else {
+      handleGenderChange("Femme");
+    }
+
+    {/*
+    const sexeInput = document.querySelector('input[name="Homme"]');
+    const sexeInput2 = document.querySelector('input[name="Femme"]');
+    if (response.data.sexe === 'true') {
+      sexeInput.checked = true;
+      sexeInput2.checked = false;
+    }else {
+      sexeInput.checked = false;
+      sexeInput2.checked = true;
+    }*/}
+    paysInput.value = response.data.pays;
+    rueInput.value = response.data.rue;
+    rueNumeroInput.value = response.data.rueNumero;
+    // Set the selected gender radio button
+    dateOfBirthInput.value = formatDateForInput(response.data.dateNaissance);
+    console.log(formatDateForInput(dateOfBirthInput.value));
+    const userData = {};
+
+
+    nameInput.addEventListener('input', () => {
+      userData.firstName = nameInput.value;
+    });
+
+    surnameInput.addEventListener('input', () => {
+      userData.lastName = surnameInput.value;
+    });
+    
+
+    dateOfBirthInput.addEventListener('input', () => {
+      const formattedDate = formatDateForServer(dateOfBirthInput.value);
+      if (isValidDate(formattedDate)) {
+        userData.dateNaissance = formattedDate;
+      } else {
+        dateOfBirthInput.value = formatDateForInput(userData.dateNaissance);
+      }
+    });
+
+    paysInput.addEventListener('input', () => {
+      userData.pays = paysInput.value;
+    });
+
+    rueInput.addEventListener('input', () => {
+      userData.rue = rueInput.value;
+    });
+
+    rueNumeroInput.addEventListener('input', () => {
+      userData.rueNumero = rueNumeroInput.value;
+    });
+
+    villeInput.addEventListener('input', () => {
+      userData.ville = villeInput.value;
+    });
+
+    codePostaleInput.addEventListener('input', () => {
+      userData.codePostale = codePostaleInput.value;
+    });
+    
+
+
+
+
+
+
+    const submitButton = document.querySelector('button[type="submit"]');
+    submitButton.addEventListener('click', () => {
+      const hommeInput = document.querySelector('input[value="Homme"]');
+if (hommeInput) {
+    // Check if hommeInput is not null
+    userData.sexe = hommeInput.checked ? true : false;
+} else {
+    console.error("Homme input element not found.");
+}
+      // Send the updated user data to the server
+      fetch('http://localhost:5000/update-user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(userData),
+      })
+        .then(response => {
+
+          if (response.ok) {
+          } else {
+            console.error('Error updating user data');
+          }
+        })
+        .catch(error => {
+          console.error('Error updating user data:', error);
+        });
+
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching user data:', error);
+  });
+  
+
+  function formatDateForInput(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+  }
+
+  function formatDateForServer(inputDateString) {
+    const [day, month, year] = inputDateString.split('-');
+    const dateString = `${year}-${month}-${day}T00:00:00.000+00:00`;
+    return dateString;
+  }
+
+  
+
+
+  const handleSubmitRdv = async () => {
+    try {
+      const doctorId = localStorage.getItem('doc_id');
+      const patientId = localStorage.getItem('client_id');
+      const datee = localStorage.getItem('clicked_time');
+      const dateTime = datee;
+      const notes = document.getElementById('notes_take').value;
+      const response = await fetch('http://localhost:5000/add-appointment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ doctorId, patientId, dateTime, notes }),
+    });
+
+    const data = await response.json();
+      
+  
+    } catch (error) {
+      console.error('Error adding appointment:', error);
+    }
+  };
+
+
+
+
+
+
+
+  const handleGenderChange = (newValue) => {
+    const hommeInput = document.querySelector('input[value="Homme"]');
+    const femmeInput = document.querySelector('input[value="Femme"]');
+
+    if (newValue === 'Homme') {
+        hommeInput.checked = true;
+        femmeInput.checked = false;
+
+        
+    } else {
+        hommeInput.checked = false;
+        femmeInput.checked = true;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const [showFirstContent, setShowFirstContent] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const rdvTime = localStorage.getItem('clicked_time');
+  const date = new Date(rdvTime.replace('Z', '')); // Remove 'Z' at the end to prevent timezone adjustment
+  const [tokenExists, setTokenExists] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setTokenExists(true);
+    }
+  }, []);
+// Define options for formatting the date and time
+const options = {
+  weekday: 'long', // Display the full name of the day of the week (e.g., "Samedi")
+  day: 'numeric', // Display the day of the month (e.g., "4")
+  month: 'long', // Display the full name of the month (e.g., "Mai")
+  year: 'numeric', // Display the year (e.g., "2024")
+  hour: 'numeric', // Display the hour (e.g., "08")
+  minute: 'numeric', // Display the minute (e.g., "00")
+  hour12: false, // Use 24-hour format
+};
+
+// Format the date and time
+const formattedDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
+const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+
+
+
 
   const handleRadioClick = () => {
     // setShowFirstContent(!showFirstContent);
@@ -57,6 +302,7 @@ function Rdv() {
     setShowSigninContent(true);
   };
 
+  
 
   /// set les ville sur input
   const [inputValueVille, setInputValueVille] = useState("");
@@ -99,48 +345,44 @@ function Rdv() {
   const DisableProcheClick = () => {
     setShowAjouterProche(false);
   };
+  const [doctorData, setDoctorData] = useState({});
+
+  useEffect(() => {
+    const fetchDoctorData = async () => {
+      try {
+        const docId = localStorage.getItem('doc_id');
+        if (docId) {
+          const response = await axios.post("http://localhost:5000/doctorbyid", { docId });
+          setDoctorData({ ...response.data });
+        } else {
+          setError('Doctor ID not found in local storage');
+        }
+      } catch (err) {
+        setError('Error fetching doctor data');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDoctorData();
+ 
+
+  }, []);
+
+
+
+
+
+
+
+
+
   return (
     <>
       <div className="Main">
         {/**Header */}
-        <header className="Header">
-          <div className="w-full h-full py-3 flex md:gap-12 items-center justify-between px-3 md:px-8 md:px-5 lg:px-9 shadow-sh-112-8">
-            <Link
-              className="ps-3 lg:w-52 !h-[56px] !w-[124px] flex items-center justify-start"
-              to="/"
-            >
-              <div className=" md:flex md:items-center md:justify-center">
-                <img
-                  src={logo}
-                  width="124"
-                  height="56"
-                  className="lg:w-52"
-                  alt=""
-                  loading="eager"
-                />
-              </div>
-            </Link>
-            <div className="Menuaff flex md:hidden min-w-[1.5em] min-h-[1.5em] ">
-              <Menu2></Menu2>
-            </div>
-            <div className="Menuadiff flex justify-end ms-auto">
-              <div className="grid grid-flow-col auto-cols gap-3 items-center justify-center">
-                <Link
-                  className="text-sm md:text-base font-light px-7 py-3 text-gray-900 min-w-[max-content]"
-                  to="/Signup"
-                >
-                  Vous avez déjà un compte ?
-                </Link>
-                <Link
-                  className="text-sm md:text-base font-semibold rounded-3xl px-7 py-3 bg-primary-ice text-white"
-                  to="/Signin"
-                >
-                  Se connecter
-                </Link>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Head></Head>
+        <br /><br /><br /><br />
         <main>
           <div className="od-book">
             <div className="od-book-container">
@@ -223,7 +465,7 @@ function Rdv() {
                                       </div>
                                       <label htmlFor="radio-52f93e42-7c64-4c4f-a45e-0d7c81f3be1f">
                                         Ceci est ma première consultation avec
-                                        Dr. Abdelillah
+                                        Dr. {doctorData.lastName} {doctorData.firstName}
                                       </label>
                                     </div>
                                   </div>
@@ -246,7 +488,7 @@ function Rdv() {
                                         </div>
                                       </div>
                                       <label htmlFor="radio-fab6428d-b07b-45c5-bfd8-6f701ae9c479">
-                                        Je suis déjà suivi(e) par Dr. Abdelillah
+                                        Je suis déjà suivi(e) par Dr. {doctorData.lastName} {doctorData.firstName}
                                       </label>
                                     </div>
                                   </div>
@@ -309,14 +551,14 @@ function Rdv() {
                                             <button
                                               onClick={() =>
                                                 ButtonClickVille(
-                                                  "Médecine générale"
+                                                  `${doctorData.type}`
                                                 )
                                               }
                                               className="grid grid-cols-speciality-item gap-2 items-center justify-between w-full rounded-lg py-5 px-4 cursor-pointer hover:bg-primary-ice group"
                                             >
                                               <div></div>
                                               <div className="rtl:text-right ltr:text-left text-sm font-medium group-hover:font-bold rtl:text-base line-clamp-2">
-                                                Médecine générale
+                                              {doctorData.type}
                                               </div>
                                               <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -379,7 +621,7 @@ function Rdv() {
                                       Créneau horaire
                                     </div>
                                     <div className="flow-step-body">
-                                      Jeudi 7 mars 2024 à 09:30
+                                      {capitalizedDay}
                                     </div>
                                   </div>
                                   <div
@@ -405,6 +647,8 @@ function Rdv() {
                       </div>
                     )}
                     {showNextContent === 2 && (
+
+                      
                       <div>
                         <div
                           className="cw-warning"
@@ -417,58 +661,67 @@ function Rdv() {
                           className="od-book-content"
                           style={{ paddingTop: "30px" }}
                         >
-                          <div className="od-book-content-body">
-                            <div className="cw-component cw-register">
-                              {showSignupContent ? (
-                                <section className="cw-form-section">
-                                  <h2 className="cw-form-section-title cw-form-section-title--centered">
-                                    Nouveau sur RDVanytime?
-                                  </h2>
-                                  <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
-                                    <button
-                                      className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
-                                      type="button"
-                                      onClick={handleSignupClick}
-                                    >
-                                      <span className="mdc-button__label">
-                                        S&apos;inscrire
-                                      </span>
-                                    </button>
-                                  </div>
-                                </section>
-                              ) : (
-                                <div>
-                                  <SectionSignup></SectionSignup>
-                                </div>
-                              )}
-                              <div className="cw-login-container">
-                                <div className="cw-component cw-login">
-                                  {showSigninContent ? (
-                                    <section className="cw-form-section">
-                                      <h2 className="cw-form-section-title cw-form-section-title--centered">
-                                        Connexion avec votre compte RDVanytime
-                                      </h2>
-                                      <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
-                                        <button
-                                          className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
-                                          type="button"
-                                          onClick={handleSigninClick}
-                                        >
-                                          <span className="mdc-button__label">
-                                            Se connecter
-                                          </span>
-                                        </button>
-                                      </div>
-                                    </section>
-                                  ) : (
-                                    <div>
-                                      <SectionSignin></SectionSignin>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          {tokenExists ? (
+              <div>
+                {/* Skip the sign-up and sign-in sections if token exists */}
+                <p>You are already signed in.</p>
+                <button className="mdc-button" onClick={handleNextClick(3)}>Continue</button>
+              </div>
+            ) : (
+              <div>
+                <div className="od-book-content-body">
+        <div className="cw-component cw-register">
+          {showSignupContent ? (
+            <section className="cw-form-section">
+              <h2 className="cw-form-section-title cw-form-section-title--centered">
+                Nouveau sur RDVanytime?
+              </h2>
+              <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
+                <button
+                  className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
+                  type="button"
+                  onClick={handleSignupClick}
+                >
+                  <span className="mdc-button__label">
+                    S&apos;inscrire
+                  </span>
+                </button>
+              </div>
+            </section>
+          ) : (
+            <div>
+              <SectionSignup></SectionSignup>
+            </div>
+          )}
+          <div className="cw-login-container">
+            <div className="cw-component cw-login">
+              {showSigninContent ? (
+                <section className="cw-form-section">
+                  <h2 className="cw-form-section-title cw-form-section-title--centered">
+                    Connexion avec votre compte RDVanytime
+                  </h2>
+                  <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
+                    <button
+                      className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
+                      type="button"
+                      onClick={handleSigninClick}
+                    >
+                      <span className="mdc-button__label">
+                        Se connecter
+                      </span>
+                    </button>
+                  </div>
+                </section>
+              ) : (
+                <div>
+                  <SectionSignin></SectionSignin>
+                </div>
+              )}
+            </div>
+          </div>
+        </div></div>
+              </div>
+            )}
                           <div className="od-book-content-sidebar">
                             <div className="cw-funnel-sidebar-summary">
                               <h2 className="cw-summary-title">
@@ -483,10 +736,10 @@ function Rdv() {
                                   />
                                 </div>
                                 <div className="cw-summary-resource-info">
-                                  Dr BELHADJ ABDELILLAH
+                                  Dr {doctorData.lastName} {doctorData.firstName}
                                 </div>
                                 <div className="cw-summary-resource-secondary-info">
-                                  Médecin généraliste
+                                {doctorData.type}
                                 </div>
                               </div>
                               <div className="cw-summary-disclaimer">
@@ -499,7 +752,7 @@ function Rdv() {
                                   <EventIcon
                                     style={{ marginRight: "8px" }}
                                   ></EventIcon>
-                                  <span>Vendredi 8 mars 2024 à 08:45</span>
+                                  <span>{capitalizedDay}</span>
                                 </div>
                                 <div className="cw-summary-details-appointment-type">
                                   <HealingIcon
@@ -512,9 +765,9 @@ function Rdv() {
                                     style={{ marginRight: "8px" }}
                                   ></LocationOnIcon>
                                   <span>
-                                    90 Rue de la Zune
+                                    {doctorData.Numerorue} {doctorData.rue} {doctorData.ville}
                                     <br />
-                                    60840 Algérie
+                                    {doctorData.codePostale} {doctorData.pays}
                                   </span>
                                 </div>
                               </div>
@@ -561,13 +814,17 @@ function Rdv() {
                                             data-uuid="409cce71-3e8a-4ce6-8779-89481f3ce679"
                                           >
                                             <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                              <input
-                                                type="radio"
-                                                className="mdc-radio__native-control"
-                                                name="gender"
-                                                value="Homme"
-                                                required=""
-                                              />
+                                            <input
+            type="radio"
+            className="mdc-radio__native-control"
+            name="gender1"
+            value="Homme"
+            
+            required=""
+            onChange={() => {
+              handleGenderChange("Homme");
+            }}// Call handleGenderChange function with 'Homme' value when this radio button is clicked
+        />
                                               <div className="mdc-radio__background">
                                                 <div className="mdc-radio__outer-circle"></div>
                                                 <div className="mdc-radio__inner-circle"></div>
@@ -584,13 +841,17 @@ function Rdv() {
                                             data-uuid="3b962c17-6c7a-4450-8304-17724ec58a90"
                                           >
                                             <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                              <input
-                                                type="radio"
-                                                className="mdc-radio__native-control"
-                                                name="gender"
-                                                value="Femme"
-                                                required=""
-                                              />
+                                            <input
+            type="radio"
+            className="mdc-radio__native-control"
+            name="gender2"
+            value="Femme"
+            
+            required=""
+            onChange={() => {
+              handleGenderChange("Femme");
+            }}// Call handleGenderChange function with 'Femme' value when this radio button is clicked
+        />
                                               <div className="mdc-radio__background">
                                                 <div className="mdc-radio__outer-circle"></div>
                                                 <div className="mdc-radio__inner-circle"></div>
@@ -646,6 +907,7 @@ function Rdv() {
                                           backgroundColor: "transparent",
                                         }}
                                         name="Date de naissance"
+                                        
                                       />
                                     </div>
                                   </div>
@@ -674,6 +936,7 @@ function Rdv() {
                                               >
                                                 <input
                                                   type="text"
+                                                  name="Rue"
                                                   className="outline-none h-12 border-none w-full bg-transparent px-0 z-10 relative !font-main htmlForm-control"
                                                   style={{
                                                     unicodeBidi: "plaintext",
@@ -682,6 +945,7 @@ function Rdv() {
                                                       "transparent",
                                                   }}
                                                   placeholder="Rue*"
+                                                  
                                                 />
                                               </div>
                                             </div>
@@ -695,6 +959,7 @@ function Rdv() {
                                             <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
                                               <input
                                                 type="text"
+                                                name="rueNumero"
                                                 placeholder="N°"
                                                 className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
                                                 style={{
@@ -724,6 +989,7 @@ function Rdv() {
                                               >
                                                 <input
                                                   type="text"
+                                                  name="codePostale"
                                                   className="outline-none h-12 border-none w-full bg-transparent px-0 z-10 relative !font-main htmlForm-control"
                                                   style={{
                                                     unicodeBidi: "plaintext",
@@ -740,6 +1006,7 @@ function Rdv() {
                                             <div className="rounded-full px-5 py-1 bg-p-night w-full flex flex-row gap-2 flex-nowrap items-center">
                                               <input
                                                 type="text"
+                                                name="ville"
                                                 placeholder="Ville*"
                                                 className="text-base font-normal h-12 bg-p-night outline-none border-none w-full !font-main shadow-none focus:ring-transparent"
                                                 style={{
@@ -793,6 +1060,8 @@ function Rdv() {
                                   >
                                     <textarea
                                       type="text"
+                                      id="notes_take"
+                                      name="notes_take"
                                       placeholder=" Transmettre un message au personnel soignant (optionnel)"
                                       className="text-base font-normal h-12 bg-p-night outline-none border-none w-full shadow-none focus:ring-transparent"
                                       style={{
@@ -800,15 +1069,19 @@ function Rdv() {
                                         backgroundColor: "transparent",
                                         height: "100px",
                                       }}
-                                      name="message"
+                                    
                                     />
                                   </div>
                                 </section>
                                 <div className="cw-form-buttons cw-form-buttons-full">
                                   <button
+                                  name="submit"
                                     className="mdc-button mdc-button--unelevated mdc-ripple-upgraded"
                                     type="submit"
-                                    onClick={() => handleNextClick(4)}
+                                    onClick={() => {
+                                      handleSubmitRdv();
+                                      handleNextClick(4);
+                                  }}
                                   >
                                     <span className="mdc-button__label">
                                       Confirmer rendez-vous
@@ -833,10 +1106,10 @@ function Rdv() {
                                   />
                                 </div>
                                 <div className="cw-summary-resource-info">
-                                  Dr BELHADJ ABDELILLAH
+                                  Dr {doctorData.firstName} {doctorData.lastName}
                                 </div>
                                 <div className="cw-summary-resource-secondary-info">
-                                  Médecin généraliste
+                                {doctorData.type}
                                 </div>
                               </div>
                               <div className="cw-summary-disclaimer">
@@ -849,7 +1122,7 @@ function Rdv() {
                                   <EventIcon
                                     style={{ marginRight: "8px" }}
                                   ></EventIcon>
-                                  <span>Vendredi 8 mars 2024 à 08:45</span>
+                                  <span>{capitalizedDay}</span>
                                 </div>
                                 <div className="cw-summary-details-appointment-type">
                                   <HealingIcon
@@ -862,9 +1135,9 @@ function Rdv() {
                                     style={{ marginRight: "8px" }}
                                   ></LocationOnIcon>
                                   <span>
-                                    90 Rue de la Zune
+                                    {doctorData.rueNumero} {doctorData.rue}
                                     <br />
-                                    60840 Algérie
+                                    {doctorData.codePostale} {doctorData.ville}, {doctorData.pays}
                                   </span>
                                 </div>
                               </div>
@@ -916,7 +1189,7 @@ function Rdv() {
                                             marginRight: "8px",
                                           }}
                                         ></PersonIcon>
-                                        <span>Znasni morad</span>
+                                        <span>Dr {doctorData.firstName} {doctorData.lastName}</span>
                                       </div>
                                       <div className="cw-confirmation-summary-item cw-confirmation-practical-info-item--wrap">
                                         <span className="cw-confirmation-summary-item-group">
@@ -924,7 +1197,7 @@ function Rdv() {
                                             style={{ marginRight: "8px" }}
                                           ></EventIcon>
                                           <span>
-                                            Vendredi 8 mars 2024 à 08:45
+                                          {capitalizedDay}
                                           </span>
                                         </span>
                                       </div>
@@ -948,11 +1221,9 @@ function Rdv() {
                                           target="_blank"
                                         >
                                           <span>
-                                            Centre Médical EZAHRA
+                                            {doctorData.rueNumero} {doctorData.rue}
                                             <br />
-                                            90 Rue de la Zune
-                                            <br />
-                                            60840 Algérie
+                                            {doctorData.codePostale} {doctorData.ville}, {doctorData.pays}
                                           </span>
                                         </a>
                                       </div>
@@ -961,7 +1232,7 @@ function Rdv() {
                                           style={{ marginRight: "8px" }}
                                         ></PhoneIcon>
                                         <a href="tel:+213664189325">
-                                          <span>0664189325</span>
+                                          <span>{doctorData.phoneNumber}</span>
                                         </a>
                                       </div>
                                     </div>
@@ -991,7 +1262,7 @@ function Rdv() {
                             <div className="od-book-content-sidebar">
                               <iframe
                                 className="od-profile-googlemaps2"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14468796.894767692!2d-8.965395742697925!3d27.704281253446712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7e8a6a28037bd1%3A0x7140bee3abd7f8a2!2zQWxnw6lyaWU!5e0!3m2!1sfr!2sdz!4v1708558499416!5m2!1sfr!2sdz"
+                                src={doctorData.map}
                                 width="330"
                                 height="322"
                                 style={{ border: "0" }}
@@ -1012,7 +1283,7 @@ function Rdv() {
         </main>
       </div>
       <Footer />
-  
+    
     </>
   );
 }

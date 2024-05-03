@@ -25,7 +25,7 @@ export const Head = (props) => {
         }
 
         const response = await axios.post(
-          "http://localhost:4000/get-user",
+          "http://localhost:5000/get-user",
           {},
           {
             headers: {

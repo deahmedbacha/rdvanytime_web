@@ -23,7 +23,7 @@ function Medecin() {
       const fetchUnavailableTimeSlots = async () => {
         try {
           const response = await axios.post(
-            "http://localhost:4000/doc-calender",
+            "http://localhost:5000/doc-calender",
             { doc_id: doctorId }
           );
           console.log(response.data.dateTime);
@@ -331,7 +331,7 @@ const handleButtonClick = () => {
     try {
       const docId = localStorage.getItem("doc_id");
       if (docId) {
-        const response = await axios.post("http://localhost:4000/doctorbyid", {
+        const response = await axios.post("http://localhost:5000/doctorbyid", {
           docId,
         });
         setDoctorData({ ...response.data });
