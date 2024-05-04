@@ -16,41 +16,47 @@ import { Footer } from "../../Components/Footer/Footer.jsx";
 import Head from "../../Components/Head";
 import axios from "axios";
 function Rdv() {
-
   const [popupEventSexe, setSexe] = useState(null);
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
-    fetch('http://localhost:4000/get-user', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  .then(response => response.json())
-  .then(response => {
-    // Access form elements
-    const nameInput = document.querySelector('input[name="Prénom"]');
-    const surnameInput = document.querySelector('input[name="Nom de famille"]');
-    const dateOfBirthInput = document.querySelector('input[name="Date de naissance"]');
-    const paysInput = document.querySelector('input[name="Pays"]');
-    const rueInput = document.querySelector('input[name="Rue"]');
-    const rueNumeroInput = document.querySelector('input[name="rueNumero"]');
-    const villeInput = document.querySelector('input[name="ville"]');
-    const codePostaleInput = document.querySelector('input[name="codePostale"]');
-    const sexeInput = document.querySelector('input[name="Homme"]');
-    codePostaleInput.value = response.data.codePostale;
-    villeInput.value = response.data.ville;
-    nameInput.value = response.data.firstName;
-    surnameInput.value = response.data.lastName;
+  fetch("http://localhost:4000/get-user", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((response) => {
+      // Access form elements
+      const nameInput = document.querySelector('input[name="Prénom"]');
+      const surnameInput = document.querySelector(
+        'input[name="Nom de famille"]'
+      );
+      const dateOfBirthInput = document.querySelector(
+        'input[name="Date de naissance"]'
+      );
+      const paysInput = document.querySelector('input[name="Pays"]');
+      const rueInput = document.querySelector('input[name="Rue"]');
+      const rueNumeroInput = document.querySelector('input[name="rueNumero"]');
+      const villeInput = document.querySelector('input[name="ville"]');
+      const codePostaleInput = document.querySelector(
+        'input[name="codePostale"]'
+      );
+      const sexeInput = document.querySelector('input[name="Homme"]');
+      codePostaleInput.value = response.data.codePostale;
+      villeInput.value = response.data.ville;
+      nameInput.value = response.data.firstName;
+      surnameInput.value = response.data.lastName;
 
-    if (response.data.sexe === true) {
-      handleGenderChange("Homme");
-    }else {
-      handleGenderChange("Femme");
-    }
+      if (response.data.sexe === true) {
+        handleGenderChange("Homme");
+      } else {
+        handleGenderChange("Femme");
+      }
 
-    {/*
+      {
+        /*
     const sexeInput = document.querySelector('input[name="Homme"]');
     const sexeInput2 = document.querySelector('input[name="Femme"]');
     if (response.data.sexe === 'true') {
@@ -59,208 +65,163 @@ function Rdv() {
     }else {
       sexeInput.checked = false;
       sexeInput2.checked = true;
-    }*/}
-    paysInput.value = response.data.pays;
-    rueInput.value = response.data.rue;
-    rueNumeroInput.value = response.data.rueNumero;
-    // Set the selected gender radio button
-    dateOfBirthInput.value = formatDateForInput(response.data.dateNaissance);
-    console.log(formatDateForInput(dateOfBirthInput.value));
-    const userData = {};
-
-
-    nameInput.addEventListener('input', () => {
-      userData.firstName = nameInput.value;
-    });
-
-    surnameInput.addEventListener('input', () => {
-      userData.lastName = surnameInput.value;
-    });
-    
-
-    dateOfBirthInput.addEventListener('input', () => {
-      const formattedDate = formatDateForServer(dateOfBirthInput.value);
-      if (isValidDate(formattedDate)) {
-        userData.dateNaissance = formattedDate;
-      } else {
-        dateOfBirthInput.value = formatDateForInput(userData.dateNaissance);
+    }*/
       }
-    });
+      paysInput.value = response.data.pays;
+      rueInput.value = response.data.rue;
+      rueNumeroInput.value = response.data.rueNumero;
+      // Set the selected gender radio button
+      dateOfBirthInput.value = formatDateForInput(response.data.dateNaissance);
+      console.log(formatDateForInput(dateOfBirthInput.value));
+      const userData = {};
 
-    paysInput.addEventListener('input', () => {
-      userData.pays = paysInput.value;
-    });
+      nameInput.addEventListener("input", () => {
+        userData.firstName = nameInput.value;
+      });
 
-    rueInput.addEventListener('input', () => {
-      userData.rue = rueInput.value;
-    });
+      surnameInput.addEventListener("input", () => {
+        userData.lastName = surnameInput.value;
+      });
 
-    rueNumeroInput.addEventListener('input', () => {
-      userData.rueNumero = rueNumeroInput.value;
-    });
+      dateOfBirthInput.addEventListener("input", () => {
+        const formattedDate = formatDateForServer(dateOfBirthInput.value);
+        if (isValidDate(formattedDate)) {
+          userData.dateNaissance = formattedDate;
+        } else {
+          dateOfBirthInput.value = formatDateForInput(userData.dateNaissance);
+        }
+      });
 
-    villeInput.addEventListener('input', () => {
-      userData.ville = villeInput.value;
-    });
+      paysInput.addEventListener("input", () => {
+        userData.pays = paysInput.value;
+      });
 
-    codePostaleInput.addEventListener('input', () => {
-      userData.codePostale = codePostaleInput.value;
-    });
-    
+      rueInput.addEventListener("input", () => {
+        userData.rue = rueInput.value;
+      });
 
+      rueNumeroInput.addEventListener("input", () => {
+        userData.rueNumero = rueNumeroInput.value;
+      });
 
+      villeInput.addEventListener("input", () => {
+        userData.ville = villeInput.value;
+      });
 
+      codePostaleInput.addEventListener("input", () => {
+        userData.codePostale = codePostaleInput.value;
+      });
 
-
-
-    const submitButton = document.querySelector('button[type="submit"]');
-    submitButton.addEventListener('click', () => {
-      const hommeInput = document.querySelector('input[value="Homme"]');
-if (hommeInput) {
-    // Check if hommeInput is not null
-    userData.sexe = hommeInput.checked ? true : false;
-} else {
-    console.error("Homme input element not found.");
-}
-      // Send the updated user data to the server
-      fetch('http://localhost:4000/update-user', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(userData),
-      })
-        .then(response => {
-
-          if (response.ok) {
-          } else {
-            console.error('Error updating user data');
-          }
+      const submitButton = document.querySelector('button[type="submit"]');
+      submitButton.addEventListener("click", () => {
+        const hommeInput = document.querySelector('input[value="Homme"]');
+        if (hommeInput) {
+          // Check if hommeInput is not null
+          userData.sexe = hommeInput.checked ? true : false;
+        } else {
+          console.error("Homme input element not found.");
+        }
+        // Send the updated user data to the server
+        fetch("http://localhost:4000/update-user", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(userData),
         })
-        .catch(error => {
-          console.error('Error updating user data:', error);
-        });
-
+          .then((response) => {
+            if (response.ok) {
+            } else {
+              console.error("Error updating user data");
+            }
+          })
+          .catch((error) => {
+            console.error("Error updating user data:", error);
+          });
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching user data:", error);
     });
-  })
-  .catch(error => {
-    console.error('Error fetching user data:', error);
-  });
-  
 
   function formatDateForInput(dateString) {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
     return `${year}-${month}-${day}`;
   }
 
   function formatDateForServer(inputDateString) {
-    const [day, month, year] = inputDateString.split('-');
+    const [day, month, year] = inputDateString.split("-");
     const dateString = `${year}-${month}-${day}T00:00:00.000+00:00`;
     return dateString;
   }
 
-  
-
-
   const handleSubmitRdv = async () => {
     try {
-      const doctorId = localStorage.getItem('doc_id');
-      const patientId = localStorage.getItem('client_id');
-      const datee = localStorage.getItem('clicked_time');
+      const doctorId = localStorage.getItem("doc_id");
+      const patientId = localStorage.getItem("client_id");
+      const datee = localStorage.getItem("clicked_time");
       const dateTime = datee;
-      const notes = document.getElementById('notes_take').value;
-      const response = await fetch('http://localhost:4000/add-appointment', {
-        method: 'POST',
+      const notes = document.getElementById("notes_take").value;
+      const response = await fetch("http://localhost:4000/add-appointment", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ doctorId, patientId, dateTime, notes }),
-    });
+      });
 
-    const data = await response.json();
-      
-  
+      const data = await response.json();
     } catch (error) {
-      console.error('Error adding appointment:', error);
+      console.error("Error adding appointment:", error);
     }
   };
-
-
-
-
-
-
 
   const handleGenderChange = (newValue) => {
     const hommeInput = document.querySelector('input[value="Homme"]');
     const femmeInput = document.querySelector('input[value="Femme"]');
 
-    if (newValue === 'Homme') {
-        hommeInput.checked = true;
-        femmeInput.checked = false;
-
-        
+    if (newValue === "Homme") {
+      hommeInput.checked = true;
+      femmeInput.checked = false;
     } else {
-        hommeInput.checked = false;
-        femmeInput.checked = true;
+      hommeInput.checked = false;
+      femmeInput.checked = true;
     }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  };
 
   const [showFirstContent, setShowFirstContent] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const rdvTime = localStorage.getItem('clicked_time');
-  const date = new Date(rdvTime.replace('Z', '')); // Remove 'Z' at the end to prevent timezone adjustment
+  const rdvTime = localStorage.getItem("clicked_time");
+  const date = new Date(rdvTime.replace("Z", "")); // Remove 'Z' at the end to prevent timezone adjustment
   const [tokenExists, setTokenExists] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       setTokenExists(true);
     }
   }, []);
-// Define options for formatting the date and time
-const options = {
-  weekday: 'long', // Display the full name of the day of the week (e.g., "Samedi")
-  day: 'numeric', // Display the day of the month (e.g., "4")
-  month: 'long', // Display the full name of the month (e.g., "Mai")
-  year: 'numeric', // Display the year (e.g., "2024")
-  hour: 'numeric', // Display the hour (e.g., "08")
-  minute: 'numeric', // Display the minute (e.g., "00")
-  hour12: false, // Use 24-hour format
-};
+  // Define options for formatting the date and time
+  const options = {
+    weekday: "long", // Display the full name of the day of the week (e.g., "Samedi")
+    day: "numeric", // Display the day of the month (e.g., "4")
+    month: "long", // Display the full name of the month (e.g., "Mai")
+    year: "numeric", // Display the year (e.g., "2024")
+    hour: "numeric", // Display the hour (e.g., "08")
+    minute: "numeric", // Display the minute (e.g., "00")
+    hour12: false, // Use 24-hour format
+  };
 
-// Format the date and time
-const formattedDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
-const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-
-
-
+  // Format the date and time
+  const formattedDate = new Intl.DateTimeFormat("fr-FR", options).format(date);
+  const capitalizedDay =
+    formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
   const handleRadioClick = () => {
     // setShowFirstContent(!showFirstContent);
@@ -301,8 +262,6 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
     setShowSignupContent(!showSignupContent);
     setShowSigninContent(true);
   };
-
-  
 
   /// set les ville sur input
   const [inputValueVille, setInputValueVille] = useState("");
@@ -350,39 +309,88 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
-        const docId = localStorage.getItem('doc_id');
+        const docId = localStorage.getItem("doc_id");
         if (docId) {
-          const response = await axios.post("http://localhost:4000/doctorbyid", { docId });
+          const response = await axios.post(
+            "http://localhost:4000/doctorbyid",
+            { docId }
+          );
           setDoctorData({ ...response.data });
         } else {
-          setError('Doctor ID not found in local storage');
+          setError("Doctor ID not found in local storage");
         }
       } catch (err) {
-        setError('Error fetching doctor data');
+        setError("Error fetching doctor data");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
     fetchDoctorData();
- 
-
   }, []);
+// const handleAddToGoogleCalendar = () => {
+  // // Get start time from localStorage
+  //  const startDate = new Date(localStorage.getItem("clicked_time")); 
+  // // Format start date
+  // const startDateString = startDate
+  //   .toISOString()
+  //   .replace(/[-:]/g, "")
+  //   .replace(/\.\d+/, "");
 
+  // // Calculate end time (start time + 30 minutes)
+  // const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
 
+  // // Format end date
+  // const endDateString = endDate
+  //   .toISOString()
+  //   .replace(/[-:]/g, "")
+  //   .replace(/\.\d+/, "");
 
+  // const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+  //   `Dr. ${doctorData.firstName} ${doctorData.lastName}`
+  // )}&dates=${encodeURIComponent(startDateString)}/${encodeURIComponent(
+  //   endDateString
+  // )}/${encodeURIComponent()}&details=${encodeURIComponent(
+  //   `Première consultation <br/> ${doctorData.phoneNumber}`
+  // )}&location=${encodeURIComponent(doctorData.map)}`;
 
+  // window.open(googleCalendarUrl);
+  const handleAddToGoogleCalendar = () => {
+    const startDate2 = new Date(
+      localStorage.getItem("clicked_time"));
+    const startDate = new Date(startDate2.getTime() - 60 * 60 * 1000); 
+    const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
 
+    const formattedStartDate =
+      startDate
+        .toISOString()
+        .replace(/[-:]/g, "")
+        .replace(/\.\d\d\d/, "") + "";
+    const formattedEndDate =
+      endDate
+        .toISOString()
+        .replace(/[-:]/g, "")
+        .replace(/\.\d\d\d/, "") + "";
 
-
-
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+      `Dr. ${doctorData.firstName} ${doctorData.lastName}`
+    )}&dates=${encodeURIComponent(formattedStartDate)}/${encodeURIComponent(
+      formattedEndDate
+    )}&details=${encodeURIComponent(
+      `Première consultation <br/> ${doctorData.phoneNumber}`
+    )}&location=${encodeURIComponent(doctorData.map)}`;
+    window.open(googleCalendarUrl);
+  };
 
   return (
     <>
       <div className="Main">
         {/**Header */}
         <Head></Head>
-        <br /><br /><br /><br />
+        <br />
+        <br />
+        <br />
+        <br />
         <main>
           <div className="od-book">
             <div className="od-book-container">
@@ -465,7 +473,8 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                       </div>
                                       <label htmlFor="radio-52f93e42-7c64-4c4f-a45e-0d7c81f3be1f">
                                         Ceci est ma première consultation avec
-                                        Dr. {doctorData.lastName} {doctorData.firstName}
+                                        Dr. {doctorData.lastName}{" "}
+                                        {doctorData.firstName}
                                       </label>
                                     </div>
                                   </div>
@@ -488,7 +497,9 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                         </div>
                                       </div>
                                       <label htmlFor="radio-fab6428d-b07b-45c5-bfd8-6f701ae9c479">
-                                        Je suis déjà suivi(e) par Dr. {doctorData.lastName} {doctorData.firstName}
+                                        Je suis déjà suivi(e) par Dr.{" "}
+                                        {doctorData.lastName}{" "}
+                                        {doctorData.firstName}
                                       </label>
                                     </div>
                                   </div>
@@ -558,7 +569,7 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                             >
                                               <div></div>
                                               <div className="rtl:text-right ltr:text-left text-sm font-medium group-hover:font-bold rtl:text-base line-clamp-2">
-                                              {doctorData.type}
+                                                {doctorData.type}
                                               </div>
                                               <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -647,13 +658,8 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                       </div>
                     )}
                     {showNextContent === 2 && (
-
-                      
                       <div>
-                        <div
-                          className="cw-warning"
-                          onClick={() => handleNextClick(3)}
-                        >
+                        <div className="cw-warning">
                           Votre RDV n&apos;est pas encore confirmé Merci de vous
                           identifier pour confirmer votre rendez-vous.
                         </div>
@@ -662,66 +668,70 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                           style={{ paddingTop: "30px" }}
                         >
                           {tokenExists ? (
-              <div>
-                {/* Skip the sign-up and sign-in sections if token exists */}
-                <p>You are already signed in.</p>
-                <button className="mdc-button" onClick={handleNextClick(3)}>Continue</button>
-              </div>
-            ) : (
-              <div>
-                <div className="od-book-content-body">
-        <div className="cw-component cw-register">
-          {showSignupContent ? (
-            <section className="cw-form-section">
-              <h2 className="cw-form-section-title cw-form-section-title--centered">
-                Nouveau sur RDVanytime?
-              </h2>
-              <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
-                <button
-                  className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
-                  type="button"
-                  onClick={handleSignupClick}
-                >
-                  <span className="mdc-button__label">
-                    S&apos;inscrire
-                  </span>
-                </button>
-              </div>
-            </section>
-          ) : (
-            <div>
-              <SectionSignup></SectionSignup>
-            </div>
-          )}
-          <div className="cw-login-container">
-            <div className="cw-component cw-login">
-              {showSigninContent ? (
-                <section className="cw-form-section">
-                  <h2 className="cw-form-section-title cw-form-section-title--centered">
-                    Connexion avec votre compte RDVanytime
-                  </h2>
-                  <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
-                    <button
-                      className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
-                      type="button"
-                      onClick={handleSigninClick}
-                    >
-                      <span className="mdc-button__label">
-                        Se connecter
-                      </span>
-                    </button>
-                  </div>
-                </section>
-              ) : (
-                <div>
-                  <SectionSignin></SectionSignin>
-                </div>
-              )}
-            </div>
-          </div>
-        </div></div>
-              </div>
-            )}
+                            <div>
+                              {/* Skip the sign-up and sign-in sections if token exists */}
+                              <p>You are already signed in.</p>
+                              <button
+                                className="mdc-button"
+                                onClick={handleNextClick(3)}
+                              >
+                                Continue
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="od-book-content-body">
+                              <div className="cw-component cw-register">
+                                {showSignupContent ? (
+                                  <section className="cw-form-section">
+                                    <h2 className="cw-form-section-title cw-form-section-title--centered">
+                                      Nouveau sur RDVanytime?
+                                    </h2>
+                                    <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
+                                      <button
+                                        className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
+                                        type="button"
+                                        onClick={handleSignupClick}
+                                      >
+                                        <span className="mdc-button__label">
+                                          S&apos;inscrire
+                                        </span>
+                                      </button>
+                                    </div>
+                                  </section>
+                                ) : (
+                                  <div>
+                                    <SectionSignup></SectionSignup>
+                                  </div>
+                                )}
+                                <div className="cw-login-container">
+                                  <div className="cw-component cw-login">
+                                    {showSigninContent ? (
+                                      <section className="cw-form-section">
+                                        <h2 className="cw-form-section-title cw-form-section-title--centered">
+                                          Connexion avec votre compte RDVanytime
+                                        </h2>
+                                        <div className="cw-form-buttons cw-form-buttons-full cw-form-toggleable-toggle">
+                                          <button
+                                            className="bodel mdc-button mdc-button--unelevated mdc-ripple-upgraded"
+                                            type="button"
+                                            onClick={handleSigninClick}
+                                          >
+                                            <span className="mdc-button__label">
+                                              Se connecter
+                                            </span>
+                                          </button>
+                                        </div>
+                                      </section>
+                                    ) : (
+                                      <div>
+                                        <SectionSignin></SectionSignin>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                           <div className="od-book-content-sidebar">
                             <div className="cw-funnel-sidebar-summary">
                               <h2 className="cw-summary-title">
@@ -736,10 +746,11 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                   />
                                 </div>
                                 <div className="cw-summary-resource-info">
-                                  Dr {doctorData.lastName} {doctorData.firstName}
+                                  Dr {doctorData.lastName}{" "}
+                                  {doctorData.firstName}
                                 </div>
                                 <div className="cw-summary-resource-secondary-info">
-                                {doctorData.type}
+                                  {doctorData.type}
                                 </div>
                               </div>
                               <div className="cw-summary-disclaimer">
@@ -765,7 +776,8 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                     style={{ marginRight: "8px" }}
                                   ></LocationOnIcon>
                                   <span>
-                                    {doctorData.Numerorue} {doctorData.rue} {doctorData.ville}
+                                    {doctorData.Numerorue} {doctorData.rue}{" "}
+                                    {doctorData.ville}
                                     <br />
                                     {doctorData.codePostale} {doctorData.pays}
                                   </span>
@@ -814,17 +826,16 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                             data-uuid="409cce71-3e8a-4ce6-8779-89481f3ce679"
                                           >
                                             <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                            <input
-            type="radio"
-            className="mdc-radio__native-control"
-            name="gender1"
-            value="Homme"
-            
-            required=""
-            onChange={() => {
-              handleGenderChange("Homme");
-            }}// Call handleGenderChange function with 'Homme' value when this radio button is clicked
-        />
+                                              <input
+                                                type="radio"
+                                                className="mdc-radio__native-control"
+                                                name="gender1"
+                                                value="Homme"
+                                                required=""
+                                                onChange={() => {
+                                                  handleGenderChange("Homme");
+                                                }} // Call handleGenderChange function with 'Homme' value when this radio button is clicked
+                                              />
                                               <div className="mdc-radio__background">
                                                 <div className="mdc-radio__outer-circle"></div>
                                                 <div className="mdc-radio__inner-circle"></div>
@@ -841,17 +852,16 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                             data-uuid="3b962c17-6c7a-4450-8304-17724ec58a90"
                                           >
                                             <div className="boul mdc-radio mdc-ripple-upgraded mdc-ripple-upgraded--unbounded">
-                                            <input
-            type="radio"
-            className="mdc-radio__native-control"
-            name="gender2"
-            value="Femme"
-            
-            required=""
-            onChange={() => {
-              handleGenderChange("Femme");
-            }}// Call handleGenderChange function with 'Femme' value when this radio button is clicked
-        />
+                                              <input
+                                                type="radio"
+                                                className="mdc-radio__native-control"
+                                                name="gender2"
+                                                value="Femme"
+                                                required=""
+                                                onChange={() => {
+                                                  handleGenderChange("Femme");
+                                                }} // Call handleGenderChange function with 'Femme' value when this radio button is clicked
+                                              />
                                               <div className="mdc-radio__background">
                                                 <div className="mdc-radio__outer-circle"></div>
                                                 <div className="mdc-radio__inner-circle"></div>
@@ -907,7 +917,6 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                           backgroundColor: "transparent",
                                         }}
                                         name="Date de naissance"
-                                        
                                       />
                                     </div>
                                   </div>
@@ -945,7 +954,6 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                                       "transparent",
                                                   }}
                                                   placeholder="Rue*"
-                                                  
                                                 />
                                               </div>
                                             </div>
@@ -1069,19 +1077,18 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                         backgroundColor: "transparent",
                                         height: "100px",
                                       }}
-                                    
                                     />
                                   </div>
                                 </section>
                                 <div className="cw-form-buttons cw-form-buttons-full">
                                   <button
-                                  name="submit"
+                                    name="submit"
                                     className="mdc-button mdc-button--unelevated mdc-ripple-upgraded"
                                     type="submit"
                                     onClick={() => {
                                       handleSubmitRdv();
                                       handleNextClick(4);
-                                  }}
+                                    }}
                                   >
                                     <span className="mdc-button__label">
                                       Confirmer rendez-vous
@@ -1106,10 +1113,11 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                   />
                                 </div>
                                 <div className="cw-summary-resource-info">
-                                  Dr {doctorData.firstName} {doctorData.lastName}
+                                  Dr {doctorData.firstName}{" "}
+                                  {doctorData.lastName}
                                 </div>
                                 <div className="cw-summary-resource-secondary-info">
-                                {doctorData.type}
+                                  {doctorData.type}
                                 </div>
                               </div>
                               <div className="cw-summary-disclaimer">
@@ -1137,7 +1145,8 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                   <span>
                                     {doctorData.rueNumero} {doctorData.rue}
                                     <br />
-                                    {doctorData.codePostale} {doctorData.ville}, {doctorData.pays}
+                                    {doctorData.codePostale} {doctorData.ville},{" "}
+                                    {doctorData.pays}
                                   </span>
                                 </div>
                               </div>
@@ -1189,17 +1198,55 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                             marginRight: "8px",
                                           }}
                                         ></PersonIcon>
-                                        <span>Dr {doctorData.firstName} {doctorData.lastName}</span>
+                                        <span>
+                                          Dr {doctorData.firstName}{" "}
+                                          {doctorData.lastName}
+                                        </span>
                                       </div>
                                       <div className="cw-confirmation-summary-item cw-confirmation-practical-info-item--wrap">
                                         <span className="cw-confirmation-summary-item-group">
                                           <EventIcon
                                             style={{ marginRight: "8px" }}
                                           ></EventIcon>
-                                          <span>
-                                          {capitalizedDay}
-                                          </span>
+                                          <span>{capitalizedDay}</span>
                                         </span>
+                                        {/*  */}
+                                        <span
+                                          style={{
+                                            padding: "4px 8px",
+                                          }}
+                                        >
+                                          <div
+                                            style={{
+                                              textAlign: "center",
+                                            }}
+                                          >
+                                            <button
+                                              onClick={
+                                                handleAddToGoogleCalendar
+                                              }
+                                              type="button"
+                                              style={{
+                                                width: " 100%",
+                                                height: "auto",
+                                                fontWeight: "500",
+                                                letterSpacing: "1px",
+                                                borderColor: "#02AE96",
+                                                color: "#02AE96",
+                                                backgroundColor: "transparent",
+                                                borderStyle: "solid",
+                                                padding: "0 15px",
+                                                borderWidth: "1px",
+                                                borderRadius: "4px",
+                                              }}
+                                            >
+                                              <span className="mdc-button__label">
+                                                Ajouter au calendrier
+                                              </span>
+                                            </button>
+                                          </div>
+                                        </span>
+                                        {/*  */}
                                       </div>
                                       <div className="cw-confirmation-summary-item">
                                         <HealingIcon
@@ -1221,9 +1268,12 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
                                           target="_blank"
                                         >
                                           <span>
-                                            {doctorData.rueNumero} {doctorData.rue}
+                                            {doctorData.rueNumero}{" "}
+                                            {doctorData.rue}
                                             <br />
-                                            {doctorData.codePostale} {doctorData.ville}, {doctorData.pays}
+                                            {doctorData.codePostale}{" "}
+                                            {doctorData.ville},{" "}
+                                            {doctorData.pays}
                                           </span>
                                         </a>
                                       </div>
@@ -1283,7 +1333,6 @@ const capitalizedDay = formattedDate.charAt(0).toUpperCase() + formattedDate.sli
         </main>
       </div>
       <Footer />
-    
     </>
   );
 }
