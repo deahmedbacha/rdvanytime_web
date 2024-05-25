@@ -4,7 +4,6 @@ import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GoogleLogin } from "@react-oauth/google";
 
 function SectionSignup() {
   //number:
@@ -433,7 +432,7 @@ function SectionSignup() {
                             className="ds-custom-tag"
                             style={{ height: "100%", width: "100%" }}
                           >
-                            {/* <button
+                            <button
                               type="submit"
                               disabled={!captchaValue}
                               onClick={handleSubmit}
@@ -459,15 +458,7 @@ function SectionSignup() {
                                   </div>
                                 </div>
                               </div>
-                            </button> */}
-                            <GoogleLogin
-                              onSuccess={(credentialResponse) => {
-                                console.log(credentialResponse);
-                              }}
-                              onError={() => {
-                                console.log("Login Failed");
-                              }}
-                            />
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -479,11 +470,6 @@ function SectionSignup() {
                         <hr className="ctw-w-1/3 ctw-h-0" />
                       </div>
                       <div>
-                        {/* 
-                     clientId :    512138408816-igjekf4m8qko5s4mq0oll4q0oj2po9sb.apps.googleusercontent.com
-                      Code secret du client : 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 
-                        */}
-
                         <div className="ds-button">
                           <div
                             className="ds-custom-tag"

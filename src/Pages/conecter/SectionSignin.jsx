@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Padding } from "@mui/icons-material";
 import ReCAPTCHA from "react-google-recaptcha";
-import { GoogleLogin } from "@react-oauth/google";
 
 function SectionSignin() {
   //email:
@@ -475,7 +474,7 @@ function SectionSignin() {
                               className="ds-custom-tag"
                               style={{ height: "100%", width: "100%" }}
                             >
-                              {/* <button
+                              <button
                                 type="submit"
                                 style={{
                                   border: "1px solid rgb(30, 29, 29) ",
@@ -516,15 +515,7 @@ function SectionSignin() {
                                     </div>
                                   </div>
                                 </div>
-                              </button> */}
-                              <GoogleLogin
-                                onSuccess={(credentialResponse) => {
-                                  console.log(credentialResponse);
-                                }}
-                                onError={() => {
-                                  console.log("Login Failed");
-                                }}
-                              />
+                              </button>
                             </div>
                           </div>
                         </div>
