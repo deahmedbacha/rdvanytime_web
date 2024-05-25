@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GoogleLogin } from "@react-oauth/google";
+
 function SectionSignup() {
   //number:
   const [phoneNumber, setphoneNumber] = useState("");
@@ -113,10 +118,12 @@ function SectionSignup() {
     } catch (error) {
       console.log("Button clicked!2");
       console.error("Registration failed:", error.response.data); // log the error
+        toast.error("une erreur s'est produite. L'enregistrement de l'utilisateur a échoué.");
       // Handle error, e.g., show an error message to the user
     }
   };
-
+  //ReCAPTCHA
+  const [captchaValue, setCaptchaValue] = useState(null);
   return (
     <>
       <div className="sc-aaf087d9-6 gpRMrZ">
@@ -415,37 +422,53 @@ function SectionSignup() {
                           </a>
                         </p>
                       </div>
-                      <div className="ds-button">
-                        <div
-                          className="ds-custom-tag"
-                          style={{ height: "100%", width: "100%" }}
-                        >
-                          <button
-                            type="submit"
-                            onClick={handleSubmit}
-                            className="ctw-select-none ctw-flex ctw-box-border ctw-items-center ctw-justify-center ctw-font-bold ctw-underline-offset-4 ctw-min-w-min ctw-w-full ctw-transition-all ctw-duration-300 ctw-outline-none ctw-bg-primary-500 ctw-text-white ctw-border-solid ctw-border-[1.5px] ctw-border-primary-500 hover:ctw-shadow-lg hover:ctw-bg-primary-700 hover:ctw-border-primary-700 focus:ctw-shadow-lg focus:ctw-bg-primary-700 focus:ctw-border-primary-700 ctw-cursor-pointer ctw-h-10 ctw-text-[1rem] ctw-rounded"
+                      <ReCAPTCHA
+                        style={{ display: "flex", justifyContent: "center" }}
+                        sitekey="6LfkHuEpAAAAAMfrjZGGc7cpf8EQv7jRnLRuvnMt"
+                        onChange={(val) => setCaptchaValue(val)}
+                      />
+                      <div className="ctw-w-full ctw-mt-6">
+                        <div className="ds-button">
+                          <div
+                            className="ds-custom-tag"
+                            style={{ height: "100%", width: "100%" }}
                           >
-                            <div className="ctw-flex ctw-flex-row">
-                              <div className="ctw-flex ctw-items-center ctw-grow ctw-flex-row ctw-justify-center">
-                                <div className="ctw-cursor-[inherit] ctw-px-3 ctw-text-left">
-                                  Accepter et s’inscrire
-                                </div>
-                                <div className="ctw-shrink-0 ctw-flex ctw-justify-center ctw-cursor-[inherit] ctw-pr-3">
-                                  <svg
-                                    className="ds-icon"
-                                    width="1em"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path
-                                      d="M4.99185 12.1573L8.26467 9.0411C8.44328 8.87105 8.63586 8.71632 8.84038 8.57853L9.02205 8.45615C9.34566 8.23814 9.34566 7.76186 9.02205 7.54385L8.84038 7.42147C8.63586 7.28369 8.44327 7.12895 8.26467 6.9589L4.99185 3.84275C4.91517 3.76971 4.85435 3.683 4.81285 3.58757C4.77136 3.49214 4.75 3.38986 4.75 3.28657C4.75 3.18327 4.77136 3.08099 4.81285 2.98556C4.85435 2.89013 4.91517 2.80342 4.99185 2.73038C5.06853 2.65734 5.15955 2.5994 5.25974 2.55987C5.35992 2.52035 5.46729 2.5 5.57573 2.5C5.68416 2.5 5.79154 2.52035 5.89172 2.55987C5.9919 2.5994 6.08293 2.65734 6.15961 2.73038L11.1077 7.44381C11.1845 7.51679 11.2455 7.60348 11.287 7.69892C11.3286 7.79436 11.35 7.89667 11.35 8C11.35 8.10333 11.3286 8.20564 11.287 8.30108C11.2455 8.39652 11.1845 8.48321 11.1077 8.55619L6.15961 13.2696C6.08293 13.3427 5.9919 13.4006 5.89172 13.4401C5.79154 13.4797 5.68416 13.5 5.57573 13.5C5.46729 13.5 5.35992 13.4797 5.25974 13.4401C5.15955 13.4006 5.06853 13.3427 4.99185 13.2696C4.91517 13.1966 4.85435 13.1099 4.81285 13.0144C4.77136 12.919 4.75 12.8167 4.75 12.7134C4.75 12.6101 4.77136 12.5079 4.81285 12.4124C4.85435 12.317 4.91517 12.2303 4.99185 12.1573Z"
-                                      fill="#FFF"
-                                    ></path>
-                                  </svg>
+                            {/* <button
+                              type="submit"
+                              disabled={!captchaValue}
+                              onClick={handleSubmit}
+                              className="ctw-select-none ctw-flex ctw-box-border ctw-items-center ctw-justify-center ctw-font-bold ctw-underline-offset-4 ctw-min-w-min ctw-w-full ctw-transition-all ctw-duration-300 ctw-outline-none ctw-bg-primary-500 ctw-text-white ctw-border-solid ctw-border-[1.5px] ctw-border-primary-500 hover:ctw-shadow-lg hover:ctw-bg-primary-700 hover:ctw-border-primary-700 focus:ctw-shadow-lg focus:ctw-bg-primary-700 focus:ctw-border-primary-700 ctw-cursor-pointer ctw-h-10 ctw-text-[1rem] ctw-rounded"
+                            >
+                              <div className="ctw-flex ctw-flex-row">
+                                <div className="ctw-flex ctw-items-center ctw-grow ctw-flex-row ctw-justify-center">
+                                  <div className="ctw-cursor-[inherit] ctw-px-3 ctw-text-left">
+                                    Accepter et s’inscrire
+                                  </div>
+                                  <div className="ctw-shrink-0 ctw-flex ctw-justify-center ctw-cursor-[inherit] ctw-pr-3">
+                                    <svg
+                                      className="ds-icon"
+                                      width="1em"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 16 16"
+                                    >
+                                      <path
+                                        d="M4.99185 12.1573L8.26467 9.0411C8.44328 8.87105 8.63586 8.71632 8.84038 8.57853L9.02205 8.45615C9.34566 8.23814 9.34566 7.76186 9.02205 7.54385L8.84038 7.42147C8.63586 7.28369 8.44327 7.12895 8.26467 6.9589L4.99185 3.84275C4.91517 3.76971 4.85435 3.683 4.81285 3.58757C4.77136 3.49214 4.75 3.38986 4.75 3.28657C4.75 3.18327 4.77136 3.08099 4.81285 2.98556C4.85435 2.89013 4.91517 2.80342 4.99185 2.73038C5.06853 2.65734 5.15955 2.5994 5.25974 2.55987C5.35992 2.52035 5.46729 2.5 5.57573 2.5C5.68416 2.5 5.79154 2.52035 5.89172 2.55987C5.9919 2.5994 6.08293 2.65734 6.15961 2.73038L11.1077 7.44381C11.1845 7.51679 11.2455 7.60348 11.287 7.69892C11.3286 7.79436 11.35 7.89667 11.35 8C11.35 8.10333 11.3286 8.20564 11.287 8.30108C11.2455 8.39652 11.1845 8.48321 11.1077 8.55619L6.15961 13.2696C6.08293 13.3427 5.9919 13.4006 5.89172 13.4401C5.79154 13.4797 5.68416 13.5 5.57573 13.5C5.46729 13.5 5.35992 13.4797 5.25974 13.4401C5.15955 13.4006 5.06853 13.3427 4.99185 13.2696C4.91517 13.1966 4.85435 13.1099 4.81285 13.0144C4.77136 12.919 4.75 12.8167 4.75 12.7134C4.75 12.6101 4.77136 12.5079 4.81285 12.4124C4.85435 12.317 4.91517 12.2303 4.99185 12.1573Z"
+                                        fill="#FFF"
+                                      ></path>
+                                    </svg>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </button>
+                            </button> */}
+                            <GoogleLogin
+                              onSuccess={(credentialResponse) => {
+                                console.log(credentialResponse);
+                              }}
+                              onError={() => {
+                                console.log("Login Failed");
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </form>
@@ -456,6 +479,11 @@ function SectionSignup() {
                         <hr className="ctw-w-1/3 ctw-h-0" />
                       </div>
                       <div>
+                        {/* 
+                     clientId :    512138408816-igjekf4m8qko5s4mq0oll4q0oj2po9sb.apps.googleusercontent.com
+                      Code secret du client : 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 
+                        */}
+
                         <div className="ds-button">
                           <div
                             className="ds-custom-tag"
@@ -468,11 +496,13 @@ function SectionSignup() {
                               }}
                               className="ctw-select-none ctw-flex ctw-box-border ctw-items-center ctw-justify-center ctw-font-bold ctw-underline-offset-4 ctw-min-w-min ctw-w-full ctw-transition-all ctw-duration-300 ctw-outline-none ctw-bg-transparent ctw-text-primary-500 ctw-border-solid ctw-border-[1.5px] ctw-border-primary-200 hover:ctw-shadow-lg hover:ctw-text-primary-700 hover:ctw-border-primary-700 focus:ctw-shadow-lg focus:ctw-text-primary-700 focus:ctw-border-primary-700 ctw-cursor-pointer ctw-h-10 ctw-text-[1rem] ctw-rounded"
                             >
+                              <ToastContainer />
                               <div className="ctw-flex ctw-flex-row">
                                 <div className="ctw-flex ctw-items-center ctw-grow ctw-flex-row-reverse ctw-justify-center">
                                   <div className="ctw-cursor-[inherit] ctw-px-3 ctw-text-left">
                                     S&apos;inscrire avec Google
                                   </div>
+
                                   <div className="ctw-shrink-0 ctw-flex ctw-justify-center ctw-cursor-[inherit] ctw-pl-3">
                                     <svg
                                       className="ds-icon"

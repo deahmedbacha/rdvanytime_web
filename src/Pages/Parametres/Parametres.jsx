@@ -1,4 +1,4 @@
-import { Headconect } from "../../Components/Headconect";
+import { Head } from "../../Components/Head";
 import { useState } from "react";
 import "./Parametres.css";
 import Informations from "./Informations";
@@ -22,7 +22,7 @@ export const Parametres = () => {
 
   return (
     <>
-      <Headconect></Headconect>
+      <Head brand="fixed h-20 end-0 w-full opacity-100 bg-white top-0 z-[49]" />
       <body>
         <main
           className=" grid-cols-profile-area mt-20 bg-p-cover overflow-hidden "

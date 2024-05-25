@@ -350,3 +350,9 @@
   border-width: 0;
 }
 }
+@media (max-width: 768px) {
+ .w-screen.overflow-scroll.scrollbar-none{
+    margin-left: 0% !important;
+    width: 100% !important;
+  }
+}

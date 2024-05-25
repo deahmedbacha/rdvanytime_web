@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "firstName":"abdou",
+    "email":"abdou@gmail.com",
+    "lastName":"blh",
+    "type": "Médecin généraliste",
+    "image": "src/assets/avatar_doctor.jpg",
+    "consultation": "Première consultation",  
+    "ville": "15, rue Miloud Benhaddou",
+    "phoneNumber":"0664189325"
+  },
+   {
+    "id": 2,
+    "firstName":"Dr KHIDAOUI ",
+    "email":"KHIDAOUIOmar@gmail.com",
+    "lastName":"Omar",
+    "type": "Médecin généraliste",
+    "image": "src/assets/avatar_doctor.jpg",
+    "consultation": "Première consultation",  
+    "ville": "15, rue Miloud Benhaddou",
+    "phoneNumber":"0664189325"
+  }
+ 
+]

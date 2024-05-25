@@ -1,22 +1,17 @@
 import "../Médecin/Medecin.css";
-import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import SectionSignin from "../conecter/SectionSignin.jsx";
 import SectionSignup from "../conecter/SectionSignup.jsx";
-import { Menu2 } from "../../Components/menu/Menu2";
 import EventIcon from "@mui/icons-material/Event";
 import HealingIcon from "@mui/icons-material/Healing";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
 import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
-import Relationn from "Components/showDiv/Relationn";
 import { Footer } from "../../Components/Footer/Footer.jsx";
 import Head from "../../Components/Head";
 import axios from "axios";
 function Rdv() {
-  const [popupEventSexe, setSexe] = useState(null);
 
   const token = localStorage.getItem("token");
 
@@ -55,18 +50,6 @@ function Rdv() {
         handleGenderChange("Femme");
       }
 
-      {
-        /*
-    const sexeInput = document.querySelector('input[name="Homme"]');
-    const sexeInput2 = document.querySelector('input[name="Femme"]');
-    if (response.data.sexe === 'true') {
-      sexeInput.checked = true;
-      sexeInput2.checked = false;
-    }else {
-      sexeInput.checked = false;
-      sexeInput2.checked = true;
-    }*/
-      }
       paysInput.value = response.data.pays;
       rueInput.value = response.data.rue;
       rueNumeroInput.value = response.data.rueNumero;
@@ -296,14 +279,6 @@ function Rdv() {
   const handleInputClick2 = () => {
     setShowDiv2(true);
   };
-  const [AjouterProche, setShowAjouterProche] = useState(false);
-  const AjouterProcheClick = () => {
-    setShowAjouterProche(true);
-  };
-
-  const DisableProcheClick = () => {
-    setShowAjouterProche(false);
-  };
   const [doctorData, setDoctorData] = useState({});
 
   useEffect(() => {
@@ -328,33 +303,7 @@ function Rdv() {
     };
     fetchDoctorData();
   }, []);
-// const handleAddToGoogleCalendar = () => {
-  // // Get start time from localStorage
-  //  const startDate = new Date(localStorage.getItem("clicked_time")); 
-  // // Format start date
-  // const startDateString = startDate
-  //   .toISOString()
-  //   .replace(/[-:]/g, "")
-  //   .replace(/\.\d+/, "");
 
-  // // Calculate end time (start time + 30 minutes)
-  // const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
-
-  // // Format end date
-  // const endDateString = endDate
-  //   .toISOString()
-  //   .replace(/[-:]/g, "")
-  //   .replace(/\.\d+/, "");
-
-  // const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
-  //   `Dr. ${doctorData.firstName} ${doctorData.lastName}`
-  // )}&dates=${encodeURIComponent(startDateString)}/${encodeURIComponent(
-  //   endDateString
-  // )}/${encodeURIComponent()}&details=${encodeURIComponent(
-  //   `Première consultation <br/> ${doctorData.phoneNumber}`
-  // )}&location=${encodeURIComponent(doctorData.map)}`;
-
-  // window.open(googleCalendarUrl);
   const handleAddToGoogleCalendar = () => {
     const startDate2 = new Date(
       localStorage.getItem("clicked_time"));
@@ -740,7 +689,7 @@ function Rdv() {
                               <div className="cw-summary-resource">
                                 <div className="cw-summary-resource-picture">
                                   <img
-                                    src="src/assets/avatar_doctor.jpg"
+                                    src="src/assets/avatar_doctor.png"
                                     alt=""
                                     title=""
                                   />
@@ -1107,7 +1056,7 @@ function Rdv() {
                               <div className="cw-summary-resource">
                                 <div className="cw-summary-resource-picture">
                                   <img
-                                    src="src/assets/avatar_doctor.jpg"
+                                    src="src/assets/avatar_doctor.png"
                                     alt=""
                                     title=""
                                   />
@@ -1266,6 +1215,7 @@ function Rdv() {
                                         <a
                                           href="https://www.google.ch/maps/"
                                           target="_blank"
+                                          rel="noreferrer"
                                         >
                                           <span>
                                             {doctorData.rueNumero}{" "}
@@ -1292,6 +1242,9 @@ function Rdv() {
                                     <button
                                       className="mdc-button mdc-button--unelevated mdc-ripple-upgraded"
                                       type="button"
+                                      onClick={() =>
+                                        (window.location.href = "./Rendezvous")
+                                      }
                                     >
                                       <span className="mdc-button__label">
                                         Voir mes rendez-vous
@@ -1300,6 +1253,9 @@ function Rdv() {
                                     <button
                                       className="mdc-button mdc-button--unelevated mdc-ripple-upgraded"
                                       type="button"
+                                      onClick={() =>
+                                        (window.location.href = "./Rechercher")
+                                      }
                                     >
                                       <span className="mdc-button__label">
                                         Nouveau rendez-vous

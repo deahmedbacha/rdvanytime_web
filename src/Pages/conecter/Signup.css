@@ -10,8 +10,8 @@
     padding-right: 47%;
     padding-top: 10%;*/
     padding-top: 12%;
-    padding-left: 17%;
-    padding-right: 17%;
+    display: flex;
+    justify-content: center;
 }
 
 

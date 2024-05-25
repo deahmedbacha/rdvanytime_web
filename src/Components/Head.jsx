@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import Badge from "@mui/material/Badge";
+
 export const Head = (props) => {
   const [showFirstContent, setShowFirstContent] = useState(false);
 
@@ -43,6 +45,19 @@ export const Head = (props) => {
 
     fetchData();
   }, []);
+    const [unread, setUnread] = useState(0);
+
+
+    useEffect(() => {
+      axios
+        .get("src/Modepro/NotificationsPro/nots.json")
+        .then((res) => {
+          setUnread(res.data.filter((item) => !item.read).length);
+        })
+        .catch((error) => {
+          console.error("Error fetching nots data:", error);
+        });
+    }, []);
 
   const disconnect = () => {
     localStorage.removeItem("token");
@@ -55,9 +70,9 @@ export const Head = (props) => {
         // <header className="fixed h-20 end-0 w-full opacity-100 bg-white top-0 z-[49]">
         <header className={props.brand}>
           <div className="w-full h-full py-3 flex md:gap-12 items-center justify-between px-3 md:px-8 md:px-5 lg:px-9 shadow-sh-112-8">
-            <Link
+            <a
               className="ps-3 lg:w-52 !h-[56px] !w-[124px] flex items-center justify-start"
-              to="/"
+              href="/"
             >
               <div className="hidden md:flex md:items-center md:justify-center">
                 <img
@@ -77,7 +92,7 @@ export const Head = (props) => {
                   alt="RDVanytime"
                 />
               </div>
-            </Link>
+            </a>
             <div className="hidden lg:flex">
               <div className="grid grid-flow-col md:gap-2 lg:gap-7">
                 <a
@@ -109,17 +124,22 @@ export const Head = (props) => {
             <div className="flex justify-end ms-auto">
               <div className="relative flex justify-end">
                 <div className="w-full grid grid-flow-col auto-cols-max gap-2 items-center justify-end">
-                  <div>
+                  <Link to="/NotificationsPro">
                     <button
                       className="w-8 h-8 flex items-center justify-center"
                       style={{ paddingRight: "15%" }}
                     >
-                      <img
-                        src="src/assets/image_Profil/notifications.svg"
-                        alt="notifications"
-                      />
+                      <Badge
+                        badgeContent={unread == "0" ? "0" : unread}
+                        color="error"
+                      >
+                        <img
+                          src="src/assets/image_Profil/notifications.svg"
+                          alt="notifications"
+                        />
+                      </Badge>
                     </button>
-                  </div>
+                  </Link>
                   <div>
                     <button
                       id="lang-switcher"
@@ -334,7 +354,7 @@ export const Head = (props) => {
                     className="text-xs xl:text-sm font-normal px-4 py-3 underline text-center text-primary"
                     to="/modepro"
                   >
-                    Passer en mode pro
+                    Vous êtes praticien ?
                   </Link>
                   <Link
                     className="text-sm xl:text-base font-semibold rounded-3xl px-8 py-3 bg-primary hover:bg-primary-bold text-center text-white align-middle"

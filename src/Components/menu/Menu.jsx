@@ -33,10 +33,10 @@ const Layout = () => {
                   : link === "Contact"
                   ? "/Contact"
                   : link === "À propos"
-                  ? "/Rechercher"
+                  ? "/Apropos"
                   : link === "Vous êtes praticien ?"
-                  ? "/Medecin"
-                 : "/"
+                  ? "/modepro"
+                  : "/"
               }
               style={{ animationDelay: `0.${index + 1}s` }}
               onClick={() => onClick(index)}

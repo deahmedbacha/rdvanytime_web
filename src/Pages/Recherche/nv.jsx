@@ -1,9 +1,0 @@
-<iframe
-  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3256.104037856658!2d-1.344086307888068!3d35.30339630550631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sdz!4v1714706368897!5m2!1sfr!2sdz"
-  width="600"
-  height="450"
-  style="border:0;"
-  allowfullscreen=""
-  loading="lazy"
-  referrerpolicy="no-referrer-when-downgrade"
-></iframe>;

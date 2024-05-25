@@ -20,6 +20,7 @@ import Profilpro from 'Modepro/Profilpro/Profilpro.jsx';
 import Patientspro from "./Modepro/Patientspro/Patientspro.jsx"
 import Agenda from "./Modepro/Agenda/Agenda.jsx"
 import NotificationsPro from "./Modepro/NotificationsPro/NotificationsPro.jsx";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -103,7 +104,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <GoogleOAuthProvider clientId="588364353366-0ola5k3j831ad9aludlkf5tcqdgglenn.apps.googleusercontent.com">
+      <RouterProvider router={router} />
+    </GoogleOAuthProvider>
   </React.StrictMode>
-  
 );

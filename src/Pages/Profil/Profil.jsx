@@ -1,4 +1,4 @@
-import { Headconect } from "../../Components/Headconect";
+import { Head } from "../../Components/Head";
 import Switch from "./Switch.jsx";
 import Groupage from "./Groupage.jsx";
 import { useState, useEffect } from "react";
@@ -234,7 +234,8 @@ export const Profil = () => {
   return (
     <>
       <body>
-        <Headconect></Headconect>
+        <Head brand="fixed h-20 end-0 w-full opacity-100 bg-white top-0 z-[49]" />
+
         <main
           className=" grid-cols-profile-area h-vh-header mt-20 bg-p-cover overflow-hidden "
           style={{ display: "flex" }}

@@ -24,6 +24,20 @@
     "time": "5 days",
     "read": true
   },
+   {
+    "account": "ahmed bacha",
+    "profilePicture": "src/assets/avatar_doctor.jpg",
+    "type": "rating",
+    "didWhat": "vous voulez noté le docteur ahmed bacha",
+    "time": "3 days",
+    "read": true,
+    "ratings": {
+      "Punctuality": 0,
+      "Cleanliness of the practice": 5,
+      "Clear information on the pathology": 3,
+      "Clear information on the side effects": 4
+    }
+  },
   {
     "account": "ahmed bacha",
     "profilePicture": "src/assets/avatar_doctor.jpg",
@@ -32,4 +46,5 @@
     "time": "2 weeks",
     "read": true
   }
+  
 ]

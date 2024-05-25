@@ -1,4 +1,6 @@
 import "./Doctors.css";
+import { Link } from "react-router-dom";
+
 export const Doctors = () => {
   return (
     <>
@@ -77,7 +79,10 @@ export const Doctors = () => {
             </ul>
           </div>
           <div className="Doctors-buttons">
-            <a className="Button Button--purpleLight rounded-3xl" href="">
+            <a
+              className="Button Button--purpleLight rounded-3xl"
+              href="/Modepro"
+            >
               Demander une démonstration gratuite
             </a>
           </div>

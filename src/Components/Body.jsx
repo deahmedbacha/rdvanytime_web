@@ -7,7 +7,7 @@ import iconplaystore from "../assets/Google-Play.json";
 import ShoxDiv1 from "../Components/showDiv/ShoxDiv1.jsx";
 import ShoxDiv2 from "../Components/showDiv/ShowDiv2.jsx";
 import { Link } from "react-router-dom";
-import useEffect from "react";
+import {useEffect,useState} from "react";
  export const Body = () => {
   const ville = "";
   const type = "";
@@ -32,6 +32,33 @@ import useEffect from "react";
     localStorage.removeItem("type");
     console.log("Recherche set to:", recherche);
   }
+ const [position, setPosition] = useState({ latitude: null, longitude: null });
+ const [error, setError] = useState(null);
+   const handleGetLocation = () => {
+
+    //les donner de position
+    console.log(position.latitude);
+    console.log(position.longitude);
+     console.log(error);
+     if (navigator.geolocation) {
+       navigator.geolocation.getCurrentPosition(
+         (position) => {
+           setPosition({
+             latitude: position.coords.latitude,
+             longitude: position.coords.longitude,
+           });
+           setError(null);
+         },
+         (error) => {
+           setError(error.message);
+         }
+       );
+     } else {
+       setError("Geolocation is not supported by this browser.");
+     }
+   };
+
+   
    return (
      <>
        <div>
@@ -111,7 +138,7 @@ import useEffect from "react";
                                    loop={true}
                                  ></Lottie>
                                </div>
-                              <ShoxDiv1></ShoxDiv1>
+                               <ShoxDiv1></ShoxDiv1>
                              </div>
                            </div>
                            <div className="relative rounded-full flex-grow border-liquide border md:w-2/6 flex items-center h-14 py-2 px-2 bg-liquide focus-within:border-primary">
@@ -130,8 +157,11 @@ import useEffect from "react";
                                    loop={true}
                                  ></Lottie>
                                </div>
-                             <ShoxDiv2></ShoxDiv2>
-                               <div className="flex flex-col items-center justify-center">
+                               <ShoxDiv2></ShoxDiv2>
+                               <div
+                                 className="flex flex-col items-center justify-center"
+                                 onClick={handleGetLocation}
+                               >
                                  <img
                                    alt="envoyer"
                                    src="src/assets/envoyer.png"

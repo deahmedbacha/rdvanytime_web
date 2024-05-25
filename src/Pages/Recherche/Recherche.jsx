@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import Head from "Components/Head.jsx";
 import { Footer } from "../../Components/Footer/Footer.jsx";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { timeClockClasses } from "@mui/x-date-pickers";
 
 const DoctorCalendar = ({ doctorId }) => {
@@ -449,7 +449,7 @@ function Recherche() {
                               />
                             ) : (
                               <img
-                                src="src/assets/avatar_doctor.jpg"
+                                src="src/assets/avatar_doctor.png"
                                 alt="Default Avatar"
                                 className="dl-image dl-image-rounded"
                               />
@@ -476,7 +476,11 @@ function Recherche() {
                             </div>
                           </div>
                         </div>
-                        <a href="" target="_blank" rel="noreferrer noopener">
+                        <a
+                          href={doctor.map}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
                           <div className="ml-96">
                             <span className="dl-text dl-text-body dl-text-regular dl-text-s">
                               {doctor.ville}

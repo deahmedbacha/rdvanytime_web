@@ -1,10 +1,7 @@
 
 import "../Médecin/Medecin.css";
-import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
-import { Menu2 } from "../../Components/menu/Menu2";
-import { useRef, useEffect } from "react";
-import React, { useState } from 'react';
+import { useRef, useEffect, useState } from "react";
 import { Footer } from "../../Components/Footer/Footer.jsx";
 import { Head } from "../../Components/Head.jsx";
 import axios from "axios";
@@ -182,7 +179,7 @@ const handleButtonClick = () => {
 };
 
     return (
-      <div className="dl-search-result-calendar">
+      <div className="dl-search-result-calendar2">
         <div
           className="dl-desktop-availabilities-days"
           style={{ opacity: "1" }}
@@ -360,7 +357,7 @@ const handleButtonClick = () => {
     <>
       <div className="Main">
         {/**Header */}
-        <Head brand="Header"/>
+        <Head brand="Header" />
         <main>
           <div className="bg-p-cover od-profile od-profile--bookable">
             <header className="od-profile-header">
@@ -504,10 +501,18 @@ const handleButtonClick = () => {
                         <h4>Heures d&apos;ouverture</h4>
                         <div className="od-profile-opening-day">
                           <div className="od-profile-opening-day-label">
+                            dimanche:
+                          </div>
+                          <div className="od-profile-opening-day-times">
+                            08:00 - 12:00 et 13:30 - 17:00
+                          </div>
+                        </div>
+                        <div className="od-profile-opening-day">
+                          <div className="od-profile-opening-day-label">
                             lundi:
                           </div>
                           <div className="od-profile-opening-day-times">
-                            08:00 - 12:00 et 13:30 - 17:30
+                            08:00 - 12:00 et 13:30 - 17:00
                           </div>
                         </div>
                         <div className="od-profile-opening-day">
@@ -515,7 +520,7 @@ const handleButtonClick = () => {
                             mardi:
                           </div>
                           <div className="od-profile-opening-day-times">
-                            08:00 - 12:00 et 13:30 - 17:30
+                            08:00 - 12:00 et 13:30 - 17:00
                           </div>
                         </div>
                         <div className="od-profile-opening-day">
@@ -523,7 +528,7 @@ const handleButtonClick = () => {
                             mercredi:
                           </div>
                           <div className="od-profile-opening-day-times">
-                            08:00 - 12:00 et 13:30 - 17:30
+                            08:00 - 12:00 et 13:30 - 17:00
                           </div>
                         </div>
                         <div className="od-profile-opening-day">
@@ -531,15 +536,7 @@ const handleButtonClick = () => {
                             jeudi:
                           </div>
                           <div className="od-profile-opening-day-times">
-                            08:00 - 12:00 et 13:30 - 17:30
-                          </div>
-                        </div>
-                        <div className="od-profile-opening-day">
-                          <div className="od-profile-opening-day-label">
-                            dimanche:
-                          </div>
-                          <div className="od-profile-opening-day-times">
-                            08:00 - 12:00 et 13:30 - 17:30
+                            08:00 - 12:00 et 13:30 - 17:00
                           </div>
                         </div>
                       </div>
@@ -985,6 +982,7 @@ const handleButtonClick = () => {
                                 >
                                   <div className="dl-desktop-availabilities-inner">
                                     <DoctorCalendar
+
                                       doctorId={localStorage.getItem("doc_id")}
                                     />
                                   </div>

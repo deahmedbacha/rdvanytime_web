@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="w-screen bg-white">
           <div className="w-full py-24 grid grid-flow-row md:grid-flow-col px-6 gap-y-20 gap-x-12">
             <div className="flex flex-col flex-nowrap items-center md:items-start px-5">
-              <a className="mb-3" href="">
+              <a className="mb-3" href="/">
                 <img
                   src={logo}
                   width="124"
@@ -26,25 +26,25 @@ export const Footer = () => {
               <div className="flex flex-col flex-nowrap items-center md:items-start">
                 <a
                   className="font-normal text-base text-gray-700 mb-2 text-center"
-                  href=""
+                  href="/Modepro"
                 >
-                  Mode pro
+                  Vous êtes praticien ?
                 </a>
                 <a
                   className="font-normal text-base text-gray-700 mb-2 text-center"
-                  href=""
+                  href="/Apropos"
                 >
                   À propos
                 </a>
                 <a
                   className="font-normal text-base text-gray-700 mb-2 text-center"
-                  href=""
+                  href="/Signup"
                 >
                   Rejoignez-nous
                 </a>
                 <a
                   className="font-normal text-base text-gray-700 mb-2 text-center"
-                  href=""
+                  href="/Contact"
                 >
                   Une question ?
                 </a>

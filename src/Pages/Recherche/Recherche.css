@@ -177,6 +177,10 @@ a.dl-button {
   flex: 1 0 0%;
   padding-top: 16px;
 }
+.dl-search-result-calendar2 {
+  flex: 1 0 0%;
+  padding-top: 16px;
+}
 .dl-desktop-availabilities.dl-desktop-availabilities-flat {
   padding: 0;
 }
@@ -583,6 +587,11 @@ b, strong {
 @media screen and (width <= 650px) {
   .dl-search-result-calendar {
     display: none;
+  }
+}
+@media screen and (width <= 650px) {
+  .dl-search-result-calendar2 {
+    display: block;
   }
 }
 @media (max-width : 640px) {

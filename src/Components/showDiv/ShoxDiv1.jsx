@@ -143,7 +143,7 @@ function ShoxDiv1() {
     <>
       <input
         className="bg-liquide outline-none w-full text-base sm:text-sm lg:text-sm outline-clear"
-        placeholder="Rechercher un praticien, un établissement, une spécialité..."
+        placeholder="Rechercher un praticien, une spécialité..."
         onClick={handleInputClick1}
         ref={inputRef1}
         value={inputValueSpes}
