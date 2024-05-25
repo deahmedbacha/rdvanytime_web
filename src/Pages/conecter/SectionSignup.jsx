@@ -2,9 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 function SectionSignup() {
   //number:
   const [phoneNumber, setphoneNumber] = useState("");
@@ -117,7 +114,6 @@ function SectionSignup() {
     } catch (error) {
       console.log("Button clicked!2");
       console.error("Registration failed:", error.response.data); // log the error
-        toast.error("une erreur s'est produite. L'enregistrement de l'utilisateur a échoué.");
       // Handle error, e.g., show an error message to the user
     }
   };
@@ -482,7 +478,6 @@ function SectionSignup() {
                               }}
                               className="ctw-select-none ctw-flex ctw-box-border ctw-items-center ctw-justify-center ctw-font-bold ctw-underline-offset-4 ctw-min-w-min ctw-w-full ctw-transition-all ctw-duration-300 ctw-outline-none ctw-bg-transparent ctw-text-primary-500 ctw-border-solid ctw-border-[1.5px] ctw-border-primary-200 hover:ctw-shadow-lg hover:ctw-text-primary-700 hover:ctw-border-primary-700 focus:ctw-shadow-lg focus:ctw-text-primary-700 focus:ctw-border-primary-700 ctw-cursor-pointer ctw-h-10 ctw-text-[1rem] ctw-rounded"
                             >
-                              <ToastContainer />
                               <div className="ctw-flex ctw-flex-row">
                                 <div className="ctw-flex ctw-items-center ctw-grow ctw-flex-row-reverse ctw-justify-center">
                                   <div className="ctw-cursor-[inherit] ctw-px-3 ctw-text-left">

@@ -66,7 +66,7 @@ function SectionSignin() {
       window.location.href = "http://localhost:5173/";
     } catch (error) {
       console.error("Login failed:", error.response.data); // log the error
-      toast.error("Mot de passe ou adresse email incorrecte");
+      toast.error("Mot de passe incorrect");
       // Handle error, e.g., show an error message to the user
     }
   };
@@ -467,7 +467,6 @@ function SectionSignin() {
                           <span>Ou</span>
                           <hr className="ctw-w-1/3 ctw-h-0" />
                         </div>
-
                         <div>
                           <div className="ds-button">
                             <div
