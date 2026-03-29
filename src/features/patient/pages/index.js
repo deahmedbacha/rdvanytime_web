@@ -1,0 +1,9 @@
+// Patient feature — page re-exports during migration
+export { default as HomePage } from '../../App';
+export { default as SearchPage } from '../../Pages/Recherche/Recherche';
+export { default as DoctorPage } from '../../Pages/Médecin/Medecin';
+export { default as BookingPage } from '../../Pages/rdv/Rdv';
+export { default as AppointmentsPage } from '../../Pages/Rendez-vous/Rendezvous';
+export { default as MedicalRecordsPage } from '../../Pages/Dossiers_médicaux/Dossiers';
+export { default as ProfilePage } from '../../Pages/Profil/Profil';
+export { default as SettingsPage } from '../../Pages/Parametres/Parametres';

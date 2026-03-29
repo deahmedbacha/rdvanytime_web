@@ -1,9 +1,10 @@
-# 🏥 RDV Anytime - Plateforme de Prise de Rendez-vous Médicaux
+# 🏥 RDV Anytime — Plateforme de Prise de Rendez-vous Médicaux
 
 [![Status](https://img.shields.io/badge/Statut-En_Développement-orange.svg)]()
 [![React](https://img.shields.io/badge/Frontend-React_18-blue.svg)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Backend-Node.js_&_Express-green.svg)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen.svg)](https://www.mongodb.com/)
+[![Architecture](https://img.shields.io/badge/Architecture-MVC_&_Feature--based-purple.svg)]()
 
 RDV Anytime est une application web moderne permettant de **connecter facilement les patients et les professionnels de santé**. Elle offre une interface intuitive permettant aux patients de chercher des médecins et de prendre rendez-vous, tout en proposant un espace dédié ("Mode Pro") aux praticiens pour gérer leur agenda et leurs patients.
 
@@ -17,7 +18,18 @@ RDV Anytime est une application web moderne permettant de **connecter facilement
 | :---: | :---: |
 | ![Accueil](https://via.placeholder.com/400x250?text=Page+d%27Accueil) | ![Mode Pro](https://via.placeholder.com/400x250?text=Agenda+M%C3%A9decin) |
 
-*(Lien vers la démo live à insérer ici)*
+---
+
+## ⚡ Stack Technique
+
+| Couche | Technologies |
+|---|---|
+| **Frontend** | React 18, Vite, React Router v6, Zustand, Axios |
+| **Styling** | Tailwind CSS, Material UI, Framer Motion, Lottie |
+| **Backend** | Node.js, Express, Zod (validation) |
+| **Base de données** | MongoDB, Mongoose |
+| **Sécurité** | JWT, bcrypt, reCAPTCHA, dotenv |
+| **Architecture** | Backend MVC strict, Frontend Feature-based |
 
 ---
 
@@ -32,94 +44,39 @@ L'application est divisée en deux portails principaux : le portail Patient et l
 - **Prise de RDV (`/Rdv`)** : Interface de sélection d'un créneau et de confirmation du rendez-vous.
 - **Mes Rendez-vous (`/Rendezvous`)** : Historique et suivi des rendez-vous à venir et passés du patient.
 - **Dossiers Médicaux (`/Dossiers`)** : Accès aux documents de santé du patient.
-- **Profil (`/Profil`)** : Informations personnelles et données de santé détaillées (taille, poids, allergies, antécédents médicaux).
-- **Paramètres (`/Parametres`)** : Configuration du compte (mot de passe, notifications).
-- **Authentification (`/Signin`, `/Signup`)** : Connexion et création de compte patient sécurisées.
+- **Profil (`/Profil`)** : Informations personnelles et données de santé détaillées.
+- **Paramètres (`/Parametres`)** : Configuration du compte.
+- **Authentification (`/Signin`, `/Signup`)** : Connexion et création de compte patient.
 
 ### Portail Professionnel (Modepro)
-- **Accueil Pro (`/Modepro`)** : Dashboard et statistiques récapitulatives pour le médecin.
-- **Connexion Pro (`/Signinpro`)** : Interface d'authentification sécurisée pour le corps médical.
-- **Agenda (`/Agenda`)** : Visualisation et gestion complète du planning (créneaux libres, RDV pris).
-- **Patients (`/Patientspro`)** : Liste et accès rapide aux dossiers des patients du praticien.
-- **Profil Pro (`/Profilpro`)** : Informations du cabinet et spécialités affichées aux patients.
-- **Notifications (`/NotificationsPro`)** : Alertes pour les annulations ou modifications de rendez-vous.
+- **Accueil Pro (`/Modepro`)** : Dashboard et statistiques du médecin.
+- **Connexion Pro (`/Signinpro`)** : Authentification sécurisée pour le corps médical.
+- **Agenda (`/Agenda`)** : Gestion complète du planning (créneaux libres, RDV pris).
+- **Patients (`/Patientspro`)** : Liste et accès aux dossiers des patients du praticien.
+- **Profil Pro (`/Profilpro`)** : Informations du cabinet et spécialités.
+- **Notifications (`/NotificationsPro`)** : Alertes pour les annulations ou modifications de RDV.
 
 ---
 
 ## ⚙️ Fonctionnalités détaillées
 
 ### 1. 🔍 Moteur de recherche médical
-- **Description** : Permet de filtrer l'annuaire des médecins via la ville et le type de spécialité. 
-- **Utilisation** : L'utilisateur remplit un formulaire multicritères qui interroge l'API.
-- **Fichiers** : `Backend/server.js` (route `/search-doctors`), `src/Pages/Recherche`.
+- **Description** : Filtre l'annuaire des médecins via ville et spécialité.
+- **Architecture** : `doctor.service.js` → `doctor.controller.js` → `GET /api/doctors/search`
+- **Frontend** : Hook `useDoctors()`, pages `features/patient/`
 
 ### 2. 🗓️ Gestion des disponibilités et Agenda
-- **Description** : Liaison entre l'emploi du temps du médecin et l'interface de prise de RDV patient en temps réel.
-- **Utilisation** : Évite les doubles réservations en vérifiant la disponibilité en direct dans la base de données.
-- **Fichiers** : `Backend/server.js` (routes `/doc-calender`, `/add-appointment`), `src/Modepro/Agenda`.
+- **Description** : Liaison calendrier médecin / prise de RDV patient en temps réel.
+- **Architecture** : `appointment.service.js` → `appointment.controller.js` → `GET /api/appointments/calendar/:doctorId`
+- **Frontend** : Hook `useAppointments()`, composant `Agenda.jsx`
 
 ### 3. 👤 Dossier Santé Complet (Profil)
-- **Description** : Structure riche de données patients incluant allergies, traitements en cours, opérations chirurgicales, habitudes de vie (alcool, tabac).
-- **Utilisation** : Le patient remplit ce formulaire depuis `/Profil`, facilitant le diagnostic pour les professionnels.
-- **Fichiers** : `Backend/models/user.js`, API `/update-user`.
+- **Description** : Structure riche (allergies, traitements, antécédents, habitudes de vie).
+- **Architecture** : `user.service.js` → `user.controller.js` → `PUT /api/users/settings`
 
-### 4. 🔔 Système de Notifications (Annulations)
-- **Description** : Gestion des annulations générant une notification automatique.
-- **Utilisation** : Si un patient annule un RDV, le médecin est alerté (et inversement).
-- **Fichiers** : `Backend/server.js` (route `/cancel-appointment`), modèle `notification.js`.
-
----
-
-## 💪 Points forts du projet
-
-- **UI/UX Moderne & Réactive** : Utilisation intensive de Tailwind CSS et Material UI pour un design soigné, enrichi par des animations via Framer Motion et Lottie.
-- **Séparation des Contextes** : L'architecture logique sépare clairement l'espace usager de l'espace administratif (Modepro), ce qui facilite l'évolutivité.
-- **Modèle de données précis** : La modélisation MongoDB du dossier patient est exhaustive, permettant d'embarquer des attributs cliniques pertinents pour le secteur de la e-santé.
-
----
-
-## ⚠️ Points faibles & limites connues (Dette technique)
-
-- **Sécurité (Variables d'environnement)** : La clé secrète JWT ("Blitz") et les URI de base de données (`mongodb://localhost:27017...`) sont en **"dur"** dans le code backend. Cela nécessite la mise en place urgente d'un fichier `.env`.
-- **Validation Backend manquante** : Peu de contrôle sur le type ou l'assainissement des données provenant de formulaires avant l'injection en base, ce qui est risqué (XSS / validation).
-- **Absence de paiement / Téléconsultation** : Il manque aujourd'hui les intégrations de liens de paiement (ex: Stripe) et une API de visio pour effectuer de vraies téléconsultations.
-- **Gestion des erreurs générique** : Le serveur renvoie souvent un simple `500 Server Error` sans capturer les erreurs spécifiques pour le debug.
-
----
-
-## 🚀 Installation & Lancement
-
-### Prérequis
-- `Node.js` (v16 ou supérieur recommandé)
-- `MongoDB` installé et actif localement sur le port `27017`
-- `npm` ou `yarn`
-
-### Étape 1 : Le Backend (API REST)
-1. Ouvrir un terminal et naviguer dans le dossier Backend :
-   ```bash
-   cd Backend
-   ```
-2. Installer les dépendances :
-   ```bash
-   npm install
-   ```
-3. Lancer le serveur (vérifiez que MongoDB est lancé en arrière-plan) :
-   ```bash
-   node server.js
-   ```
-   *L'API tournera sur `http://localhost:4000`.*
-
-### Étape 2 : Le Frontend (React/Vite)
-1. Ouvrir un second terminal à la racine du projet (`rdvanytime_web`).
-2. Installer les dépendances :
-   ```bash
-   npm install
-   ```
-3. Lancer l'environnement de développement :
-   ```bash
-   npm run dev
-   ```
-   *L'application sera accessible sur `http://localhost:5173`.*
+### 4. 🔔 Système de Notifications
+- **Description** : Notifications automatiques d'annulations/modifications.
+- **Architecture** : `notification.service.js` → `notification.controller.js` → `GET /api/notifications/*`
 
 ---
 
@@ -127,51 +84,155 @@ L'application est divisée en deux portails principaux : le portail Patient et l
 
 ```text
 rdvanytime_web/
-├── Backend/                 # Serveur Node.js / Express
-│   ├── middlewares/         # Logique d'interception (ex: auth.js pour vérif JWT)
-│   ├── models/              # Schémas Mongoose (User, Doctor, Appointment, Notification)
-│   └── server.js            # Fichier principal définissant les routes API
-├── src/                     # Code source Frontend (React)
-│   ├── assets/              # Images, icônes et fichiers statiques
-│   ├── Components/          # Composants UI partagés et réutilisables
-│   ├── Modepro/             # L'intégralité du portail pour les médecins
-│   ├── Pages/               # L'intégralité du portail pour les patients
-│   ├── styles/              # CSS locaux et thèmes
-│   ├── utils/               # Fonctions utilitaires
-│   ├── App.jsx              # Wrapper principal de l'UI
-│   └── main.jsx             # Point d'entrée avec définition des routes (React Router)
-├── index.html               # Template racine HTML
-├── package.json             # Dépendances Frontend et scripts métiers
-├── tailwind.config.js       # Configuration design Tailwind CSS
-└── vite.config.js           # Configuration du bundler Vite
+├── Backend/                     # Serveur Node.js / Express (Architecture MVC)
+│   ├── config/
+│   │   └── env.js               # Validation fail-fast des variables d'environnement
+│   ├── controllers/             # Couche HTTP (réception requêtes, réponses)
+│   │   ├── auth.controller.js
+│   │   ├── user.controller.js
+│   │   ├── doctor.controller.js
+│   │   ├── appointment.controller.js
+│   │   └── notification.controller.js
+│   ├── middlewares/
+│   │   ├── auth.js              # Vérification JWT (secret via .env)
+│   │   ├── errorHandler.js      # Gestionnaire d'erreurs global
+│   │   └── validate.js          # Middleware validation Zod
+│   ├── models/                  # Schémas Mongoose
+│   ├── routes/                  # Définitions des routes Express
+│   │   ├── index.js             # Registre central /api/*
+│   │   ├── auth.routes.js
+│   │   ├── user.routes.js
+│   │   ├── doctor.routes.js
+│   │   ├── appointment.routes.js
+│   │   └── notification.routes.js
+│   ├── services/                # Logique métier pure
+│   │   ├── auth.service.js
+│   │   ├── user.service.js
+│   │   ├── doctor.service.js
+│   │   ├── appointment.service.js
+│   │   └── notification.service.js
+│   ├── validators/              # Schémas de validation Zod
+│   ├── utils/                   # AppError, catchAsync
+│   ├── app.js                   # Factory Express + montage routes
+│   ├── server.js                # Bootstrap (17 lignes)
+│   ├── .env                     # Variables d'environnement (non versionné)
+│   └── .env.example             # Template pour les développeurs
+│
+├── src/                         # Code source Frontend (React)
+│   ├── config/
+│   │   ├── api.js               # Instance Axios centralisée + interceptors
+│   │   └── constants.js         # Routes et URLs centralisées
+│   ├── stores/                  # État global Zustand
+│   │   ├── useAuthStore.js      # Auth (token, user, persist)
+│   │   └── useNotificationStore.js
+│   ├── services/                # Couche API (appels Axios isolés)
+│   │   ├── auth.service.js
+│   │   ├── doctor.service.js
+│   │   ├── appointment.service.js
+│   │   ├── user.service.js
+│   │   └── notification.service.js
+│   ├── hooks/                   # Hooks personnalisés
+│   │   ├── useAuth.js           # Auto-fetch user on mount
+│   │   ├── useDoctors.js        # Recherche + loading/error
+│   │   ├── useAppointments.js   # CRUD RDV
+│   │   └── useLoginForm.js      # Logique login extraite
+│   ├── routes/
+│   │   ├── AppRouter.jsx        # Router centralisé + lazy loading
+│   │   ├── PrivateRoute.jsx     # Guard : redirect si non connecté
+│   │   └── PublicRoute.jsx      # Guard : redirect si déjà connecté
+│   ├── features/                # Architecture Feature-based (migration)
+│   │   ├── auth/pages/          # Bridge re-exports auth
+│   │   ├── patient/pages/       # Barrel re-exports patient
+│   │   ├── pro/pages/           # Barrel re-exports pro
+│   │   └── landing/pages/       # Barrel re-exports landing
+│   ├── Components/              # Composants UI partagés (legacy)
+│   ├── Modepro/                 # Portail médecin (legacy, en migration)
+│   ├── Pages/                   # Portail patient (legacy, en migration)
+│   ├── App.jsx                  # Wrapper principal de l'UI
+│   └── main.jsx                 # Point d'entrée (14 lignes)
+│
+├── jsconfig.json                # Path aliases (@features/, @hooks/, etc.)
+├── tailwind.config.js           # Configuration Tailwind CSS
+└── vite.config.js               # Configuration bundler Vite
 ```
 
 ---
 
-## 🔌 API & Intégrations externes
+## 💪 Points forts du projet
 
-- **API REST (Custom)** : Le backend est fait sur-mesure (Express & MongoDB) avec des requêtes faites via `axios` côté Frontend.
-- **Mailing** : Emploi probable du package `@emailjs/browser` / `emailjs-com` intégré dans le Front pour l'envoi direct de tickets de contact sans passer par le backend.
-- **Composants externes** : Utilisation de `react-google-recaptcha` (Sécurité des formulaires), `swiper` (carrousels interactifs), et `react-toastify` (alertes).
+- **Architecture MVC Backend** : Séparation stricte validators → services → controllers → routes
+- **Architecture Feature-based Frontend** : Structure scalable avec stores, services, hooks
+- **Sécurité renforcée** : JWT via `.env`, validation Zod, gestionnaire d'erreurs global
+- **Code-splitting** : Lazy loading de toutes les pages (React.lazy + Suspense)
+- **Rétrocompatibilité** : Migration progressive sans casser l'existant (routes legacy maintenues)
+- **Modèle de données précis** : Modélisation exhaustive du dossier patient
+
+---
+
+## 🚀 Installation & Lancement
+
+### Prérequis
+- `Node.js` (v16 ou supérieur)
+- `MongoDB` installé et actif localement sur le port `27017`
+- `npm` ou `yarn`
+
+### Configuration
+1. Copier le template d'environnement :
+   ```bash
+   cp Backend/.env.example Backend/.env
+   ```
+2. Modifier `Backend/.env` avec vos valeurs (JWT secret, MongoDB URI).
+
+### Démarrer le Backend
+```bash
+cd Backend
+npm install
+node server.js
+```
+*L'API tournera sur `http://localhost:4000`.*
+
+### Démarrer le Frontend
+```bash
+# À la racine du projet
+npm install
+npm run dev
+```
+*L'application sera accessible sur `http://localhost:5173`.*
+
+---
+
+## 🔌 API & Intégrations
+
+| Intégration | Usage |
+|---|---|
+| **API REST** (Express/MongoDB) | Backend sur-mesure, appels via instance Axios centralisée |
+| **EmailJS** | Envoi de tickets de contact depuis le frontend |
+| **reCAPTCHA** | Sécurisation des formulaires auth |
+| **Swiper** | Carrousels interactifs |
+| **React Toastify** | Notifications toast (alertes UI) |
 
 ---
 
 ## 🛣️ Roadmap
 
-- [ ] **Sécurisation du Backend** : Remplacement des clés secrètes par des variables `.env` (dotenv).
-- [ ] **Visio-consultation** : Intégration de WebRTC ou d'une API de visioconférence.
-- [ ] **Paiement en ligne** : Intégration de Stripe pour le prépaiement des actes de santé.
-- [ ] **Module de Pharmaciel** : Gestion des ordonnances et télétransmission au sein des dossiers médicaux.
+- [x] **Sécurisation Backend** : Variables `.env` + validation Zod
+- [x] **Architecture MVC** : Découpage server.js en couches
+- [x] **Fondations Frontend** : Stores Zustand, services API, hooks
+- [x] **Feature-based structure** : Migration progressive
+- [x] **Lazy loading** : Code-splitting par page
+- [ ] **Route guards** : Activation PrivateRoute / PublicRoute
+- [ ] **Visio-consultation** : Intégration WebRTC
+- [ ] **Paiement en ligne** : Intégration Stripe
+- [ ] **Module Pharmacie** : Gestion ordonnances
 
 ---
 
 ## 🤝 Contribution
 
-Si vous souhaitez contribuer ou reprendre le développement du projet :
 1. Créez un fork du dépôt.
 2. Créez une branche de fonctionnalité (`git checkout -b feature/nomDeLaFonctionnalite`).
-3. Appliquez les règles de nommage standardisées (Composants en PascalCase, Variables en camelCase).
-4. Commitez vos modifications (`git commit -m "Ajout merveilleux"`).
+3. Respectez l'architecture MVC backend et feature-based frontend.
+4. Commitez vos modifications (`git commit -m "feat: description"`).
 5. Poussez vers la branche (`git push origin feature/nomDeLaFonctionnalite`).
 6. Ouvrez une Pull Request structurée.
 

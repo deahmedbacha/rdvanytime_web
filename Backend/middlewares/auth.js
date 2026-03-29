@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { jwtSecret } = require("../config/env");
 
 module.exports = async (req, res, next) => {
   try {
@@ -8,17 +9,16 @@ module.exports = async (req, res, next) => {
       return res.status(401).json({ message: "Token not provided", success: false });
     }
 
-    jwt.verify(token, "Blitz", (err, decoded) => {
+    jwt.verify(token, jwtSecret, (err, decoded) => {
       if (err) {
         return res.status(401).json({ message: "Auth failed", success: false });
       }
 
-      req.user = decoded; // Attach decoded payload to req.user
-      console.log("Decoded JWT payload:", decoded);
+      req.user = decoded;
       next();
     });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Auth middleware error:", error.message);
     res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };

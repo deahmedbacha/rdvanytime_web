@@ -1,5 +1,15 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@config/*": ["config/*"],
+      "@hooks/*": ["hooks/*"],
+      "@stores/*": ["stores/*"],
+      "@services/*": ["services/*"],
+      "@routes/*": ["routes/*"],
+      "@features/*": ["features/*"],
+      "@shared/*": ["shared/*"]
+    }
   }
 }
